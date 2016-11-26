@@ -1,0 +1,94 @@
+﻿using UnityEngine;
+using UnityEngine.UI;
+using System.Collections;  
+using UnityEngine.EventSystems;  
+using System.Collections.Generic; 
+
+/// <summary>
+/// ui事件
+/// @author hannibal
+/// @time 2014-10-22
+/// </summary>
+public class UIEventTriggerListener : EventTrigger
+{
+	public delegate void VoidDelegate(GameObject go);
+	public delegate void VectorDelegate(GameObject go, Vector2 delta);
+
+    public VectorDelegate   onClick;
+    public VectorDelegate   onDown;
+    public VectorDelegate   onEnter;
+    public VectorDelegate   onExit;
+    public VectorDelegate   onUp;
+	public VoidDelegate     onSelect;
+	public VoidDelegate     onUpdateSelect;
+
+	public VectorDelegate   onDrag;
+	public VoidDelegate     onDragOut; 
+	
+	static public UIEventTriggerListener Get (GameObject go)
+	{
+		if (go == null)return null;
+
+		UIEventTriggerListener listener = go.GetComponent<UIEventTriggerListener>();
+		if (listener == null) listener = go.AddComponent<UIEventTriggerListener>();
+		return listener;
+	}
+	public override void OnDrag(PointerEventData eventData)  
+	{  
+		if(onDrag != null) onDrag(gameObject, eventData.delta); 		
+	}
+	public override void OnEndDrag(PointerEventData eventData)  
+	{
+        if (onDragOut != null) onDragOut(gameObject);  
+	}
+	public override void OnPointerClick(PointerEventData eventData)
+	{
+        if (onClick != null) onClick(gameObject, eventData.position);
+	}
+	public override void OnPointerDown (PointerEventData eventData)
+	{
+        if (onDown != null) onDown(gameObject, eventData.position);
+	}
+	public override void OnPointerEnter (PointerEventData eventData)
+	{
+        if (onEnter != null) onEnter(gameObject, eventData.position);
+	}
+	public override void OnPointerExit (PointerEventData eventData)
+	{
+        if (onExit != null) onExit(gameObject, eventData.position);
+	}
+	public override void OnPointerUp (PointerEventData eventData)
+	{
+        if (onUp != null) onUp(gameObject, eventData.position);
+	}
+	public override void OnSelect (BaseEventData eventData)
+	{
+		if(onSelect != null) onSelect(gameObject);
+	}
+	public override void OnUpdateSelected (BaseEventData eventData)
+	{
+		if(onUpdateSelect != null) onUpdateSelect(gameObject);
+	}
+}
+
+/** 使用方式
+	Button	button;
+	Image image;
+	void Start () 
+	{
+		button = transform.Find("Button").GetComponent<Button>();
+		image = transform.Find("Image").GetComponent<Image>();
+		EventTriggerListener.Get(button.gameObject).onClick =OnButtonClick;
+		EventTriggerListener.Get(image.gameObject).onClick =OnButtonClick;
+	}
+ 
+	private void OnButtonClick(GameObject go)
+	{
+		//在这里监听按钮的点击事件
+		if(go == button.gameObject)
+		{
+			Log.Info ("DoSomeThings");
+		}
+	}
+
+ */
