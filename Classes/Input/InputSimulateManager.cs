@@ -40,7 +40,6 @@ public class InputSimulateManager : Singleton<InputSimulateManager>
 			{
 				if(!m_IsTouchDown)
 				{
-					Log.Debug("down");
                     event_type = InputID.TOUCH_BEGIN;
 				}
 				m_IsTouchDown = true;
@@ -49,7 +48,6 @@ public class InputSimulateManager : Singleton<InputSimulateManager>
 			{
 				if(m_IsTouchDown)
 				{
-					Log.Debug("up");
                     event_type = InputID.TOUCH_END;
 				}
 				m_IsTouchDown = false;
@@ -58,7 +56,6 @@ public class InputSimulateManager : Singleton<InputSimulateManager>
 			{
 				if(m_IsTouchDown && Input.mousePosition != m_TouchInfo.getLocation())
 				{
-					Log.Debug("move");
                     event_type = InputID.TOUCH_MOVED;
 				}
 			}
