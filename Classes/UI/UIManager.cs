@@ -107,10 +107,7 @@ public class UIManager : Singleton<UIManager>
  
 		//构建
 		obj = GameObject.Instantiate(res) as GameObject;
-        obj.transform.SetParent(layer.transform);
-        obj.transform.localPosition = Vector3.zero;
-        obj.transform.localScale = Vector3.one;
-        obj.transform.Rotate(Vector3.zero);
+        obj.transform.SetParent(layer.transform, false);
 		m_DicUIView.Add(id, obj);
 
 		return obj;
