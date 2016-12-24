@@ -20,17 +20,17 @@ using System.Collections.Generic;
 public class UILayerManager : Singleton<UILayerManager>
 {
 	/**layer*/
-	private GameObject m_RootLayer = null;
+    private Transform m_RootLayer = null;
     private GameObject m_Canvas = null;
-	private Dictionary<int, GameObject> m_DicLayer;
+    private Dictionary<int, Transform> m_DicLayer;
 
 	public UILayerManager()
 	{
-		m_DicLayer = new Dictionary<int, GameObject>();
+        m_DicLayer = new Dictionary<int, Transform>();
 	}
 
 	//～～～～～～～～～～～～～～～～～～～～～～～Layer~～～～～～～～～～～～～～～～～～～～～～～～//
-	public void AddLayer(int layer_id, GameObject layer)
+    public void AddLayer(int layer_id, Transform layer)
 	{
 		if(m_DicLayer.ContainsKey(layer_id))
 		{
@@ -59,9 +59,9 @@ public class UILayerManager : Singleton<UILayerManager>
 		m_RootLayer = null;
 	}
 
-	public GameObject GetLayer(int layer)
+    public Transform GetLayer(int layer)
 	{
-		GameObject obj;
+        Transform obj;
 		if(m_DicLayer.TryGetValue(layer, out obj))
 		{
 			return obj;
@@ -69,14 +69,14 @@ public class UILayerManager : Singleton<UILayerManager>
 		return null;
 	}
 
-	public void SetCanvas(GameObject canvas, GameObject layer)
+	public void SetCanvas(GameObject canvas, Transform layer)
 	{
         m_Canvas = canvas;
 		m_RootLayer = layer;
 	}
 
 	//～～～～～～～～～～～～～～～～～～～～～～～get/set~～～～～～～～～～～～～～～～～～～～～～～～//
-	public GameObject RootLayer
+    public Transform RootLayer
 	{
 		get { return m_RootLayer; }
 	}

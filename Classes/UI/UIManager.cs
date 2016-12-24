@@ -93,7 +93,7 @@ public class UIManager : Singleton<UIManager>
 		}
 
 		//layer
-        GameObject layer = UILayerManager.Instance.GetLayer(info.mLayer);
+        Transform layer = UILayerManager.Instance.GetLayer(info.mLayer);
 		if(layer == null)
 		{
             Log.Warning("UIManager::Show - not find layer:" + info.mLayer.ToString());

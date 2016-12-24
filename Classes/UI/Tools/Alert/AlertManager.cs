@@ -12,7 +12,7 @@ public class AlertManager : Singleton<AlertManager>
 	                 AlertView.FunCallback fun, int layer_id)
 	{
 		//layer
-		GameObject layer = UILayerManager.Instance.GetLayer(layer_id);
+        Transform layer = UILayerManager.Instance.GetLayer(layer_id);
 		if(layer == null)
 		{
 			Log.Warning("AlertManager::Show - not find layer:"+layer_id.ToString());

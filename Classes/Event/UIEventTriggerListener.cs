@@ -22,8 +22,9 @@ public class UIEventTriggerListener : EventTrigger
 	public VoidDelegate     onSelect;
 	public VoidDelegate     onUpdateSelect;
 
+    public VectorDelegate   onDragStart;
 	public VectorDelegate   onDrag;
-	public VoidDelegate     onDragOut; 
+	public VoidDelegate     onDragEnd; 
 	
 	static public UIEventTriggerListener Get (GameObject go)
 	{
@@ -33,13 +34,17 @@ public class UIEventTriggerListener : EventTrigger
 		if (listener == null) listener = go.AddComponent<UIEventTriggerListener>();
 		return listener;
 	}
+    public override void OnBeginDrag(PointerEventData eventData)
+    {
+        if (onDragStart != null) onDragStart(gameObject, eventData.delta);
+    }
 	public override void OnDrag(PointerEventData eventData)  
 	{  
 		if(onDrag != null) onDrag(gameObject, eventData.delta); 		
 	}
 	public override void OnEndDrag(PointerEventData eventData)  
 	{
-        if (onDragOut != null) onDragOut(gameObject);  
+        if (onDragEnd != null) onDragEnd(gameObject);  
 	}
 	public override void OnPointerClick(PointerEventData eventData)
 	{

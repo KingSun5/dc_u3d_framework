@@ -26,7 +26,7 @@ public struct GameEvent
     {
         if (idx >= m_Length)
         {
-            Log.Error("VarCommand::Get 参数错误:" + idx);
+            Log.Error("GameEvent::Get 参数错误:" + idx);
         }
 
         object obj = m_data[idx];
@@ -37,7 +37,7 @@ public struct GameEvent
     {
         if (idx >= CAPACITY)
         {
-            Log.Error("VarCommand::Set 参数错误:" + idx);
+            Log.Error("GameEvent::Set 参数错误:" + idx);
             return;
         }
         m_data[idx] = val;
