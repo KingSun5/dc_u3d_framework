@@ -33,7 +33,6 @@ public class ShakeCameraScript : MonoBehaviour
 
         if (Time.realtimeSinceStartup - tmpLastShakeTime < m_Interval)return;
 
-        Log.Debug("time:" + (Time.realtimeSinceStartup - tmpLastShakeTime));
         tmpLastShakeTime += m_Interval;
         m_PassTime += Time.deltaTime;
 
