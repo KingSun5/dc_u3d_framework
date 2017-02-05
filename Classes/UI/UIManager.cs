@@ -62,6 +62,25 @@ public class UIManager : Singleton<UIManager>
 		m_DicUIView.Clear();
 	}
 
+    public GameObject Find(int id)
+    {
+        GameObject obj;
+        if (m_DicUIView.TryGetValue(id, out obj))
+        {
+            return obj;
+        }
+        return null;
+    }
+
+    public int GetUILayerID(int id)
+    {
+        SUILoaderInfo info;
+        if (m_DicLoaderInfo.TryGetValue(id, out info) == false)
+        {
+            return -1;
+        }
+        return info.mLayer;
+    }
 	//～～～～～～～～～～～～～～～～～～～～～～～显示~～～～～～～～～～～～～～～～～～～～～～～～//
     /// <summary>
     /// 显示入口
@@ -115,7 +134,7 @@ public class UIManager : Singleton<UIManager>
     /// <summary>
     /// 关闭入口
     /// </summary>
-	public void Close(int id)
+	public bool Close(int id)
 	{
 		SUILoaderInfo loaderInfo;
 		loaderInfo = UIManager.Instance.GetLoaderInfo(id);
@@ -123,20 +142,42 @@ public class UIManager : Singleton<UIManager>
 		GameObject gameObject;
 		if(m_DicUIView.TryGetValue(id, out gameObject) == false)
 		{
-			return;
+			return false;
 		}
 		
 		if(loaderInfo.mHideDestroy)
 		{
 			GameObject.Destroy(gameObject);
-			m_DicUIView.Remove(id);
+            m_DicUIView.Remove(id);
+            return true;
 		}
 		else
 		{
-			gameObject.SetActive(false);
+            gameObject.SetActive(false);
+            return false;
 		}
 	}
-
+    /// <summary>
+    /// 关闭所有面板
+    /// </summary>
+    public void CloseAll(List<int> exclude_list)
+    {
+        bool has_close = false;
+        while (m_DicUIView.Count > 0)
+        {
+            has_close = false;
+            foreach (var obj in m_DicUIView)
+            {
+                if (exclude_list != null && exclude_list.Contains(obj.Key)) continue;
+                if (Close(obj.Key))
+                {
+                    has_close = true;
+                    break;
+                }
+            }
+            if (!has_close) break;
+        }
+    }
 
 	//～～～～～～～～～～～～～～～～～～～～～～～加载~～～～～～～～～～～～～～～～～～～～～～～～//
 	public void PushLoaderInfo(SUILoaderInfo info)

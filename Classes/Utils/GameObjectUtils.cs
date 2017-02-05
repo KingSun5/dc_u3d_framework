@@ -7,8 +7,22 @@ using System.Collections.Generic;
 /// @author hannibal
 /// @time 2014-11-17
 /// </summary>
-public class GameObjectUtils 
+public class GameObjectUtils
 {
+    static public GameObject BuildObject(string file)
+    {
+        if (file.Length == 0)
+            return null;
+
+        UnityEngine.Object res = ResourceLoaderManager.Instance.Load(file);
+        if (res == null)
+        {
+            Log.Error("ObjectManager::NewObject - not build file:" + file);
+            return null;
+        }
+        GameObject obj = GameObject.Instantiate(res) as GameObject;
+        return obj;
+    }
     /// <summary>
     /// 根据名称获得对象或子对象
     /// </summary>

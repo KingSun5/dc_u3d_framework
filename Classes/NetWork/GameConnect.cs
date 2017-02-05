@@ -290,7 +290,7 @@ public class GameConnect :NetClient
         srvData.buffer = NetProtocol.decryptGatePacket(ref recvData, data.Position, uDataLength, uKey);
         byte sysId = data.Read<byte>();
         byte cmdId = data.Read<byte>();
-        if (GlobalID.IsDebugNet)
+        if (GlobalID.IsLogNet)
         {
             if (!((sysId == 3 && cmdId == 100) || (sysId == 3 && cmdId == 2) || (sysId == 3 && cmdId == 105) || (sysId == 3 && cmdId == 106)))
                 Log.Debug("[recv] sysId:" + sysId + " cmdId:" + cmdId);
@@ -328,7 +328,7 @@ public class GameConnect :NetClient
 
         tempDataPacket.Write<byte>((byte)sysId);
         tempDataPacket.Write<byte>((byte)cmdId);
-        if (GlobalID.IsDebugNet)
+        if (GlobalID.IsLogNet)
         {
             if (!((sysId == 3 && cmdId == 100) || (sysId == 3 && cmdId == 105) || (sysId == 3 && cmdId == 2) || (sysId == 3 && cmdId == 3) || (sysId == 3 && cmdId == 106)))
                 Log.Debug("[send] sysId:" + sysId + " cmdId:" + cmdId);

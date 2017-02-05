@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 
 
-public class AlertView : UIViewBase
+public class AlertView : UIPanelBase
 {
 	public delegate void FunCallback(GameEvent evt);
 

@@ -46,6 +46,13 @@ public class EngineManager : Singleton<EngineManager>
         GameConnect.Instance.Tick(elapse,game_frame);
 	}
 
+    public void ProcessGC()
+    {
+        SpritePools.Clear();
+        GameobjectPools.Clear();
+        SoundManager.Instance.Clear();
+        ResourceManager.Instance.ProcessGC();
+    }
 	
 	//～～～～～～～～～～～～～～～～～～～～～～～暂停～～～～～～～～～～～～～～～～～～～～～～～//
     private void OnPauseGame(GameEvent evt)
