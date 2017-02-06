@@ -109,7 +109,8 @@ public class GameConnect :NetClient
     {
         m_ServerId = serverId;
     }
-    public bool Connect(){
+    public bool Connect()
+    {
         StartConnect(m_ServerHost, m_ServerPort);
         return true;
     }

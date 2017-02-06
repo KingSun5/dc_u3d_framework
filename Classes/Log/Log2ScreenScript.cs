@@ -17,8 +17,6 @@ public class Log2ScreenScript : MonoBehaviour
     private GUIStyle      m_TextStyle;
     private StringBuilder m_ErrMsgBuffer = new StringBuilder();
 
-    private string m_OutPath = "";
-
     void Start()
     {
         if (m_IsWrite2Screen)

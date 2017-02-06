@@ -18,7 +18,7 @@ public class VisibleTransformer : Transformer
         transformer.target = target;
         return transformer;
     }
-    void runTransform(float currTime)
+    public override void runTransform(float currTime)
 	{
 		if (currTime >= m_fEndTime)
 		{

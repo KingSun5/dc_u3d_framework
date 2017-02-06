@@ -25,7 +25,7 @@ public class RepeatTransformer : Transformer
 	{
 		m_fEndTime = m_fStartTime + 72 * 60 * 60;
 	}
-	void runTransform(float currTime)
+    public override void runTransform(float currTime)
 	{
 		if (m_boAllChildrenEnded)
 		{

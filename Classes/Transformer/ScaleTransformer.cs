@@ -53,7 +53,7 @@ public class ScaleTransformer : Transformer
 			m_fTargetY = scale.x + m_fSpeedY * m_fTransformTime;
 		}
     }
-    public virtual void runTransform(float currTime)
+    public override void runTransform(float currTime)
     {
         if (currTime >= m_fEndTime)
         {
