@@ -17,14 +17,14 @@ public class ObjPlaySound : MonoBehaviour
         External,   //外部调用
     }
 
-    public AudioClip    m_AudioClip;
+    public AudioClip m_AudioClip;
     public eTriggerType m_TriggerTime = eTriggerType.Active;
-    public bool         m_Loop = false;
-    public float        m_MinDistance = 5;
-    public float        m_MaxDistance = 50;
+    public bool m_Loop = false;
+    public float m_MinDistance = 5;
+    public float m_MaxDistance = 50;
 
     private AudioSource m_AudioSource = null;
-    private Transform   m_ParentTransform;
+    private Transform m_ParentTransform;
 
     void Awake()
     {
@@ -45,16 +45,16 @@ public class ObjPlaySound : MonoBehaviour
             stop();
         }
     }
-    void Update()
-    {
-        if(m_AudioSource != null)
-        {
-            m_AudioSource.transform.position = m_ParentTransform.position;
-        }
-    }
     void OnDestroy()
     {
         stop();
+    }
+    void Update()
+    {
+        if (m_AudioSource != null)
+        {
+            m_AudioSource.transform.position = m_ParentTransform.position;
+        }
     }
 
     /// <summary>

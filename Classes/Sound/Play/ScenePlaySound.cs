@@ -6,7 +6,7 @@ using System.Collections;
 /// @author hannibal
 /// @time 2016-12-11
 /// </summary>
-public class ScenePlaySound : MonoBehaviour 
+public class ScenePlaySound : MonoBehaviour
 {
     /// <summary>
     /// 触发条件
@@ -17,14 +17,14 @@ public class ScenePlaySound : MonoBehaviour
         External,   //外部调用
     }
 
-    public AudioClip    m_AudioClip;
+    public AudioClip m_AudioClip;
     public eTriggerType m_TriggerTime = eTriggerType.Enter;
-    public bool         m_Loop = true;
-    public float        m_Range = 50;
-    public Color        m_color = new Color(0.2f,0.2f,0.2f,0.5f);
-    
+    public bool m_Loop = true;
+    public float m_Range = 50;
+    public Color m_color = new Color(0.2f, 0.2f, 0.2f, 0.5f);
+
     private AudioSource m_AudioSource = null;
-    private Transform   m_Listener;     //听众 
+    private Transform m_Listener;     //听众 
 
     void Awake()
     {
@@ -41,10 +41,18 @@ public class ScenePlaySound : MonoBehaviour
         EventDispatcher.RemoveEventListener(SoundID.SOUND_LISTENER_LEAVE, OnListenerEvt);
         stop();
     }
+    void OnDestroy()
+    {
+        if (m_AudioSource != null)
+        {
+            SoundManager.Instance.StopSoundEffect(m_AudioSource);
+            m_AudioSource = null;
+        }
+    }
 
     void OnListenerEvt(GameEvent evt)
     {
-        switch(evt.type)
+        switch (evt.type)
         {
             case SoundID.SOUND_LISTENER_ENTER:
                 m_Listener = evt.Get<Transform>(0);
@@ -62,10 +70,10 @@ public class ScenePlaySound : MonoBehaviour
     {
         if (m_Listener == null) return;
 
-        if(Time.realtimeSinceStartup - tmpLastCalTime > tmpCalListenerTime)
+        if (Time.realtimeSinceStartup - tmpLastCalTime > tmpCalListenerTime)
         {
             Vector3 listener_pos = m_Listener.gameObject.transform.position;
-            if(Vector3.Distance(listener_pos, transform.position) <= m_Range)
+            if (Vector3.Distance(listener_pos, transform.position) <= m_Range)
             {
                 play();
             }
@@ -76,15 +84,6 @@ public class ScenePlaySound : MonoBehaviour
             tmpLastCalTime = Time.realtimeSinceStartup;
         }
     }
-    void OnDestroy()
-    {
-        if(m_AudioSource != null)
-        {
-            SoundManager.Instance.StopSoundEffect(m_AudioSource);
-            m_AudioSource = null;
-        }
-    }
-
     /// <summary>
     /// 外部调用
     /// </summary>
@@ -101,7 +100,7 @@ public class ScenePlaySound : MonoBehaviour
     {
         if (m_AudioClip != null)
         {
-            if(m_AudioSource == null)
+            if (m_AudioSource == null)
             {
                 m_AudioSource = SoundManager.Instance.PlaySoundEffect(m_AudioClip, transform.position, 0, m_Range, m_Loop);
                 if (m_AudioSource == null) return;

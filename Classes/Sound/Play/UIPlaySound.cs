@@ -7,22 +7,22 @@ using UnityEngine;
 /// </summary>
 public class UIPlaySound : MonoBehaviour
 {
-	public enum Trigger
-	{
-		OnClick,
-	}
-    public Trigger  trigger = Trigger.OnClick;
+    public enum Trigger
+    {
+        OnClick,
+    }
+    public Trigger trigger = Trigger.OnClick;
 
-    public AudioClip    audioClip;
+    public AudioClip audioClip;
 
     void Awake()
     {
     }
 
-	void OnEnable()
-	{
+    void OnEnable()
+    {
         UIEventTriggerListener.Get(gameObject).onClick += OnClick;
-	}
+    }
 
     void OnDestroy()
     {
@@ -34,16 +34,27 @@ public class UIPlaySound : MonoBehaviour
         play();
     }
 
-	public void Play ()
-	{
+    public void Play()
+    {
         play();
-	}
+    }
 
     void play()
     {
         if (audioClip != null)
         {
-            SoundManager.Instance.PlayUISoundEffect(audioClip);
+            AudioSource aSrc = SoundManager.Instance.PlayUISoundEffect(audioClip);
+            if (aSrc != null)
+            {
+                AutoDestroyAudio component = aSrc.gameObject.GetComponent<AutoDestroyAudio>();
+                if (component == null) component = aSrc.gameObject.AddComponent<AutoDestroyAudio>();
+
+                component.IsLoop = false;
+                component.m_DestroyCallback = delegate()
+                {
+                    SoundManager.Instance.StopSoundEffect(aSrc);
+                };
+            }
         }
     }
 }
