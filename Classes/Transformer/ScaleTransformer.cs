@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections;
 /**
  * 缩放变换器
  */
@@ -36,7 +33,7 @@ public class ScaleTransformer : Transformer
         transformer.target = target;
         return transformer;
     }
-    public override void transformStarted()
+    public override void OnTransformStarted()
     {
         //获得当前对象的缩放
 		Vector3 scale = target.transform.localScale;
@@ -52,17 +49,18 @@ public class ScaleTransformer : Transformer
 			m_fTargetX = scale.x + m_fSpeedX * m_fTransformTime;
 			m_fTargetY = scale.x + m_fSpeedY * m_fTransformTime;
 		}
+        base.OnTransformStarted();
     }
     public override void runTransform(float currTime)
     {
         if (currTime >= m_fEndTime)
         {
-            target.transform.localScale.Set(m_fTargetX, m_fTargetY, target.transform.localScale.z);
+            target.transform.localScale = new Vector3(m_fTargetX, m_fTargetY, target.transform.localScale.z);
         }
         else
         {
             float timeElapased = currTime - m_fStartTime;
-            target.transform.localScale.Set(m_fStartX + m_fSpeedX * timeElapased, m_fStartY + m_fSpeedY * timeElapased, target.transform.localScale.z);
+            target.transform.localScale = new Vector3(m_fStartX + m_fSpeedX * timeElapased, m_fStartY + m_fSpeedY * timeElapased, target.transform.localScale.z);
         }
     }
 }

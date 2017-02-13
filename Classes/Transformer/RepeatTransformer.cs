@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
+using System.Collections;
 /**
  * 重复运行变换器
  */
@@ -21,7 +17,7 @@ public class RepeatTransformer : Transformer
         transformer.m_boSelfControlChildren = true;
         return transformer;
     }
-    public override void transformStarted()
+    public override void OnTransformStarted()
 	{
 		m_fEndTime = m_fStartTime + 72 * 60 * 60;
 	}
@@ -32,7 +28,7 @@ public class RepeatTransformer : Transformer
 			m_nRunTwice++;
 			if (m_nMaxTwice != 0 && m_nRunTwice >= m_nMaxTwice)
 			{
-				transformCompleted();
+                OnTransformCompleted();
 				m_fEndTime = currTime;
 			}
 			else

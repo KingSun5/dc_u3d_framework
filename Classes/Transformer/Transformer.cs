@@ -1,8 +1,6 @@
-﻿using System;
+﻿using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
 /**
  * 显示对象变换器
  * 显示对象变换器提供了统一抽象的显示对象自由变换操作方式。对于任何显示对象，
@@ -22,49 +20,19 @@ using UnityEngine;
  */
 public class Transformer
 {
-    GameObject m_Target = null;
-    public float m_fStartTime = 0;//变换开始时间
-    public float m_fEndTime = 0;//变换结束时间
-    public float m_fTransformTime = 0;//变换持续时间
-    public float m_fRootTimeOffset = 0;//在变换树中的时间偏移
+    protected GameObject m_Target = null;
+
+    public float m_fStartTime = 0;      //变换开始时间
+    public float m_fEndTime = 0;        //变换结束时间
+    public float m_fTransformTime = 0;  //变换持续时间
+    public float m_fRootTimeOffset = 0; //在变换树中的时间偏移
+
     public Transformer m_Root = null; //根变换器
-    List<Transformer> m_ChildrenList = new List<Transformer>();//子级变换器列表
+    protected List<Transformer> m_ChildrenList = new List<Transformer>();//子级变换器列表
+
     public bool m_boEnded = false;//是否已结束自身变换
     public bool m_boAllChildrenEnded = false;//是否已结束整个变换树
     public bool m_boSelfControlChildren = false;//是否由变换器自身控制子成员列表
-
-
-
-    //返回变换器是否正在运行
-    public bool runing()
-    {
-        return m_fStartTime != 0 && !completed();
-    }
-
-    //返回变换器是否完成
-    public bool completed()
-    {
-        return m_boEnded && m_boAllChildrenEnded;
-    }
-
-		//停止变换
-    public void stop()
-    {
-        m_fEndTime = 0;
-        m_boAllChildrenEnded = true;
-        m_boEnded = true;
-    }
-
-    public GameObject target
-    {
-        get { return m_Target; }
-        set { m_Target = value; }
-    }
-
-    public Transformer root() 
-    { 
-        return m_Root != null ? m_Root : this; 
-    }
 
     //连接一个变换器到此变换器之后
     //被连接的变换器将在此变换器变换结束后开始执行变换
@@ -116,11 +84,19 @@ public class Transformer
         m_fStartTime = Time.realtimeSinceStartup - timeOffset;
         m_fEndTime = m_fStartTime + m_fTransformTime;
         resetAllChildren();
-        transformStarted();
+        OnTransformStarted();
         if (autoManage)
         {
-            TransformerMgr.Instance.Add(this);
+            TransformerManager.Instance.Add(this);
         }
+    }
+
+    //停止变换
+    public void stop()
+    {
+        m_fEndTime = 0;
+        m_boAllChildrenEnded = true;
+        m_boEnded = true;
     }
 
 
@@ -132,7 +108,7 @@ public class Transformer
 			if (currTime >= m_fEndTime)
 			{
 				m_boEnded = true;
-				transformCompleted();
+                OnTransformCompleted();
 			}
 		}
 
@@ -175,13 +151,37 @@ public class Transformer
 
     }
     //变换器开始更新变换函数
-    public virtual void transformStarted()
+    public virtual void OnTransformStarted()
     {
 
     }
     //变换器完成变换函数
-    public virtual void transformCompleted()
+    public virtual void OnTransformCompleted()
     {
 
     }
+
+    //返回变换器是否正在运行
+    public bool runing()
+    {
+        return m_fStartTime != 0 && !completed();
+    }
+
+    //返回变换器是否完成
+    public bool completed()
+    {
+        return m_boEnded && m_boAllChildrenEnded;
+    }
+
+    public GameObject target
+    {
+        get { return m_Target; }
+        set { m_Target = value; }
+    }
+
+    public Transformer root() 
+    { 
+        return m_Root != null ? m_Root : this; 
+    }
+
 }

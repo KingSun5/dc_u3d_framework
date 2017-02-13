@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 /**
  * 图片进度填充变换器
  */
@@ -21,7 +18,7 @@ public class ImageFillTransformer : Transformer
         transformer.target = target;
         return transformer;
     }
-    public override void transformStarted()
+    public override void OnTransformStarted()
     {
         m_FillImage = target.GetComponent<Image>();
         if (m_FillImage == null)

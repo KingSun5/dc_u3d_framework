@@ -138,6 +138,16 @@ public class MathUtils
 		result.max = vec;
 		return result;
 	}
+    /// <summary>
+    /// bound1是否包含bound2
+    /// </summary>
+    /// <param name="bound1"></param>
+    /// <param name="bound2"></param>
+    /// <returns></returns>
+    public static bool ContainerBounds(Bounds bound1, Bounds bound2)
+    {
+        return true;
+    }
 	/**
 	 * 弧度转化为度 
 	 */		

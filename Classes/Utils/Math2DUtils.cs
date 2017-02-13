@@ -162,7 +162,14 @@ public class Math2DUtils
 		}
 		return false;
 	}
-
+    public static bool containerCircle(Vector2 c, Vector2 h, Vector2 p, float r)
+    {
+        Vector2 v = p - c;    // 第1步：转换至第1象限
+        v = new Vector2(Mathf.Abs(v.x), Mathf.Abs(v.y));
+        Vector2 u = v - h; // 第2步：求圆心至矩形的最短距离矢量
+        //u = new Vector2(u.x < 0 ? 0 : u.x, u.y < 0 ? 0 : u.y);
+        return Vector2.Dot(u, u) <= r * r; // 第3步：长度平方与半径平方比较
+    }
     /// <summary>
     /// 两个向量夹角
     /// </summary>

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
+using System.Collections;
 /**
  * 渐隐变换器
  */
@@ -23,7 +19,7 @@ public class FadeTransformer : Transformer
         transformer.target = target;
         return transformer;
     }
-    public override void transformStarted()
+    public override void OnTransformStarted()
     {
         m_CanvasGroup =  target.GetComponent<CanvasGroup>();
         if (m_CanvasGroup == null)
