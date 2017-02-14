@@ -13,6 +13,7 @@ public class LangText
 {
     public List<string> m_LangList = new List<string>();
     public string m_LangFileName;
+
     public string this[int i]
     {
         get
