@@ -54,11 +54,15 @@ public class TimerManager : Singleton<TimerManager>
     /// <returns>新定时器id</returns>
     public int AddTimer(float rate, int ticks, Action callBack)
     {
+        if (ticks <= 0) ticks = 0;
         TimerEntity newTimer = new TimerEntity(++m_idCounter, rate, ticks, callBack);
         m_Timers.Add(newTimer);
         return newTimer.id;
     }
-
+    public void AddNextFrameProc(Action callBack)
+    {
+        AddTimer(0, 1, callBack);
+    }
     /// <summary>
     /// 移除定时器
     /// </summary>

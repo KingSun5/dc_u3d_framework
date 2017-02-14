@@ -12,6 +12,11 @@ public class NullTransformer : Transformer
         result.target = target;
         return result;
     }
+
+    public NullTransformer()
+    {
+        m_Type = eTransformerID.Null;
+    }
     public override void runTransform(float currTime)
     {
 

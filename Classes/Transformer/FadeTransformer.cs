@@ -10,6 +10,7 @@ public class FadeTransformer : Transformer
     public float m_SpeedAlpha;
     public float m_TargetAlpha;
     public CanvasGroup m_CanvasGroup;
+
     public static FadeTransformer FadeTo(GameObject target, float destAlpha, float time)
     {
         FadeTransformer transformer = new FadeTransformer();
@@ -18,6 +19,10 @@ public class FadeTransformer : Transformer
         transformer.m_fTransformTime = time;
         transformer.target = target;
         return transformer;
+    }
+    public FadeTransformer()
+    {
+        m_Type = eTransformerID.Fade;
     }
     public override void OnTransformStarted()
     {

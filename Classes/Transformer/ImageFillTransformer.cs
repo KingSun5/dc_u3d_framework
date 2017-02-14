@@ -26,6 +26,11 @@ public class ImageFillTransformer : Transformer
         m_StartFill = m_FillImage.fillAmount;
         m_FillSpeed = (m_FillCount - m_StartFill) / m_fTransformTime;
     }
+
+    public ImageFillTransformer()
+    {
+        m_Type = eTransformerID.ImageFill;
+    }
     public override void runTransform(float currTime)
     {
         if (m_FillImage == null)

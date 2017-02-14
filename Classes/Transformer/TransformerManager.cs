@@ -52,7 +52,14 @@ public class TransformerManager : Singleton<TransformerManager>
                 m_UpdateAllList.RemoveAt(i);
         }
     }
-
+    public void StopTargetByType(GameObject target, eTransformerID type)
+    {
+        for (int i = m_UpdateAllList.Count - 1; i > -1; --i)
+        {
+            if (m_UpdateAllList[i].target == target && m_UpdateAllList[i].Type == type)
+                m_UpdateAllList.RemoveAt(i);
+        }
+    }
     //停止所有变换器
     public void StopAll()
     {

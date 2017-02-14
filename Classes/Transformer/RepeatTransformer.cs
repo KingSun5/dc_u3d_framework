@@ -17,6 +17,10 @@ public class RepeatTransformer : Transformer
         transformer.m_boSelfControlChildren = true;
         return transformer;
     }
+    public RepeatTransformer()
+    {
+        m_Type = eTransformerID.Repert;
+    }
     public override void OnTransformStarted()
 	{
 		m_fEndTime = m_fStartTime + 72 * 60 * 60;

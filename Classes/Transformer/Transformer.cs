@@ -20,6 +20,7 @@ using System.Collections.Generic;
  */
 public class Transformer
 {
+    protected eTransformerID m_Type = eTransformerID.None;
     protected GameObject m_Target = null;
 
     public float m_fStartTime = 0;      //变换开始时间
@@ -184,4 +185,8 @@ public class Transformer
         return m_Root != null ? m_Root : this; 
     }
 
+    public eTransformerID Type
+    {
+        get { return m_Type; }
+    }
 }

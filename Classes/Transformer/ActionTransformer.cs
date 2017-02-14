@@ -7,6 +7,7 @@ using System;
 public class ActionTransformer : Transformer
 {
     public Action m_CallBack;
+
     public static ActionTransformer FadeTo(GameObject target, Action callBack, float time)
     {
         ActionTransformer transformer = new ActionTransformer();
@@ -16,6 +17,10 @@ public class ActionTransformer : Transformer
         return transformer;
     }
 
+    public ActionTransformer()
+    {
+        m_Type = eTransformerID.Action;
+    }
     public override void runTransform(float currTime)
     {
         if (currTime >= m_fEndTime)

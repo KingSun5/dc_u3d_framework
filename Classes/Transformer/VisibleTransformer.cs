@@ -15,6 +15,10 @@ public class VisibleTransformer : Transformer
         transformer.target = target;
         return transformer;
     }
+    public VisibleTransformer()
+    {
+        m_Type = eTransformerID.Visible;
+    }
     public override void runTransform(float currTime)
 	{
 		if (currTime >= m_fEndTime)
