@@ -28,7 +28,7 @@ public class LangText
     }
     public bool Load()
     {
-        ReadTxtConfig("", OnLoad);
+        ReadTxtConfig(m_LangFileName, OnLoad);
         return true;
     }
     public void Unload()
