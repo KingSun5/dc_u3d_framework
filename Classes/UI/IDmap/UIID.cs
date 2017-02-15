@@ -20,3 +20,24 @@ public class UIID
     public const int ORDERLAYERINTERVAL = 1000;
 
 }
+/// <summary>
+/// 界面layer
+/// </summary>
+public enum eUILayer
+{
+    BACK = 0,
+    TOOLS,
+    APP,
+    TOP,
+    MAX,
+}
+
+/// <summary>
+/// 界面id
+/// </summary>
+public enum eInternalUIID
+{
+    ID_ALERT,           // 弹出框
+
+    ID_MAX,
+}

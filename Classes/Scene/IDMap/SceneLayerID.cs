@@ -13,5 +13,7 @@ public class SceneLayerID
     public const string Layer_Scene         = "Scene";
     public const string Layer_Effect        = "Effect";
     public const string Layer_Ball          = "Ball";
-
+    public const string Layer_ColorBall     = "ColorBall";
+    public const string Layer_TriggleBall   = "TriggleBall";
+    public const string Layer_MainBall      = "MainBall";
 }

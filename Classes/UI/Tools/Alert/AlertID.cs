@@ -3,12 +3,12 @@ using System.Collections;
 
 public class AlertID 
 {
-	public enum EBtnType
-	{
-		OK = 0,
-		CANCEL,
-		HELP,
+}
 
-		MAX
-	}
+public enum eAlertBtnType
+{
+    OK = 0,
+    CANCEL,
+
+    MAX
 }

@@ -4,23 +4,29 @@ using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-
-
+/// <summary>
+/// 弹框
+/// @author hannibal
+/// @time 2017-2-15
+/// </summary>
 public class AlertView : UIPanelBase
 {
-	public delegate void FunCallback(GameEvent evt);
+	public Button[]     m_ArrBtn = new Button[(int)eAlertBtnType.MAX];
+	public Text         m_ContentText;
 
-	public Button[] m_ArrBtn = new Button[(int)AlertID.EBtnType.MAX];
-	public Text m_ContentText;
+	private string      m_Content;
+	private object      m_Info;
+    private System.Action<eAlertBtnType>        m_Fun;
+    private Dictionary<eAlertBtnType, string>   m_DicBtn;
 
-	private string m_Content;
-	private FunCallback m_Fun;
-	private object m_Info;
-	private Dictionary<AlertID.EBtnType, string> m_DicBtn;
+    public AlertView()
+    {
+        m_DicBtn = new Dictionary<eAlertBtnType, string>();
+    }
 
-	public override void OnEnable ()
-	{
-        base.OnEnable();
+	public override void Show(params object[] info)
+    {
+        base.Show(info);
 
 		for(int i = 0; i < m_ArrBtn.Length; ++i)
 		{
@@ -34,18 +40,8 @@ public class AlertView : UIPanelBase
 			m_ArrBtn[(int)obj.Key].GetComponentInChildren<Text>().text = obj.Value;
 		}
 		m_ContentText.text = m_Content;
-
-		EngineManager.Instance.HandlePauseGame(true);
 	}
-	public override void OnDisable ()
-	{
-        EngineManager.Instance.HandlePauseGame(false);
 
-        GameObject.Destroy(gameObject);
-
-        base.OnDisable();
-	}
-	
 	public override void RegisterEvent ()
 	{
 		for(int i = 0; i < m_ArrBtn.Length; ++i)
@@ -66,7 +62,7 @@ public class AlertView : UIPanelBase
 	{
 		if(m_Fun != null)
 		{
-			m_Fun(new GameEvent((AlertID.EBtnType)(System.Convert.ToInt32(obj.name)), m_Info));
+            m_Fun((eAlertBtnType)(System.Convert.ToInt32(obj.name)));
 
 			AlertManager.Instance.Remove();
 		}
@@ -76,7 +72,7 @@ public class AlertView : UIPanelBase
 	{
 		set{ m_Content = value; }
 	}
-	public FunCallback Fun
+    public System.Action<eAlertBtnType> Fun
 	{
 		set{ m_Fun = value; }
 	}
@@ -84,8 +80,9 @@ public class AlertView : UIPanelBase
 	{
 		set{ m_Info = value; }
 	}
-	public Dictionary<AlertID.EBtnType, string> DicBtn
+	public Dictionary<eAlertBtnType, string> DicBtn
 	{
 		set{ m_DicBtn = value; }
+        get { return m_DicBtn; }
 	}
 }

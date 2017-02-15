@@ -39,8 +39,10 @@ public class EngineManager : Singleton<EngineManager>
         TransformerManager.Instance.Destroy();
 	}
 	
-	public void Tick (float elapse, int game_frame) 
-	{
+	public void Tick (float elapse, int game_frame)
+    {
+        CheckEscapeGame();
+
         TimerManager.Instance.Tick(elapse, game_frame);
 		MultyBuildManager.Instance.Tick(elapse, game_frame);
 		DropSimulationManager.Instance.Tick(elapse, game_frame);
@@ -56,7 +58,39 @@ public class EngineManager : Singleton<EngineManager>
         SoundManager.Instance.Clear();
         ResourceManager.Instance.ProcessGC();
     }
-	
+    /// <summary>
+    /// 退出游戏
+    /// </summary>
+    static private int m_ClickCounts = 0;
+    static private float m_LastClickTick = 0;
+    static private void CheckEscapeGame()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (m_ClickCounts == 0)
+            {
+                m_LastClickTick = Time.time;
+            }
+            if (Time.time - m_LastClickTick >= 1.0f)
+            {
+                m_ClickCounts = 0;
+                m_LastClickTick = Time.time;
+            }
+            m_ClickCounts++;
+
+            // 点击两次才有反应
+            if (m_ClickCounts >= 2)
+            {
+                m_ClickCounts = 0;
+                AlertManager.Instance.ShowConfirm((int)eInternalUIID.ID_ALERT, LangManager.lang[4], (eAlertBtnType type) =>
+                {
+                    if (type == eAlertBtnType.OK)
+                        Application.Quit();
+                }
+                , LangManager.lang[5], LangManager.lang[6]);
+            }
+        }
+    }
 	//～～～～～～～～～～～～～～～～～～～～～～～暂停～～～～～～～～～～～～～～～～～～～～～～～//
     private void OnPauseGame(GameEvent evt)
 	{

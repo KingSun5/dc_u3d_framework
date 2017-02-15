@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public struct SUILoaderInfo
 {
@@ -129,6 +130,9 @@ public class UIManager : Singleton<UIManager>
         obj.transform.SetParent(layer.transform, false);
 		m_DicUIView.Add(id, obj);
 
+        //设置层级
+        ResetSortingOrder((int)id);
+
 		return obj;
 	}
     /// <summary>
@@ -178,7 +182,79 @@ public class UIManager : Singleton<UIManager>
             if (!has_close) break;
         }
     }
+    //～～～～～～～～～～～～～～～～～～～～～～～渲染层级~～～～～～～～～～～～～～～～～～～～～～～～//
+    /// <summary>
+    /// 重设UI渲染层级
+    /// </summary>
+    /// <param name="id"></param>
+    public void ResetSortingOrder(int id)
+    {
+        GameObject obj = UIManager.Instance.Find(id);
+        if (obj == null) return;
+        UIPanelBase currView = obj.GetComponent<UIPanelBase>();
+        if (currView == null) return;
 
+        currView.MaxSortingOrder = 0;
+        int UILayerID = UIManager.Instance.GetUILayerID(id);
+        GameObject layer = UILayerManager.Instance.GetLayer(UILayerID).gameObject;
+        int maxCanvasSortingOrder = GetMaxCanvasSortingOrder(layer);
+        Canvas currCanvas = obj.GetComponent<Canvas>();
+        if (currCanvas == null)
+        {
+            currCanvas = obj.AddComponent<Canvas>();
+        }
+        if (maxCanvasSortingOrder != -1)
+        {
+            currCanvas.overrideSorting = true;
+            if (maxCanvasSortingOrder == 0)
+            {
+                currCanvas.sortingOrder = UILayerID * UIID.ORDERLAYERINTERVAL;
+                currView.MaxSortingOrder = UILayerID * UIID.ORDERLAYERINTERVAL;
+            }
+            else
+            {
+                currCanvas.sortingOrder = maxCanvasSortingOrder + 1;
+                currView.MaxSortingOrder = maxCanvasSortingOrder + 1;
+            }
+        }
+
+        // 加射线
+        GraphicRaycaster cast = obj.GetComponent<GraphicRaycaster>();
+        if (cast == null)
+        {
+            cast = obj.AddComponent<GraphicRaycaster>();
+        }
+
+        CanvasGroup canvasGroup = obj.GetComponent<CanvasGroup>();
+        if (canvasGroup == null)
+        {
+            canvasGroup = obj.AddComponent<CanvasGroup>();
+        }
+    }
+
+    /// <summary>
+    /// 获取当前节点下的最大sortingOrder值
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="UILayerID"></param>
+    /// <returns></returns>
+    public int GetMaxCanvasSortingOrder(GameObject obj)
+    {
+        if (obj == null) return -1;
+        int maxSortingOrder = 0;
+        int childCounts = obj.transform.childCount;
+        for (int i = 0; i < childCounts; ++i)
+        {
+            GameObject child = obj.transform.GetChild(i).gameObject;
+            UIPanelBase currView = child.GetComponent<UIPanelBase>();
+            if (currView == null) continue;
+            if (maxSortingOrder < currView.MaxSortingOrder)
+            {
+                maxSortingOrder = currView.MaxSortingOrder;
+            }
+        }
+        return maxSortingOrder;
+    }
 	//～～～～～～～～～～～～～～～～～～～～～～～加载~～～～～～～～～～～～～～～～～～～～～～～～//
 	public void PushLoaderInfo(SUILoaderInfo info)
 	{
