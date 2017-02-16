@@ -90,7 +90,7 @@ public class EngineManager : Singleton<EngineManager>
                     if (type == eAlertBtnType.OK)
                         Application.Quit();
                 }
-                , LangManager.lang[5], LangManager.lang[6]);
+                , LangManager.lang[8], LangManager.lang[9]);
             }
         }
     }
