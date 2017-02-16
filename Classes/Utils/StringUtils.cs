@@ -29,10 +29,10 @@ public class StringUtils
 	 * @param seconds
 	 * @return 
 	 */		
-	public static string MinuteFormat(int seconds)
+	public static string MinuteFormat(uint seconds)
 	{
-		int min = seconds / 60;
-		int sec = seconds % 60;
+		uint min = seconds / 60;
+		uint sec = seconds % 60;
 		
 		string min_str = min < 10 ? ("0" + min.ToString()) : (min.ToString());
 		string sec_str = sec < 10 ? ("0" + sec.ToString()) : (sec.ToString());
@@ -44,9 +44,9 @@ public class StringUtils
 	 * @param seconds(秒)
 	 * @return 
 	 */
-	public static string HourFormat(int seconds)
+	public static string HourFormat(uint seconds)
 	{
-		int hour = seconds / 3600;
+		uint hour = seconds / 3600;
 		
 		string hour_str = hour < 10 ? ("0" + hour.ToString()) : (hour.ToString());
 

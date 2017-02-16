@@ -14,6 +14,7 @@ public class EngineManager : Singleton<EngineManager>
 		ObjectPoolsManager.Instance.Setup();
 		ObjectFactoryManager.Instance.Setup();
 		MultyBuildManager.Instance.Setup();
+        ResourceManager.Instance.Setup();
 		UIManager.Instance.Setup();
 		DropSimulationManager.Instance.Setup();
 		SoundManager.Instance.Setup ();
@@ -29,7 +30,8 @@ public class EngineManager : Singleton<EngineManager>
         TimerManager.Instance.Destroy();
 		ObjectPoolsManager.Instance.Destroy();
 		ObjectFactoryManager.Instance.Destroy();
-		MultyBuildManager.Instance.Destroy();
+        MultyBuildManager.Instance.Destroy();
+        ResourceManager.Instance.Destroy();
 		UIManager.Instance.Destroy();
 		DropSimulationManager.Instance.Destroy();
 		SoundManager.Instance.Destroy ();
@@ -44,6 +46,7 @@ public class EngineManager : Singleton<EngineManager>
         CheckEscapeGame();
 
         TimerManager.Instance.Tick(elapse, game_frame);
+        ResourceManager.Instance.Tick(elapse, game_frame);
 		MultyBuildManager.Instance.Tick(elapse, game_frame);
 		DropSimulationManager.Instance.Tick(elapse, game_frame);
 		InputSimulateManager.Instance.Tick(elapse, game_frame);
