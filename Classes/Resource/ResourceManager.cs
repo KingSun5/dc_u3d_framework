@@ -102,6 +102,14 @@ public class ResourceManager : Singleton<ResourceManager>
     {
         if (m_BackLoadThread == null) return 0;
 
+        //判断是否已经加载过
+        Object res = ResourceLoaderManager.Instance.GetResource(path);
+        if (res != null)
+        {
+            if (callback != null) callback(new sResLoadResult(true, path));
+            return 0;
+        }
+
         ulong id = ShareGUID();
         sResLoadChunk info = new sResLoadChunk(path, type, callback);
         info.ID = id;

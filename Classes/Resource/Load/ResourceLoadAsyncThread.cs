@@ -36,7 +36,7 @@ public class ResourceLoadAsyncThread : ResourceLoadThread
                 {
                     ResourceLoaderManager.Instance.AddResource(info.Path, m_LoadRequest.asset);
                     info.Stage = eResChunkStage.LOADED;
-                    if (info.Callback != null) info.Callback(new sResLoadResult(true, info.Path, m_LoadRequest));
+                    if (info.Callback != null) info.Callback(new sResLoadResult(true, info.Path));
                     m_LoadQueue.RemoveAt(0);
                     m_TotalCount--;
                 }
@@ -122,7 +122,7 @@ public class ResourceLoadAsyncThread : ResourceLoadThread
             if (res != null)
             {
                 info.Stage = eResChunkStage.LOADED;
-                if (info.Callback != null) info.Callback(new sResLoadResult(true, info.Path, null));
+                if (info.Callback != null) info.Callback(new sResLoadResult(true, info.Path));
 
                 m_LoadQueue.RemoveAt(0);
                 m_TotalCount--;
@@ -133,7 +133,7 @@ public class ResourceLoadAsyncThread : ResourceLoadThread
                 if (req == null)
                 {
                     info.Stage = eResChunkStage.LOADED;
-                    if (info.Callback != null) info.Callback(new sResLoadResult(false, info.Path, null));
+                    if (info.Callback != null) info.Callback(new sResLoadResult(false, info.Path));
                     m_LoadQueue.RemoveAt(0);
                     m_TotalCount--;
                 }

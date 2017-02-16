@@ -74,25 +74,17 @@ public class EffectBase : MonoBehaviour
     {
         m_IsLoadComplete = false;
 
-        Object res = ResourceLoaderManager.Instance.GetResource(file);
-        if(res == null)
+        ResourceManager.Instance.AddAsync(file, eResType.PREFAB, delegate(sResLoadResult info)
         {
-            ResourceManager.Instance.AddAsync(file, eResType.PREFAB, delegate(sResLoadResult info)
-            {
-                if (!m_Active || info.Req == null) return;
+            if (!m_Active) return;
+            Object res = ResourceLoaderManager.Instance.GetResource(file);
+            if (res == null) return;
 
-                GameObject obj = GameObject.Instantiate(info.Req.asset) as GameObject;
-                if (obj == null) return;
-                OnLoadComplete(obj.transform);
-            }
-            );
-        }
-        else
-        {
             GameObject obj = GameObject.Instantiate(res) as GameObject;
             if (obj == null) return;
             OnLoadComplete(obj.transform);
         }
+        );
     }
     public virtual void OnLoadComplete(Transform obj)
     {
@@ -130,7 +122,7 @@ public class EffectBase : MonoBehaviour
     {
         m_Active = false;
 
-        //m_Observer.TriggerEvent(EventID.EFFECT_DESTROY, new GameEvent());
+        m_Observer.TriggerEvent(EffectID.EFFECT_DESTROY, new GameEvent());
         EffectManager.Instance.RemoveEffect(this);
     }
     public ulong ObjectUID

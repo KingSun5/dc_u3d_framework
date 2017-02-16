@@ -32,12 +32,10 @@ public struct sResLoadResult
 {
     public bool IsSucceed;
     public string Path;
-    public ResourceRequest Req;
 
-    public sResLoadResult(bool b, string path, ResourceRequest req)
+    public sResLoadResult(bool b, string path)
     {
         IsSucceed = b;
         Path = path;
-        Req = req;
     }
 }
