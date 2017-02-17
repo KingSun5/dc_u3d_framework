@@ -60,7 +60,7 @@ public class Effect2DManager : Singleton<Effect2DManager>
     /// <returns></returns>
     private Effect2DBase NewObject<T>(string file = "")
     {
-        GameObject obj = GameObjectUtils.BuildObject("Prefab/EmptyObject");
+        GameObject obj = GameObjectUtils.BuildObject(file);
         if (obj == null) return null;
         Component gameObj = obj.GetComponent(typeof(T));
         if (gameObj == null) gameObj = obj.AddComponent(typeof(T));
