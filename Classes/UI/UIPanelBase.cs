@@ -62,30 +62,6 @@ public class UIPanelBase : MonoBehaviour
 		}
 	}
 
-    //～～～～～～～～～～～～～～～～～～～～～～～缩放动画~～～～～～～～～～～～～～～～～～～～～～～～//
-    /// <summary>
-    /// UI按下缩放动画
-    /// </summary>
-    /// <param name="receive_obj">接收事件对象</param>
-    /// <param name="influence_obj">动画作用对象</param>
-    /// <param name="time">缩放过程时间</param>
-    /// <param name="scale">按下时的缩放比例</param>
-    static public void AddPressScaleAnim(GameObject receive_obj, GameObject influence_obj, float time, float scale)
-    {
-        if (receive_obj == null || influence_obj == null) return;
-
-        UIEventTriggerListener.Get(receive_obj).onDown  = delegate(GameObject go, Vector2 delta) { influence_obj.transform.DOScale(Vector3.one * scale, time); };
-        UIEventTriggerListener.Get(receive_obj).onUp    = delegate(GameObject go, Vector2 delta) { influence_obj.transform.DOScale(Vector3.one, time); };
-        UIEventTriggerListener.Get(receive_obj).onExit  = delegate(GameObject go, Vector2 delta) { influence_obj.transform.DOScale(Vector3.one, time); }; 
-    }
-    static public void RemovePressScaleAnim(GameObject receive_obj)
-    {
-        if (receive_obj == null) return;
-
-        UIEventTriggerListener.Get(receive_obj).onDown = null;
-        UIEventTriggerListener.Get(receive_obj).onUp = null;
-        UIEventTriggerListener.Get(receive_obj).onExit = null;
-    }
 	//～～～～～～～～～～～～～～～～～～～～～～～get/set~～～～～～～～～～～～～～～～～～～～～～～～//
 	public int screenID
 	{ 
