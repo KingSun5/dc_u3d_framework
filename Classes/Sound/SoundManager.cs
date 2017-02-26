@@ -19,6 +19,11 @@ public class SoundManager : Singleton<SoundManager>
 
 	public void Setup()
     {
+        m_IsCloseBGSound = LocalValue.GetValue<int>(SoundID.LOCAL_BG_SOUND_CLOSE, 0) == 1 ? true : false;
+        m_IsCloseEffectSound = LocalValue.GetValue<int>(SoundID.LOCAL_EFFECT_SOUND_CLOSE, 0) == 1 ? true : false;
+        m_BGSoundVolume = LocalValue.GetValue<float>(SoundID.LOCAL_BGSOUND_VOLUME, 1) ;
+        m_EffectSoundVolume = LocalValue.GetValue<float>(SoundID.LOCAL_EFFECT_SOUND_VOLUME, 1);
+
         ObjectFactoryManager.Instance.RegisterFactory(SoundBase.POOLS_SOUND_EFFECT, EffectSound.CreateObject);
         ObjectFactoryManager.Instance.RegisterFactory(SoundBase.POOLS_SOUND_BG, BackgroundSound.CreateObject);
         RegisterEvent();
@@ -226,7 +231,7 @@ public class SoundManager : Singleton<SoundManager>
         switch(evt_type)
         {
             case SoundID.SWITCH_BG_SOUND:
-                m_IsCloseBGSound = evt.Get<int>(0) == 0 ? true : false;
+                IsCloseBGSound = evt.Get<bool>(0);
                 if(m_IsCloseBGSound)
                     PauseBGSound();
                 else
@@ -234,18 +239,18 @@ public class SoundManager : Singleton<SoundManager>
                 break;
 
             case SoundID.SWITCH_EFFECT_SOUND:
-                m_IsCloseEffectSound = evt.Get<int>(0) == 0 ? true : false;
+                IsCloseEffectSound = evt.Get<bool>(0);
                 break;
 
             case SoundID.ADJUST_BG_VOLUME:
                 m_BGSoundVolume = evt.Get<float>(0);
-                m_BGSoundVolume = Mathf.Clamp(m_BGSoundVolume, 0, 1);
+                BGSoundVolume = Mathf.Clamp(m_BGSoundVolume, 0, 1);
                 if (m_BackAudio != null) m_BackAudio.volume = m_BGSoundVolume;
                 break;
 
             case SoundID.ADJUST_EFFECT_VOLUME:
                 m_EffectSoundVolume = evt.Get<float>(0);
-                m_EffectSoundVolume = Mathf.Clamp(m_EffectSoundVolume, 0, 1);
+                EffectSoundVolume = Mathf.Clamp(m_EffectSoundVolume, 0, 1);
                 break;
         }
 	}
@@ -253,17 +258,37 @@ public class SoundManager : Singleton<SoundManager>
     public bool IsCloseBGSound
     {
         get { return m_IsCloseBGSound; }
+        set 
+        {
+            m_IsCloseBGSound = value;
+            LocalValue.SetValue<int>(SoundID.LOCAL_BG_SOUND_CLOSE, m_IsCloseBGSound ? 1 : 0);
+        }
     }
     public bool IsCloseEffectSound
     {
         get { return m_IsCloseEffectSound; }
+        set
+        {
+            m_IsCloseEffectSound = value;
+            LocalValue.SetValue<int>(SoundID.LOCAL_EFFECT_SOUND_CLOSE, m_IsCloseEffectSound ? 1 : 0);
+        }
     }
     public float BGSoundVolume
     {
         get { return m_BGSoundVolume; }
+        set
+        {
+            m_BGSoundVolume = value;
+            LocalValue.SetValue<float>(SoundID.LOCAL_BGSOUND_VOLUME, m_BGSoundVolume);
+        }
     }
     public float EffectSoundVolume
     {
         get { return m_EffectSoundVolume; }
+        set 
+        {
+            m_EffectSoundVolume = value;
+            LocalValue.SetValue<float>(SoundID.LOCAL_EFFECT_SOUND_VOLUME, m_EffectSoundVolume);
+        }
     }
 }
