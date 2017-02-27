@@ -23,6 +23,7 @@ public class EngineManager : Singleton<EngineManager>
         GameConnect.Instance.SetUp();
         HttpDownloadManager.Instance.Setup();
         TransformerManager.Instance.Setup();
+        AssetBundleManager.Instance.Setup();
 	}
 	
 	public void Destroy()
@@ -39,6 +40,7 @@ public class EngineManager : Singleton<EngineManager>
         HttpDownloadManager.Instance.Destroy();
         GameConnect.Instance.Destroy();
         TransformerManager.Instance.Destroy();
+        AssetBundleManager.Instance.Destroy();
 	}
 	
 	public void Tick (float elapse, int game_frame)
@@ -52,6 +54,7 @@ public class EngineManager : Singleton<EngineManager>
 		InputSimulateManager.Instance.Tick(elapse, game_frame);
         GameConnect.Instance.Tick(elapse, game_frame);
         TransformerManager.Instance.Tick(elapse, game_frame);
+        AssetBundleManager.Instance.Tick(elapse, game_frame);
 	}
 
     public void ProcessGC()
