@@ -29,14 +29,13 @@ public class EffectSound : SoundBase
     {
         base.Setup(fileName, pos, parent, min_distance, max_distance, loop);
     }
-
     public override void Play()
     {
+        if (SoundManager.Instance.IsCloseEffectSound) return;
         base.Play();
-        if (m_SoundSource != null && !SoundManager.Instance.IsCloseEffectSound)
+        if (m_SoundSource != null)
         {
             m_SoundSource.volume = SoundManager.Instance.EffectSoundVolume;
-            m_SoundSource.Play();
         }
     }
     public override void Stop()

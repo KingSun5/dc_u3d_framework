@@ -55,11 +55,11 @@ public class BackgroundSound : SoundBase
     }
     public override void Play()
     {
+        if (SoundManager.Instance.IsCloseBGSound) return;
         base.Play();
-        if (m_SoundSource != null && !SoundManager.Instance.IsCloseBGSound)
+        if (m_SoundSource != null)
         {
             m_SoundSource.volume = SoundManager.Instance.BGSoundVolume;
-            m_SoundSource.Play();
         }
     }
     public override void Stop()
@@ -72,6 +72,7 @@ public class BackgroundSound : SoundBase
     }
     public override void ResumeSound()
     {
+        if (SoundManager.Instance.IsCloseBGSound) return;
         base.ResumeSound();
         if (m_SoundSource != null)
         {
