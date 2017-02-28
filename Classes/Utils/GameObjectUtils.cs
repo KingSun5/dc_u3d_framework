@@ -73,15 +73,42 @@ public class GameObjectUtils
 		obj.localScale = Vector3.one;
 		obj.Rotate(Vector3.zero);
 	}
+    /// <summary>
+    /// 设置子节点active
+    /// </summary>
+    /// <param name="Target">父节点</param>
+    /// <param name="active"></param>
+    /// <param name="recursion">是否递归</param>
+    static public void SetActiveAllChild(Transform Target, bool active, bool recursion)
+    {
+        for (int i = 0; i < Target.childCount; i++)
+        {
+            Transform obj = Target.GetChild(i);
+            if (recursion) SetActiveAllChild(obj, active, recursion);
+            obj.gameObject.SetActive(active);
+        }
+    }
 
     static public void SetLayer(GameObject go, int layer)
     {
-        if(layer <= 31)
+        if (layer <= 31)
         {
             go.layer = layer;
-            for(int i = 0; i < go.transform.childCount; ++i)
+            for (int i = 0; i < go.transform.childCount; ++i)
             {
-                GameObjectUtils.SetLayer(go.transform.GetChild(i).gameObject, layer);
+                SetLayer(go.transform.GetChild(i).gameObject, layer);
+            }
+        }
+    }
+
+    static public void SetName(GameObject go, string name, bool recursion)
+    {
+        go.name = name;
+        if (recursion)
+        {
+            for (int i = 0; i < go.transform.childCount; ++i)
+            {
+                SetName(go.transform.GetChild(i).gameObject, name, recursion);
             }
         }
     }
