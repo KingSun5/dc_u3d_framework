@@ -49,7 +49,7 @@ public class ObjectFactoryManager : Singleton<ObjectFactoryManager>
 
 	public IPoolsObject CreateObject(string nPoolsType)
 	{
-		IPoolsObject obj = ObjectPoolsManager.Instance.GetObj(nPoolsType);
+		IPoolsObject obj = ObjectPools.GetObj(nPoolsType);
 		if(obj == null)
 		{
 			funCreateObject fun;
@@ -70,7 +70,7 @@ public class ObjectFactoryManager : Singleton<ObjectFactoryManager>
 		if(pObj == null)return;
 
 		pObj.Release();
-		ObjectPoolsManager.Instance.RecoverObj(pObj.GetPoolsType(), pObj);
+		ObjectPools.RecoverObj(pObj.GetPoolsType(), pObj);
 	}
 }
 

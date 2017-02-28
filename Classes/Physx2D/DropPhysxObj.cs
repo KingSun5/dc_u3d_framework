@@ -63,7 +63,7 @@ public class DropPhysxObj : IPoolsObject
 	/**统一创建接口，不要使用默认的构造函数实现*/		
 	static public DropPhysxObj Create()
 	{
-		DropPhysxObj obj = ObjectPoolsManager.Instance.GetObj(POOLS_DROP_PHYSX_OBJ) as DropPhysxObj;
+		DropPhysxObj obj = ObjectPools.GetObj(POOLS_DROP_PHYSX_OBJ) as DropPhysxObj;
 		if(obj == null)
 		{
 			obj = new DropPhysxObj();
@@ -95,7 +95,7 @@ public class DropPhysxObj : IPoolsObject
 		m_drop_info.m_end_fun = null;
 		
 		DropSimulationManager.Instance.Remove(this);
-		ObjectPoolsManager.Instance.RecoverObj(POOLS_DROP_PHYSX_OBJ,this);
+		ObjectPools.RecoverObj(POOLS_DROP_PHYSX_OBJ,this);
 	}
     public string GetPoolsType()
 	{

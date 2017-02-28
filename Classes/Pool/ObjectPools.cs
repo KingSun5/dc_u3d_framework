@@ -7,31 +7,11 @@ using System.Collections.Generic;
 /// @author hannibal
 /// @time 2014-11-22
 /// </summary>
-public class ObjectPoolsManager : Singleton<ObjectPoolsManager>
+public class ObjectPools
 {
-    private Dictionary<string, List<IPoolsObject>> m_DicObjects;
+    private static Dictionary<string, List<IPoolsObject>> m_DicObjects = new Dictionary<string, List<IPoolsObject>>();
 
-
-	public ObjectPoolsManager()
-	{
-        m_DicObjects = new Dictionary<string, List<IPoolsObject>>();
-	}
-
-	public void Setup()
-	{
-		
-	}
-	public void Destroy()
-	{
-		foreach(var obj in m_DicObjects)
-		{
-			obj.Value.Clear();
-		}
-
-		m_DicObjects.Clear();
-	}
-
-    public IPoolsObject GetObj(string type)
+    public static IPoolsObject GetObj(string type)
 	{
 		List<IPoolsObject> listObject;
 		if(m_DicObjects.TryGetValue(type, out listObject) == false)
@@ -47,7 +27,7 @@ public class ObjectPoolsManager : Singleton<ObjectPoolsManager>
 		return obj;
 	}
 
-    public void RecoverObj(string type, IPoolsObject obj)
+    public static void RecoverObj(string type, IPoolsObject obj)
 	{
 		List<IPoolsObject> listObject;
 		if(m_DicObjects.TryGetValue(type, out listObject) == false)
@@ -57,4 +37,14 @@ public class ObjectPoolsManager : Singleton<ObjectPoolsManager>
 		}
 		listObject.Add(obj);
 	}
+
+    public static void Clear()
+    {
+        foreach (var obj in m_DicObjects)
+        {
+            obj.Value.Clear();
+        }
+
+        m_DicObjects.Clear();
+    }
 }

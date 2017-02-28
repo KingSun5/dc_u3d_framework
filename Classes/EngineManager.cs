@@ -11,7 +11,6 @@ public class EngineManager : Singleton<EngineManager>
 	public void Setup()
 	{
         TimerManager.Instance.Setup();
-		ObjectPoolsManager.Instance.Setup();
 		ObjectFactoryManager.Instance.Setup();
 		MultyBuildManager.Instance.Setup();
         ResourceManager.Instance.Setup();
@@ -29,7 +28,6 @@ public class EngineManager : Singleton<EngineManager>
 	public void Destroy()
 	{
         TimerManager.Instance.Destroy();
-		ObjectPoolsManager.Instance.Destroy();
 		ObjectFactoryManager.Instance.Destroy();
         MultyBuildManager.Instance.Destroy();
         ResourceManager.Instance.Destroy();

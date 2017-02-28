@@ -9,13 +9,18 @@ using System.Collections.Generic;
 /// </summary>
 public class SoundManager : Singleton<SoundManager>
 {
-	private AudioListener   m_Listener;     //听众 
-    private AudioSource     m_BackAudio;    //当前背景声音
+	private AudioListener           m_Listener;     //听众 
+    private List<BackgroundSound>   m_ListBGAudio;  //背景声音
 
     private bool    m_IsCloseBGSound = false;
     private bool    m_IsCloseEffectSound = false;
     private float   m_BGSoundVolume = 1;
     private float   m_EffectSoundVolume = 1;
+
+    public SoundManager()
+    {
+        m_ListBGAudio = new List<BackgroundSound>();
+    }
 
 	public void Setup()
     {
@@ -56,61 +61,68 @@ public class SoundManager : Singleton<SoundManager>
         AudioPools.instance.Clear();
     }
     /*～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～背景声音～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～*/
-	/**背景声音*/
-    public bool PlayBGSound(string fileName, bool loop)
-	{
-        if (m_IsCloseBGSound) return false;
-        //Log.Debug("PlayOneBGSound:" + fileName);
-        AudioClip clip = ResourceLoaderManager.Instance.Load(fileName) as AudioClip;
-		if(clip == null)
-		{
-            Log.Error("SoundManager::PlayOneBGSound - not load sound, file:" + fileName);
-			return false;
-		}
-        GetDefaultListener();
-		if (m_Listener != null && m_Listener.enabled)
-		{
-            m_BackAudio = m_Listener.GetComponent<AudioSource>();
-            if (m_BackAudio == null) m_BackAudio = m_Listener.gameObject.AddComponent<AudioSource>();
-            m_BackAudio.clip = clip;
-            m_BackAudio.loop = loop;
-            m_BackAudio.volume = m_BGSoundVolume;
-            m_BackAudio.Play();
-			return true;
-		}
-		
-		return true;
-	}
+    /**背景声音*/
+    public BackgroundSound PlayBGSound(string fileName, bool loop)
+    {
+        if (m_IsCloseBGSound) return null;
+        if (string.IsNullOrEmpty(fileName)) return null;
+
+        BackgroundSound sound = ObjectFactoryManager.Instance.CreateObject(SoundBase.POOLS_SOUND_BG) as BackgroundSound;
+        sound.Setup(fileName, Vector3.zero, null, 0, 0, loop);
+        sound.LoadResource();
+        m_ListBGAudio.Add(sound);
+
+        return sound;
+    }
 
     public void PauseBGSound()
     {
-        if (m_BackAudio != null)
+        for (int i = 0; i < m_ListBGAudio.Count; ++i)
         {
-            m_BackAudio.Pause();
+            m_ListBGAudio[i].PauseSound();
         }
     }
     public void ResumeBGSound()
     {
-        if (m_BackAudio != null)
+        for (int i = 0; i < m_ListBGAudio.Count; ++i)
         {
-            m_BackAudio.UnPause();
+            m_ListBGAudio[i].ResumeSound();
         }
     }
 
+    public void SetBGSoundVolume(float volume)
+    {
+        BGSoundVolume = volume;
+        for (int i = 0; i < m_ListBGAudio.Count; ++i)
+        {
+            m_ListBGAudio[i].SetVolume(volume);
+        }
+    }
+    public void RemoveBGSound(BackgroundSound sound)
+    {
+        if (sound != null)
+        {
+            sound.Stop();
+            ObjectFactoryManager.Instance.RecoverObject(sound);
+            m_ListBGAudio.Remove(sound);
+        }
+    }
     public void StopBGSound()
     {
-        if(m_BackAudio != null)
+        for (int i = 0; i < m_ListBGAudio.Count; ++i)
         {
-            m_BackAudio.Stop();
+            m_ListBGAudio[i].Stop();
         }
     }
     public void ClearBGSound()
     {
-        if (m_BackAudio != null)
+        for (int i = 0; i < m_ListBGAudio.Count; ++i)
         {
-            GameObject.Destroy(m_BackAudio);
-            m_BackAudio = null;
+            SoundBase sound = m_ListBGAudio[i];
+            sound.Stop();
+            ObjectFactoryManager.Instance.RecoverObject(sound);
         }
+        m_ListBGAudio.Clear();
     }
     /*～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～音效～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～*/
 	/// <summary>
@@ -125,7 +137,7 @@ public class SoundManager : Singleton<SoundManager>
         if (IsCloseEffectSound || fileName.Length == 0) return null;
 
         EffectSound sound = ObjectFactoryManager.Instance.CreateObject(SoundBase.POOLS_SOUND_EFFECT) as EffectSound;
-        sound.Setup(fileName, pos, null, m_EffectSoundVolume, min_distance, max_distance, loop);
+        sound.Setup(fileName, pos, null, min_distance, max_distance, loop);
         sound.LoadResource();
 
         return sound;
@@ -183,14 +195,14 @@ public class SoundManager : Singleton<SoundManager>
         if (IsCloseEffectSound || fileName.Length == 0) return null;
 
         EffectSound sound = ObjectFactoryManager.Instance.CreateObject(SoundBase.POOLS_SOUND_EFFECT) as EffectSound;
-        sound.Setup(fileName, Vector3.zero, GetDefaultListener().transform, m_EffectSoundVolume, 0, 0, loop);
+        sound.Setup(fileName, Vector3.zero, GetDefaultListener().transform, 0, 0, loop);
         sound.LoadResource();
 
         return sound;
     }
 
     /**听众*/
-    private AudioListener GetDefaultListener()
+    public AudioListener GetDefaultListener()
 	{
 		if (m_Listener == null)
 		{
@@ -244,8 +256,8 @@ public class SoundManager : Singleton<SoundManager>
 
             case SoundID.ADJUST_BG_VOLUME:
                 m_BGSoundVolume = evt.Get<float>(0);
-                BGSoundVolume = Mathf.Clamp(m_BGSoundVolume, 0, 1);
-                if (m_BackAudio != null) m_BackAudio.volume = m_BGSoundVolume;
+                m_BGSoundVolume = Mathf.Clamp(m_BGSoundVolume, 0, 1);
+                SetBGSoundVolume(m_BGSoundVolume);
                 break;
 
             case SoundID.ADJUST_EFFECT_VOLUME:
