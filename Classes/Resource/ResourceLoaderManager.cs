@@ -50,12 +50,19 @@ public class ResourceLoaderManager : Singleton<ResourceLoaderManager>
     /// <summary>
     /// 场景
     /// </summary>
-    public void LoadScene(int index, LoadSceneMode mode)
+    public void LoadScene(string path, LoadSceneMode mode = LoadSceneMode.Single)
     {
         float time = Time.realtimeSinceStartup;
-        UnityEngine.SceneManagement.SceneManager.LoadScene(index, mode);
-        if (m_EnableLog) Log.Debug("[load]load scene:" + index + " Time:" + (Time.realtimeSinceStartup - time));
-	}
+        UnityEngine.SceneManagement.SceneManager.LoadScene(path);
+        if (m_EnableLog) Log.Debug("[load]load scene:" + path + " Time:" + (Time.realtimeSinceStartup - time));
+    }
+    public AsyncOperation AsyncLoadScene(string path, LoadSceneMode mode = LoadSceneMode.Single)
+    {
+        float time = Time.realtimeSinceStartup;
+        AsyncOperation async = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(path);
+        if (m_EnableLog) Log.Debug("[load]async load scene:" + path + " Time:" + (Time.realtimeSinceStartup - time));
+        return async;
+    }
     /// <summary>
     /// sprite
     /// </summary>

@@ -8,8 +8,8 @@ using System.Collections;
 /// </summary>
 public class UIID
 {
-	public const float DEFAULT_WIDTH 	= 750;  //标准界面大小
-	public const float DEFAULT_HEIGHT 	= 1334;
+    public static float DEFAULT_WIDTH = 750;  //标准界面大小
+    public static float DEFAULT_HEIGHT = 1334;
 
     public static float ScreenScaleX    = 1;    //界面缩放
     public static float ScreenScaleY    = 1;
@@ -37,7 +37,7 @@ public enum eUILayer
 /// </summary>
 public enum eInternalUIID
 {
-    ID_ALERT,           // 弹出框
+    ID_ALERT = 1,           // 弹出框
 
     ID_MAX,
 }
