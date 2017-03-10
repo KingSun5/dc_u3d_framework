@@ -18,7 +18,7 @@ public class EditorOverrideUGUI : Editor
             {
                 GameObject go = new GameObject("image", typeof(Image));
                 go.GetComponent<Image>().raycastTarget = false;
-                go.transform.SetParent(Selection.activeTransform);
+                go.transform.SetParent(Selection.activeTransform, false);
             }
         }
     }
@@ -31,7 +31,7 @@ public class EditorOverrideUGUI : Editor
             {
                 GameObject go = new GameObject("text", typeof(Text));
                 go.GetComponent<Text>().raycastTarget = false;
-                go.transform.SetParent(Selection.activeTransform);
+                go.transform.SetParent(Selection.activeTransform, false);
             }
         }
     }
@@ -44,7 +44,7 @@ public class EditorOverrideUGUI : Editor
             {
                 GameObject go = new GameObject("rawimage", typeof(RawImage));
                 go.GetComponent<RawImage>().raycastTarget = false;
-                go.transform.SetParent(Selection.activeTransform);
+                go.transform.SetParent(Selection.activeTransform, false);
             }
         }
     }
