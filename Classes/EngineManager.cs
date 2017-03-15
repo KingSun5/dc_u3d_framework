@@ -117,12 +117,12 @@ public class EngineManager : Singleton<EngineManager>
             if (m_ClickCounts >= 2)
             {
                 m_ClickCounts = 0;
-                AlertManager.Instance.ShowConfirm((int)eInternalUIID.ID_ALERT, LangManager.lang[4], (eAlertBtnType type) =>
+                AlertManager.Instance.ShowConfirm((int)eInternalUIID.ID_ALERT, LangManager.Instance.GetText(5), (eAlertBtnType type) =>
                 {
                     if (type == eAlertBtnType.OK)
                         Application.Quit();
                 }
-                , LangManager.lang[8], LangManager.lang[9]);
+                , LangManager.Instance.GetText(1), LangManager.Instance.GetText(2));
             }
         }
     }

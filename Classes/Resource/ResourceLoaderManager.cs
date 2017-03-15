@@ -40,7 +40,7 @@ public class ResourceLoaderManager : Singleton<ResourceLoaderManager>
     /// <summary>
     /// 文本
     /// </summary>
-    public TextAsset LoadTextAssetInResources(string path)
+    public TextAsset LoadTextAsset(string path)
     {
         float time = Time.realtimeSinceStartup;
         TextAsset textAsset = Load(path) as TextAsset;
