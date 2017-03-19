@@ -5,15 +5,25 @@ using UnityEngine.UI;
 using System;
 using DG.Tweening;
 
-public class UIEleScale : UIElementAnimation
+public class UIEleFade : UIEleAnimation
 {
-    public Vector3 m_FromScale;
-    public Vector3 m_ToScale;
+    public float m_ToAlpha;
+    public float m_FromAlpha;
+
+    private CanvasGroup m_CanvasGroup;
 
     public override void Awake()
     {
-        gameObject.transform.localScale = m_FromScale;
+        if (m_CanvasGroup == null)
+        {
+            m_CanvasGroup = gameObject.GetComponent<CanvasGroup>();
+        }
+        if (m_CanvasGroup == null)
+        {
+            m_CanvasGroup = gameObject.AddComponent<CanvasGroup>();
+        }
         m_CurTick = Time.time + m_Delay;
+        m_CanvasGroup.alpha = m_FromAlpha;
     }
 
     public override void Start()
@@ -42,12 +52,12 @@ public class UIEleScale : UIElementAnimation
     public void Reset()
     {
         m_CurTick = Time.time + m_Delay;
-        gameObject.transform.localScale = m_FromScale;
+        m_CanvasGroup.DOFade(m_FromAlpha, 0);
     }
 
     public void PlayForward()
     {
-        gameObject.transform.DOScale(m_ToScale, m_Duration).SetEase(m_easeType);
+        m_CanvasGroup.DOFade(m_ToAlpha, m_Duration).SetEase(m_easeType);
     }
 }
 

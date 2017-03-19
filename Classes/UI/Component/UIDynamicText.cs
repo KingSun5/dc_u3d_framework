@@ -24,7 +24,7 @@ public class UIDynamicText : MonoBehaviour
 	public string 	m_PreData = "";
 	public string 	m_EndData = "";
 	
-	private Text 	m_OwnerText;
+	private Text 	m_TextComponent;
 	private bool 	m_Active = false;
 
 	/**值*/
@@ -37,8 +37,8 @@ public class UIDynamicText : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		m_OwnerText = gameObject.GetComponent<Text>();
-		if(m_OwnerText == null)
+		m_TextComponent = gameObject.GetComponent<Text>();
+		if(m_TextComponent == null)
 		{
 			Log.Error("DynamicTextScript::Start - attach object not Text");
 		}
@@ -61,7 +61,7 @@ public class UIDynamicText : MonoBehaviour
 
 		if(!m_Active && m_OnComplete != null)
 		{
-			m_OnComplete(m_OwnerText);
+			m_OnComplete(m_TextComponent);
 		}
 	}
 
@@ -102,12 +102,12 @@ public class UIDynamicText : MonoBehaviour
 		set
 		{
 			m_Value = value;
-			if(m_OwnerText != null)
+			if(m_TextComponent != null)
 			{
 				string str_value = m_Value.ToString();
 				if(m_EnableColor)
 					str_value = StringUtils.SetFontColor( m_Value.ToString(),"#"+ColorUtils.Color2RGBA(m_Color));
-				m_OwnerText.text = m_PreData + str_value + m_EndData;
+				m_TextComponent.text = m_PreData + str_value + m_EndData;
 			}
 		}
 	}

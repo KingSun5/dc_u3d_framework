@@ -5,25 +5,16 @@ using UnityEngine.UI;
 using System;
 using DG.Tweening;
 
-public class UIEleFade : UIElementAnimation
+public class UIEleLocalMove : UIEleAnimation
 {
-    public float m_ToAlpha;
-    public float m_FromAlpha;
-
-    private CanvasGroup m_CanvasGroup;
-
+    public Vector3 m_FromPositon;
+    public Vector3 m_ToPosition;
+    private RectTransform rectTransform;
     public override void Awake()
     {
-        if (m_CanvasGroup == null)
-        {
-            m_CanvasGroup = gameObject.GetComponent<CanvasGroup>();
-        }
-        if (m_CanvasGroup == null)
-        {
-            m_CanvasGroup = gameObject.AddComponent<CanvasGroup>();
-        }
+        rectTransform = gameObject.GetComponent<RectTransform>();
+        rectTransform.anchoredPosition = m_FromPositon;
         m_CurTick = Time.time + m_Delay;
-        m_CanvasGroup.alpha = m_FromAlpha;
     }
 
     public override void Start()
@@ -52,12 +43,11 @@ public class UIEleFade : UIElementAnimation
     public void Reset()
     {
         m_CurTick = Time.time + m_Delay;
-        m_CanvasGroup.DOFade(m_FromAlpha, 0);
+        rectTransform.anchoredPosition = m_FromPositon;
     }
 
     public void PlayForward()
     {
-        m_CanvasGroup.DOFade(m_ToAlpha, m_Duration).SetEase(m_easeType);
+        rectTransform.DOAnchorPos3D(m_ToPosition, m_Duration).SetEase(m_easeType);
     }
 }
-

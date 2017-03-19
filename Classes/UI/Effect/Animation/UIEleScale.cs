@@ -5,15 +5,14 @@ using UnityEngine.UI;
 using System;
 using DG.Tweening;
 
-public class UIEleLocalMove : UIElementAnimation
+public class UIEleScale : UIEleAnimation
 {
-    public Vector3 m_FromPositon;
-    public Vector3 m_ToPosition;
-    private RectTransform rectTransform;
+    public Vector3 m_FromScale;
+    public Vector3 m_ToScale;
+
     public override void Awake()
     {
-        rectTransform = gameObject.GetComponent<RectTransform>();
-        rectTransform.anchoredPosition = m_FromPositon;
+        gameObject.transform.localScale = m_FromScale;
         m_CurTick = Time.time + m_Delay;
     }
 
@@ -43,11 +42,12 @@ public class UIEleLocalMove : UIElementAnimation
     public void Reset()
     {
         m_CurTick = Time.time + m_Delay;
-        rectTransform.anchoredPosition = m_FromPositon;
+        gameObject.transform.localScale = m_FromScale;
     }
 
     public void PlayForward()
     {
-        rectTransform.DOAnchorPos3D(m_ToPosition, m_Duration).SetEase(m_easeType);
+        gameObject.transform.DOScale(m_ToScale, m_Duration).SetEase(m_easeType);
     }
 }
+

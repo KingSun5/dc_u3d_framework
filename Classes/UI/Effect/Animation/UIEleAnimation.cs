@@ -15,7 +15,7 @@ using DG.Tweening;
 /// @author Qc_Chao
 /// @time 2017-01-05
 /// </summary>
-public class UIElementAnimation : MonoBehaviour
+public class UIEleAnimation : MonoBehaviour
 {
     public float m_Duration;
     public float m_Delay;
