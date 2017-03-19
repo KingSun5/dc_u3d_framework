@@ -15,10 +15,12 @@ public class UISwitchButton : MonoBehaviour
         Normal,
         Select,
     }
+    public bool AutoSwitch = true;  //是否自动切换状态
     public Status BtnStatus = Status.Normal;
-
+    
     public Sprite NormalBtn;
     public Sprite SelectBtn;
+
 
     private Image ImgComponent;
 
@@ -49,6 +51,7 @@ public class UISwitchButton : MonoBehaviour
 
     void OnClick(GameObject go, Vector2 delta)
     {
+        if (!AutoSwitch) return;
         switch (BtnStatus)
         {
             case Status.Normal:
@@ -63,6 +66,7 @@ public class UISwitchButton : MonoBehaviour
 
     public void SetStatus(Status status)
     {
+        Log.Debug("SetStatus:" + status);
         switch (status)
         {
             case Status.Normal:
