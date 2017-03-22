@@ -20,20 +20,19 @@ public class FPSScript : MonoBehaviour
 	private Rect 		m_RectText;
 
 	void Awake()
-	{
+    {
+        m_FPS = 0;
+
+        m_RectText = new Rect(Screen.width - 200 * UIID.ScreenScaleX, 120 * UIID.ScreenScaleY, 80 * UIID.ScreenScaleX, 30 * UIID.ScreenScaleY);
+
+        m_TextStyle.alignment = TextAnchor.MiddleRight;
+        m_TextStyle.fontSize = (int)(15.0f * (UIID.ScreenScaleX + UIID.ScreenScaleY) * 0.5f);
+
         SetFrameRate(m_FrameRate);
 	}
 
 	void Start()
 	{
-		m_FrameCount = 0;
-		m_FPS = 0;
-
-		m_RectText = new Rect(Screen.width - 200*UIID.ScreenScaleX, 120, 80*UIID.ScreenScaleX, 30*UIID.ScreenScaleY);
-		
-		m_TextStyle.alignment = TextAnchor.MiddleRight;
-		m_TextStyle.fontSize = (int)(15.0f*(UIID.ScreenScaleX+UIID.ScreenScaleY)*0.5f);
-
 		InvokeRepeating("UpdateFPS", 0, m_TimeOffset);
 	}
 
@@ -61,6 +60,7 @@ public class FPSScript : MonoBehaviour
 
     public void SetFrameRate(int fps)
     {
+        Log.Info("SetFrameRate:" + fps + " rect:" + m_RectText);
         m_FrameRate = fps;
         //fps:需要注意的是在Edit/Project Setting/QualitySettings下,若vsync被设置了，则targetFrameRate设置的将无效
         Application.targetFrameRate = m_FrameRate;

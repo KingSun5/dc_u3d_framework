@@ -67,7 +67,7 @@ public class EngineManager : Singleton<EngineManager>
     /// <summary>
     /// 设置最大分辨率
     /// </summary>
-    private void SetResolution(int default_screen_w, int default_screen_h, int max_screen_w)
+    public void SetResolution(int default_screen_w, int default_screen_h, int max_screen_w)
     {
         UIID.DEFAULT_WIDTH = default_screen_w;
         UIID.DEFAULT_HEIGHT = default_screen_h;
@@ -79,19 +79,17 @@ public class EngineManager : Singleton<EngineManager>
         if (w <= screen_w && h <= screen_h)
         {
             SetResolution(w, h);
-            screen_w = w; screen_h = h;
         }
         else
         {
             SetResolution(screen_w, screen_h);
         }
+        Log.Info("分辨率:" + Screen.width + "*" + Screen.height);
     }
     void SetResolution(int w, int h)
     {
-#if UNITY_STANDALONE && !UNITY_EDITOR
-#else
+        Log.Info("请求设置分辨率:" + w + "*" + h);
         Screen.SetResolution(w, h, true);
-#endif
     }
     /// <summary>
     /// 退出游戏
