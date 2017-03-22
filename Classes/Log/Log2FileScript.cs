@@ -30,6 +30,10 @@ public class Log2FileScript : MonoBehaviour
     {
         if (m_IsWrite2File)
         {
+            if (!Directory.Exists(GlobalID.RootSDCard))
+            {
+                Directory.CreateDirectory(GlobalID.RootSDCard);
+            }
             m_OutPath = GlobalID.RootSDCard + "/outLog.txt";
             if (IsWrite2File && m_OutPath.Length > 0)
             {

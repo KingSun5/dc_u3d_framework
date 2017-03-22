@@ -11,9 +11,9 @@ public enum eTransformerID
     None,
     Action,
     Blink,
-    Fade,
+    UIFade,
     Flip,
-    ImageFill,
+    UIImageFill,
     Move,
     Null,
     Place,
@@ -22,4 +22,5 @@ public enum eTransformerID
     Scale,
     Speed,
     Visible,
+    MeshFade,
 }

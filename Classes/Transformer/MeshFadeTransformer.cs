@@ -1,36 +1,37 @@
 ﻿using UnityEngine;
 using System.Collections;
 /**
- * 渐隐变换器
+ * mesh渐隐变换器
  */
-public class FadeTransformer : Transformer
+public class MeshFadeTransformer : Transformer
 {
     public int m_nStartType;
     public float m_StartAlpha;
     public float m_SpeedAlpha;
     public float m_TargetAlpha;
-    public CanvasGroup m_CanvasGroup;
+    public Renderer m_MeshRender;
+    public Color m_InitColor = Color.white;
 
-    public static FadeTransformer FadeTo(GameObject target, float destAlpha, float time)
+    public static MeshFadeTransformer FadeTo(GameObject target, float destAlpha, float time)
     {
-        FadeTransformer transformer = new FadeTransformer();
+        MeshFadeTransformer transformer = new MeshFadeTransformer();
         transformer.m_nStartType = 0;
         transformer.m_TargetAlpha = destAlpha;
         transformer.m_fTransformTime = time;
         transformer.target = target;
         return transformer;
     }
-    public FadeTransformer()
+    public MeshFadeTransformer()
     {
-        m_Type = eTransformerID.Fade;
+        m_Type = eTransformerID.MeshFade;
     }
     public override void OnTransformStarted()
     {
-        m_CanvasGroup =  target.GetComponent<CanvasGroup>();
-        if (m_CanvasGroup == null)
-            m_CanvasGroup = target.AddComponent<CanvasGroup>();
+        m_MeshRender = target.GetComponentInChildren<Renderer>();
+        if (m_MeshRender == null || m_MeshRender.material == null) return;
 
-        float startAlpha = m_CanvasGroup.alpha;
+        m_InitColor = m_MeshRender.material.GetColor("_TintColor");
+        float startAlpha = m_InitColor.a;
         m_StartAlpha = startAlpha;
         if (m_nStartType == 0)
         {
@@ -42,17 +43,18 @@ public class FadeTransformer : Transformer
         }
     }
     public override void runTransform(float currTime)
-	{
-        if (m_CanvasGroup == null)
-            m_CanvasGroup = target.AddComponent<CanvasGroup>();
+    {
+        if (m_MeshRender == null || m_MeshRender.material == null) return;
+
 		if (currTime >= m_fEndTime)
 		{
-            m_CanvasGroup.alpha = m_TargetAlpha;
+            m_InitColor.a = m_TargetAlpha;
 		}
 		else
 		{
 			float timeElapased = currTime - m_fStartTime;
-            m_CanvasGroup.alpha = (m_StartAlpha + m_SpeedAlpha * timeElapased);
-		}
+            m_InitColor.a = (m_StartAlpha + m_SpeedAlpha * timeElapased);
+        }
+        m_MeshRender.material.SetColor("_TintColor", m_InitColor);
 	}
 }

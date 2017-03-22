@@ -17,15 +17,30 @@ public class GlobalID
     public static bool IsLogLoad = false;           //是否显示加载日志
     public static bool IsLogBuild = false;          //是否显示对象构建日志
 
-    public static int FPS = 24;                    //fps
+    public static int FPS = 24;                     //fps
+    
+    private static string m_GameName = "";             //游戏名
+    public static string GameName
+    {
+        get { return m_GameName; }
+        set { m_GameName = value; }
+    }
 
+    public static string RootSDCard
+    {
+        get 
+        { 
 #if UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX || UNITY_EDITOR
-    public static string RootSDCard = Application.persistentDataPath;
+            return Application.persistentDataPath + "/"+GameName;
 #elif UNITY_ANDROID
-    public static string RootSDCard = "/sdcard/HugenStar/fps";
+            return "/sdcard/oayx/"+GameName;
 #elif UNITY_IPHONE
-    public static string RootSDCard = Application.persistentDataPath;
+            return Application.persistentDataPath+ "/"+GameName;
 #else
-    public static string RootSDCard = Application.persistentDataPath;
+            return Application.persistentDataPath+ "/"+GameName;
 #endif
+        }
+    }
+
+
 }

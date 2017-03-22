@@ -4,15 +4,15 @@ using System.Collections;
 /**
  * 图片进度填充变换器
  */
-public class ImageFillTransformer : Transformer
+public class UIImageFillTransformer : Transformer
 {
     public float m_FillCount;
     public float m_FillSpeed;
     private float m_StartFill = 0;
     public Image m_FillImage = null;
-    public static ImageFillTransformer FillTo(GameObject target, float fillCount, float time)
+    public static UIImageFillTransformer FillTo(GameObject target, float fillCount, float time)
     {
-        ImageFillTransformer transformer = new ImageFillTransformer();
+        UIImageFillTransformer transformer = new UIImageFillTransformer();
         transformer.m_FillCount = fillCount;
         transformer.m_fTransformTime = time;
         transformer.target = target;
@@ -27,9 +27,9 @@ public class ImageFillTransformer : Transformer
         m_FillSpeed = (m_FillCount - m_StartFill) / m_fTransformTime;
     }
 
-    public ImageFillTransformer()
+    public UIImageFillTransformer()
     {
-        m_Type = eTransformerID.ImageFill;
+        m_Type = eTransformerID.UIImageFill;
     }
     public override void runTransform(float currTime)
     {

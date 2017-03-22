@@ -29,7 +29,7 @@ public class FPSScript : MonoBehaviour
 		m_FrameCount = 0;
 		m_FPS = 0;
 
-		m_RectText = new Rect(Screen.width - 150*UIID.ScreenScaleX, 0, 80*UIID.ScreenScaleX, 30*UIID.ScreenScaleY);
+		m_RectText = new Rect(Screen.width - 200*UIID.ScreenScaleX, 120, 80*UIID.ScreenScaleX, 30*UIID.ScreenScaleY);
 		
 		m_TextStyle.alignment = TextAnchor.MiddleRight;
 		m_TextStyle.fontSize = (int)(15.0f*(UIID.ScreenScaleX+UIID.ScreenScaleY)*0.5f);

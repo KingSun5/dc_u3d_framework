@@ -66,7 +66,6 @@ public class UISwitchButton : MonoBehaviour
 
     public void SetStatus(Status status)
     {
-        Log.Debug("SetStatus:" + status);
         switch (status)
         {
             case Status.Normal:
