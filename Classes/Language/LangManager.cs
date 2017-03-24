@@ -3,7 +3,12 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.IO;
 
-public class LangManager : Singleton<LangManager>
+/// <summary>
+/// 多语言
+/// @author hannibal
+/// @time 2017-3-23
+/// </summary>
+public class LangManager
 {
     public const string LANGUAGE_ENGLISH    = "EN";
     public const string LANGUAGE_CHINESE    = "CN";
@@ -15,24 +20,29 @@ public class LangManager : Singleton<LangManager>
     public const string LANGUAGE_RUSSIA     = "RU";
     public const string LANGUAGE_SPANISH    = "SP";
 
-    private const string KEY_CODE   = "KEY";
+    private const string KEY_CODE = "KEY";
 
-    private SystemLanguage language = SystemLanguage.Chinese;
-    private Dictionary<int, string> textData = new Dictionary<int, string>();
+    private static SystemLanguage language = SystemLanguage.Chinese;
+    private static Dictionary<int, string> textData = new Dictionary<int, string>();
 
-    public void Init(string file_name)
+    public static void Init(string file_name)
     {
         SetLanguage(Application.systemLanguage);
         ReadData(file_name);
     }
 
-    public void Init(string file_name,SystemLanguage setLanguage)
+    public static void Init(string file_name, SystemLanguage setLanguage)
     {
         SetLanguage(setLanguage);
         ReadData(file_name);
     }
 
-    public string GetText(int key)
+    public static void Release()
+    {
+        textData.Clear();
+    }
+
+    public static string GetText(int key)
     {
         if (textData.ContainsKey(key))
         {
@@ -41,9 +51,9 @@ public class LangManager : Singleton<LangManager>
         return "[NoDefine]" + key;
     }
 
-    private void SetLanguage(SystemLanguage language)
+    private static void SetLanguage(SystemLanguage _language)
     {
-        this.language = language;
+        language = _language;
     }
 
     private static string GetLanguageAB(SystemLanguage language)
@@ -110,7 +120,7 @@ public class LangManager : Singleton<LangManager>
         return LANGUAGE_CHINESE;
     }
 
-    private void ReadData(string file_name)
+    private static void ReadData(string file_name)
     {
         textData.Clear();
         string csvStr = (ResourceLoaderManager.Instance.LoadTextAsset(file_name)).text;
@@ -123,7 +133,7 @@ public class LangManager : Singleton<LangManager>
             return;
         }
         int tempRow = loader.GetRow();
-        for (int i = 0; i < tempRow; ++i)
+        for (int i = 2; i < tempRow; ++i)
         {
             textData.Add(int.Parse(loader.GetValueAt(0, i)), loader.GetValueAt(languageIndex, i));
         }

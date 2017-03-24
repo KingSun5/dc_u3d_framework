@@ -48,6 +48,23 @@ public class UIEleLocalMove : UIEleAnimation
 
     public void PlayForward()
     {
-        rectTransform.DOAnchorPos3D(m_ToPosition, m_Duration).SetEase(m_easeType);
+        m_Running = true;
+        Tweener tweener = rectTransform.DOAnchorPos3D(m_ToPosition, m_Duration);
+        tweener.SetEase(m_easeType);
+        tweener.OnComplete(() =>
+        {
+            m_Running = false;
+        });
+    }
+
+    public override void Rollback()
+    {
+        m_Running = true;
+        Tweener tweener = rectTransform.DOAnchorPos3D(m_FromPositon, m_Duration);
+        tweener.SetEase(m_easeType);
+        tweener.OnComplete(() =>
+        {
+            m_Running = false;
+        });
     }
 }

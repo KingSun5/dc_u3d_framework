@@ -21,8 +21,11 @@ public class UIEleAnimation : MonoBehaviour
     public float m_Delay;
     public Ease m_easeType = Ease.OutQuad;
 
+    protected bool m_Running;
+
     public virtual void Awake()
     {
+        m_Running = false;
     }
 
     public virtual void Start()
@@ -41,4 +44,12 @@ public class UIEleAnimation : MonoBehaviour
     {
     }
 
+    public virtual void Rollback()
+    {
+
+    }
+    public bool Running
+    {
+        get { return m_Running; }
+    }
 }

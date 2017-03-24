@@ -51,11 +51,8 @@ public class UILayerManager : Singleton<UILayerManager>
 	}
 	public void ClearLayer()
 	{
-		foreach(var obj in m_DicLayer)
-		{
-			GameObject.Destroy(obj.Value);
-		}
 		m_DicLayer.Clear();
+        m_Canvas = null;
 		m_RootLayer = null;
 	}
 

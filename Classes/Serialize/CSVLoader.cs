@@ -15,12 +15,12 @@ public class CSVLoader
     private List<List<string>> table;
 
     /// <summary>
-    /// 只支持GBK2312的编码（WPS直接保存的编码支持,暂时不可用）
+    /// 只支持UTF8的编码
     /// </summary>
     /// <param name="fileName"></param>
     private void ReadFile(string fileName)
     {
-        inStream = new StreamReader(fileName, Encoding.GetEncoding("GBK"));
+        inStream = new StreamReader(fileName, System.Text.Encoding.UTF8);
         table = new List<List<string>>();
         List<string> temp = this.getLineContentVector();
         while (null != temp)
@@ -36,7 +36,7 @@ public class CSVLoader
     }
 
     /// <summary>
-    /// 目前只支持UTF-8的编码（WPS直接保存的编码不支持）
+    /// 目前只支持UTF-8的编码
     /// </summary>
     /// <param name="str"></param>
     public void ReadMultiLine(string str)
