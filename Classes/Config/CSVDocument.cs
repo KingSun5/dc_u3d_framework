@@ -138,6 +138,9 @@ public class LoadCSVData
                 {
                     tempLineStringList.Add(columnArray[j]);
                 }
+                //最后一行有可能为空
+                if (tempLineStringList.Count == 0 || (tempLineStringList.Count == 1 && string.IsNullOrEmpty(tempLineStringList[0])))
+                    continue;
                 mDocumentText.Add(tempLineStringList);
             }
         }
