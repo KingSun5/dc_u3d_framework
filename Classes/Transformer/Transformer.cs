@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 /**
  * 显示对象变换器
  * 显示对象变换器提供了统一抽象的显示对象自由变换操作方式。对于任何显示对象，
@@ -34,6 +35,9 @@ public class Transformer
     public bool m_boEnded = false;//是否已结束自身变换
     public bool m_boAllChildrenEnded = false;//是否已结束整个变换树
     public bool m_boSelfControlChildren = false;//是否由变换器自身控制子成员列表
+
+    public Action OnComplete = null;
+
 
     //连接一个变换器到此变换器之后
     //被连接的变换器将在此变换器变换结束后开始执行变换
@@ -159,7 +163,12 @@ public class Transformer
     //变换器完成变换函数
     public virtual void OnTransformCompleted()
     {
+        if (OnComplete != null) OnComplete();
+    }
 
+    public void OnCompleted(Action callback)
+    {
+        OnComplete = callback;
     }
 
     //返回变换器是否正在运行

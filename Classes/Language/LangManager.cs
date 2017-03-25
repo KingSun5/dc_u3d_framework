@@ -11,7 +11,8 @@ using System.IO;
 public class LangManager
 {
     public const string LANGUAGE_ENGLISH    = "EN";
-    public const string LANGUAGE_CHINESE    = "CN";
+    public const string LANGUAGE_CHINESE    = "zh-CN";
+    public const string LANGUAGE_CHINESE_TW = "zh-TW";
     public const string LANGUAGE_JAPANESE   = "JP";
     public const string LANGUAGE_FRENCH     = "FR";
     public const string LANGUAGE_GERMAN     = "GE";
@@ -22,38 +23,61 @@ public class LangManager
 
     private const string KEY_CODE = "KEY";
 
+    private static string languageFile = "";
     private static SystemLanguage language = SystemLanguage.Chinese;
-    private static Dictionary<int, string> textData = new Dictionary<int, string>();
+    private static Dictionary<int, string> m_DicData = new Dictionary<int, string>();
 
     public static void Init(string file_name)
     {
+        languageFile = file_name;
         SetLanguage(Application.systemLanguage);
         ReadData(file_name);
     }
 
     public static void Init(string file_name, SystemLanguage setLanguage)
     {
+        languageFile = file_name;
         SetLanguage(setLanguage);
         ReadData(file_name);
     }
 
+    public static void SetLanguage(SystemLanguage _language)
+    {
+        language = _language;
+        ReadData(languageFile);
+    }
+
     public static void Release()
     {
-        textData.Clear();
+        m_DicData.Clear();
     }
 
     public static string GetText(int key)
     {
-        if (textData.ContainsKey(key))
+        if (m_DicData.ContainsKey(key))
         {
-            return textData[key];
+            return m_DicData[key];
         }
         return "[NoDefine]" + key;
     }
 
-    private static void SetLanguage(SystemLanguage _language)
+    private static void ReadData(string file_name)
     {
-        language = _language;
+        m_DicData.Clear();
+        string csvStr = (ResourceLoaderManager.Instance.LoadTextAsset(file_name)).text;
+        CSVLoader loader = new CSVLoader();
+        loader.ReadMultiLine(csvStr);
+        int languageIndex = loader.GetFirstIndexAtRow(GetLanguageAB(language), 0);
+        if (-1 == languageIndex)
+        {
+            Debug.LogError("未读取到" + language + "任何数据，请检查配置表");
+            return;
+        }
+        int tempRow = loader.GetRow();
+        for (int i = 2; i < tempRow; ++i)
+        {
+            m_DicData.Add(int.Parse(loader.GetValueAt(0, i)), loader.GetValueAt(languageIndex, i));
+        }
     }
 
     private static string GetLanguageAB(SystemLanguage language)
@@ -68,9 +92,10 @@ public class LangManager
             case SystemLanguage.Catalan:
                 return LANGUAGE_ENGLISH;
             case SystemLanguage.Chinese:
-            case SystemLanguage.ChineseTraditional:
             case SystemLanguage.ChineseSimplified:
                 return LANGUAGE_CHINESE;
+            case SystemLanguage.ChineseTraditional:
+                return LANGUAGE_CHINESE_TW;
             case SystemLanguage.Czech:
             case SystemLanguage.Danish:
             case SystemLanguage.Dutch:
@@ -118,24 +143,5 @@ public class LangManager
                 return LANGUAGE_ENGLISH;
         }
         return LANGUAGE_CHINESE;
-    }
-
-    private static void ReadData(string file_name)
-    {
-        textData.Clear();
-        string csvStr = (ResourceLoaderManager.Instance.LoadTextAsset(file_name)).text;
-        CSVLoader loader = new CSVLoader();
-        loader.ReadMultiLine(csvStr);
-        int languageIndex = loader.GetFirstIndexAtRow(GetLanguageAB(language), 0);
-        if (-1 == languageIndex)
-        {
-            Debug.LogError("未读取到" + language + "任何数据，请检查配置表");
-            return;
-        }
-        int tempRow = loader.GetRow();
-        for (int i = 2; i < tempRow; ++i)
-        {
-            textData.Add(int.Parse(loader.GetValueAt(0, i)), loader.GetValueAt(languageIndex, i));
-        }
     }
 }
