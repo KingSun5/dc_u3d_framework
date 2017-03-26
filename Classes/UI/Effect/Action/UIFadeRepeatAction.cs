@@ -1,7 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class UIFadeAction : MonoBehaviour 
+/// <summary>
+/// 闪烁
+/// @author hannibal
+/// @time 2017-3-26
+/// </summary>
+public class UIFadeRepeatAction : MonoBehaviour 
 {
     public float m_ToAlpha = 0;
     public float m_Duration = 1;

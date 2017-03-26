@@ -1,19 +1,20 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
+using System.Collections;
 
+[RequireComponent(typeof(Text))]
 
 /// <summary>
 /// 动态显示数值文本
 /// @author hannibal
 /// @time 2015-2-1
 /// </summary>
-public class UIDynamicText : MonoBehaviour
+public class UIDynamicTextAction : MonoBehaviour
 {
 	/**时间：控制改变速度*/
 	public float 	m_TotalTime = 1f;
 	public bool 	m_FixedTime = true;
-	public float 	m_Speed = 0.03f;
+	public float 	m_Speed = 0.03f;        //m_FixedTime为false时，起效
 	private float 	m_StartTime = 0f;
 
 	/**颜色*/
@@ -28,31 +29,24 @@ public class UIDynamicText : MonoBehaviour
 	private bool 	m_Active = false;
 
 	/**值*/
-	private int 	m_Value = 200;
+	private int 	m_Value;
 	private int 	m_InitValue;
 	private int 	m_EndValue;
 
 	public System.Action<Text> m_OnComplete = null;
 
-	// Use this for initialization
 	void Start () 
 	{
 		m_TextComponent = gameObject.GetComponent<Text>();
-		if(m_TextComponent == null)
-		{
-			Log.Error("DynamicTextScript::Start - attach object not Text");
-		}
 	}
 	
-	// Update is called once per frame
 	void Update () 
 	{
 		if(!m_Active)return;
 
 		//线性插值
 		int to_value = m_InitValue + (int)((m_EndValue-m_InitValue)*((Time.realtimeSinceStartup-m_StartTime)/m_TotalTime));
-		int side = MathUtils.Sign(m_EndValue - m_InitValue);
-		if((m_Value == m_EndValue) || (side == 1 && to_value >= m_EndValue) || (side == -1 && to_value <= m_EndValue))
+		if(Time.realtimeSinceStartup-m_StartTime >= m_TotalTime)
 		{
 			to_value = m_EndValue;
 			m_Active = false;

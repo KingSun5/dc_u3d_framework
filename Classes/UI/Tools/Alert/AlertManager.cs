@@ -11,7 +11,7 @@ public class AlertManager : Singleton<AlertManager>
 {
 	private AlertView m_AlertView;
 
-    public void ShowAlert(int id, string content, System.Action<eAlertBtnType> fun, string btn_name = "确定")
+    public void ShowAlert(int id, string content, string btn_name, System.Action<eAlertBtnType> fun)
 	{
 		//layer
         Transform layer = UILayerManager.Instance.GetLayer((int)eUILayer.TOP);
@@ -40,7 +40,7 @@ public class AlertManager : Singleton<AlertManager>
         m_AlertView.Show();
 	}
 
-    public void ShowConfirm(int id, string content, System.Action<eAlertBtnType> fun, string ok_name = "确定", string cancel_name = "取消")
+    public void ShowConfirm(int id, string content, string ok_name, string cancel_name, System.Action<eAlertBtnType> fun)
     {
         //layer
         Transform layer = UILayerManager.Instance.GetLayer((int)eUILayer.TOP);

@@ -22,7 +22,6 @@ public class LangManager
     public const string LANGUAGE_SPANISH    = "SP";
 
     private const string KEY_CODE = "KEY";
-
     private static string languageFile = "";
     private static SystemLanguage language = SystemLanguage.Chinese;
     private static Dictionary<int, string> m_DicData = new Dictionary<int, string>();

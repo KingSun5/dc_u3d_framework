@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class UIScaleAction : MonoBehaviour {
+public class UIScaleAction : MonoBehaviour 
+{
 
 	// Use this for initialization
 	void Start () {

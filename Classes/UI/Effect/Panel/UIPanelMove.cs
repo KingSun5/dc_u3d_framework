@@ -5,7 +5,12 @@ using UnityEngine.UI;
 using System;
 using DG.Tweening;
 
-public class UIEleLocalMove : UIEleAnimation
+/// <summary>
+/// UI界面移动
+/// @author hannibal
+/// @time 2017-3-26
+/// </summary>
+public class UIPanelMove : UIPanelAnimation
 {
     public Vector3 m_FromPositon;
     public Vector3 m_ToPosition;

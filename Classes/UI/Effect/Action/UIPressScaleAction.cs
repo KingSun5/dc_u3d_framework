@@ -8,7 +8,7 @@ using System.Collections;
 /// @author hannibal
 /// @time 2017-2-25
 /// </summary>
-public class UIPressScale : MonoBehaviour
+public class UIPressScaleAction : MonoBehaviour
 {
     public float time = 1;
     public float scale = 0.8f;

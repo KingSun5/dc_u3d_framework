@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+/// <summary>
+/// 事件参数
+/// @author hannibal
+/// @time 2017-3-26
+/// </summary>
 public struct GameEvent
 {
     public const int CAPACITY = 10;
