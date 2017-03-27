@@ -18,8 +18,8 @@ public class ParticleAutoDestroyScript : MonoBehaviour
 
     void Start()
     {
-        particleSystems = GetComponentsInChildren<ParticleSystem>();
-        if (particleSystems != null && particleSystems.Length > 0) m_TotalTime = 0;
+        if (m_TotalTime <= 0)
+            particleSystems = GetComponentsInChildren<ParticleSystem>();
     }
 
     void Update()

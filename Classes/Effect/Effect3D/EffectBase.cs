@@ -9,40 +9,38 @@ using System.Collections;
 public class EffectBase : MonoBehaviour
 {
     [SerializeField, Tooltip("对象唯一ID(readonly)")]
-    protected ulong     m_ObjectUID = 0;
+    protected ulong m_ObjectUID = 0;
     [SerializeField, Tooltip("开始激活时间(readonly)")]
-    protected float     m_StartTime = 0;           
+    protected float m_StartTime = 0;
     [SerializeField, Tooltip("总时长")]
-    protected float     m_TotalTime = 0;            
+    protected float m_TotalTime = 0;
     [SerializeField, Tooltip("位置偏移")]
-    protected Vector3   m_OffsetPos = Vector3.zero;
+    protected Vector3 m_OffsetPos = Vector3.zero;
     [SerializeField, Tooltip("是否激活中")]
-    protected bool      m_Active = false; 			
+    protected bool m_Active = false;
     [SerializeField, Tooltip("是否准备完成(readonly)")]
-    protected bool      m_IsLoadComplete = false;
+    protected bool m_IsLoadComplete = false;
 
-    protected Transform         m_RootNode = null;
-    protected EventController   m_Observer = new EventController();
-	
-	public EffectBase()
-	{
-	}
+    protected Transform m_RootNode = null;
+    protected EventController m_Observer = new EventController();
+
+    public EffectBase()
+    {
+    }
     public virtual void Awake()
     {
     }
     public virtual void Start()
-	{
+    {
         m_StartTime = Time.realtimeSinceStartup;
         transform.localPosition += m_OffsetPos;
-
-        AddDestroyComponent();
-	}
+    }
     public virtual void PreDestroy()
     {
     }
     public virtual void OnDestroy()
     {
-	}
+    }
     public virtual void OnEnable()
     {
         m_Active = true;
@@ -95,20 +93,22 @@ public class EffectBase : MonoBehaviour
         m_RootNode.SetParent(this.transform, false);
         m_RootNode.localPosition = Vector3.zero;
         m_RootNode.localRotation = Quaternion.identity;
+
+        AddDestroyComponent();
     }
 
-    private void AddDestroyComponent()
+    protected virtual void AddDestroyComponent()
     {
-        if(m_TotalTime <= 0)
+        if (m_TotalTime <= 0)
         {
-            ParticleAutoDestroyScript componet = gameObject.GetComponent<ParticleAutoDestroyScript>();
+            ParticleAutoDestroyScript componet = gameObject.GetComponentInChildren<ParticleAutoDestroyScript>();
             if (componet == null) componet = gameObject.AddComponent<ParticleAutoDestroyScript>();
             componet.m_AutoDestroy = false;
             componet.m_DestroyCallback = OnComponentDestroy;
         }
         else
         {
-            AutoDestroyScript componet = gameObject.GetComponent<AutoDestroyScript>();
+            AutoDestroyScript componet = gameObject.GetComponentInChildren<AutoDestroyScript>();
             if (componet == null) componet = gameObject.AddComponent<AutoDestroyScript>();
             componet.m_AutoDestroy = false;
             componet.m_TotalTime = m_TotalTime;
