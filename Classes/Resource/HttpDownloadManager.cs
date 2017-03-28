@@ -39,7 +39,11 @@ public class HttpDownloadManager : Singleton<HttpDownloadManager>
 
     public void Destroy()
     {
-        m_ListDownFiles.Clear();
+        if (m_ListDownFiles != null)
+        {
+            m_ListDownFiles.Clear();
+            m_ListDownFiles = null;
+        }
         if(m_Thread != null)
         {
             m_Thread.Abort();
