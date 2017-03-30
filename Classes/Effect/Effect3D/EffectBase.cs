@@ -34,6 +34,7 @@ public class EffectBase : MonoBehaviour
     {
         m_StartTime = Time.realtimeSinceStartup;
         transform.localPosition += m_OffsetPos;
+        AddDestroyComponent();
     }
     public virtual void PreDestroy()
     {
@@ -80,7 +81,7 @@ public class EffectBase : MonoBehaviour
 
             GameObject obj = GameObject.Instantiate(res) as GameObject;
             if (obj == null) return;
-            OnLoadComplete(obj.transform);
+            TimerManager.Instance.AddTimer(0, 1, delegate() { OnLoadComplete(obj.transform); });
         }
         );
     }
@@ -93,8 +94,6 @@ public class EffectBase : MonoBehaviour
         m_RootNode.SetParent(this.transform, false);
         m_RootNode.localPosition = Vector3.zero;
         m_RootNode.localRotation = Quaternion.identity;
-
-        AddDestroyComponent();
     }
 
     protected virtual void AddDestroyComponent()

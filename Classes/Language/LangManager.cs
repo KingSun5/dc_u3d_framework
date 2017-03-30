@@ -65,7 +65,7 @@ public class LangManager
         m_DicData.Clear();
         string csvStr = (ResourceLoaderManager.Instance.LoadTextAsset(file_name)).text;
         CSVLoader loader = new CSVLoader();
-        loader.ReadMultiLine(csvStr);
+        loader.ReadMultiLine(file_name);
         int languageIndex = loader.GetFirstIndexAtRow(GetLanguageAB(language), 0);
         if (-1 == languageIndex)
         {

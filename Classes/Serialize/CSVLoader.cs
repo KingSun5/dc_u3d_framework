@@ -18,7 +18,7 @@ public class CSVLoader
     /// 只支持UTF8的编码
     /// </summary>
     /// <param name="fileName"></param>
-    private void ReadFile(string fileName)
+    public void ReadFile(string fileName)
     {
         inStream = new StreamReader(fileName, System.Text.Encoding.UTF8);
         table = new List<List<string>>();
