@@ -1,82 +1,90 @@
-﻿
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
-using System.IO;
+using System.Xml;
+using System;
 
 /// <summary>
-/// 多语言
+/// 语音表
 /// @author hannibal
-/// @time 2017-3-23
+/// @time 2015-1-21
 /// </summary>
 public class LangManager
 {
-    public const string LANGUAGE_ENGLISH    = "EN";
-    public const string LANGUAGE_CHINESE    = "zh-CN";
+    public const string LANGUAGE_ENGLISH = "EN";
+    public const string LANGUAGE_CHINESE = "zh-CN";
     public const string LANGUAGE_CHINESE_TW = "zh-TW";
-    public const string LANGUAGE_JAPANESE   = "JP";
-    public const string LANGUAGE_FRENCH     = "FR";
-    public const string LANGUAGE_GERMAN     = "GE";
-    public const string LANGUAGE_ITALY      = "IT";
-    public const string LANGUAGE_KOREA      = "KR";
-    public const string LANGUAGE_RUSSIA     = "RU";
-    public const string LANGUAGE_SPANISH    = "SP";
+    public const string LANGUAGE_JAPANESE = "JP";
+    public const string LANGUAGE_FRENCH = "FR";
+    public const string LANGUAGE_GERMAN = "GE";
+    public const string LANGUAGE_ITALY = "IT";
+    public const string LANGUAGE_KOREA = "KR";
+    public const string LANGUAGE_RUSSIA = "RU";
+    public const string LANGUAGE_SPANISH = "SP";
 
-    private const string KEY_CODE = "KEY";
-    private static string languageFile = "";
-    private static SystemLanguage language = SystemLanguage.Chinese;
-    private static Dictionary<int, string> m_DicData = new Dictionary<int, string>();
+    private static string m_LanguageFile = "";
+    private static SystemLanguage m_Language = SystemLanguage.Chinese;
+    private static Dictionary<int, string> m_DicInfo = new Dictionary<int, string>();
 
-    public static void Init(string file_name)
+    public static void Load(string file, SystemLanguage _language)
     {
-        languageFile = file_name;
-        SetLanguage(Application.systemLanguage);
-        ReadData(file_name);
+        m_LanguageFile = file;
+        SetLanguage(_language);
     }
-
-    public static void Init(string file_name, SystemLanguage setLanguage)
+    public static void Unload()
     {
-        languageFile = file_name;
-        SetLanguage(setLanguage);
-        ReadData(file_name);
+        m_DicInfo.Clear();
     }
 
     public static void SetLanguage(SystemLanguage _language)
     {
-        language = _language;
-        ReadData(languageFile);
+        m_Language = _language;
+        ReadXmlConfig(m_LanguageFile, OnReadFile);
     }
 
-    public static void Release()
+    private static bool ReadXmlConfig(string fileName, Action<XmlDocument> handler)
     {
-        m_DicData.Clear();
+        Log.Info("ReadXmlConfig:" + fileName);
+        TextAsset textAsset = ResourceLoaderManager.Instance.LoadTextAsset(fileName);
+        if (textAsset == null)
+        {
+            Log.Error("LangConfig::ReadXmlConfig - load error:" + fileName);
+            return false;
+        }
+        else
+        {
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(textAsset.text);
+            handler(xmlDoc);
+            xmlDoc = null;
+            ResourceLoaderManager.Instance.UnloadAsset(textAsset);
+            textAsset = null;
+        }
+        return true;
+    }
+
+    private static void OnReadFile(XmlDocument doc)
+    {
+        m_DicInfo.Clear();
+        string language = GetLanguageAB(m_Language);
+
+        XmlNodeList nodeList = doc.SelectSingleNode("Lines").ChildNodes;
+        foreach (XmlElement xe in nodeList)
+        {
+            int ID = XmlConvert.ToInt32(xe.GetAttribute("KEY"));
+            string value = xe.GetAttribute(language);
+
+            m_DicInfo.Add(ID, value);
+        }
     }
 
     public static string GetText(int key)
     {
-        if (m_DicData.ContainsKey(key))
+        if (m_DicInfo.ContainsKey(key))
         {
-            return m_DicData[key];
+            return m_DicInfo[key];
         }
         return "[NoDefine]" + key;
-    }
-
-    private static void ReadData(string file_name)
-    {
-        m_DicData.Clear();
-        string csvStr = (ResourceLoaderManager.Instance.LoadTextAsset(file_name)).text;
-        CSVLoader loader = new CSVLoader();
-        loader.ReadMultiLine(file_name);
-        int languageIndex = loader.GetFirstIndexAtRow(GetLanguageAB(language), 0);
-        if (-1 == languageIndex)
-        {
-            Debug.LogError("未读取到" + language + "任何数据，请检查配置表");
-            return;
-        }
-        int tempRow = loader.GetRow();
-        for (int i = 2; i < tempRow; ++i)
-        {
-            m_DicData.Add(int.Parse(loader.GetValueAt(0, i)), loader.GetValueAt(languageIndex, i));
-        }
     }
 
     private static string GetLanguageAB(SystemLanguage language)
