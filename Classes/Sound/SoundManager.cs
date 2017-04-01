@@ -165,6 +165,7 @@ public class SoundManager : Singleton<SoundManager>
         aSrc.pitch = 1;
         aSrc.volume = m_EffectSoundVolume;
         aSrc.loop = loop;
+        aSrc.transform.SetParent(GetDefaultListener().transform, false);
         aSrc.Play();
 
         return aSrc;
@@ -258,7 +259,6 @@ public class SoundManager : Singleton<SoundManager>
                 m_BGSoundVolume = evt.Get<float>(0);
                 m_BGSoundVolume = Mathf.Clamp(m_BGSoundVolume, 0, 1);
                 SetBGSoundVolume(m_BGSoundVolume);
-                Log.Debug("SetBGSoundVolume:"+m_BGSoundVolume);
                 break;
 
             case SoundID.ADJUST_EFFECT_VOLUME:
