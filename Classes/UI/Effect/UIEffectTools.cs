@@ -35,7 +35,7 @@ public class UIEffectTools
         UIEventTriggerListener.Get(receive_obj).onExit = null;
     }
     //～～～～～～～～～～～～～～～～～～～～～～～渐隐动画~～～～～～～～～～～～～～～～～～～～～～～～//
-    public static void FadeIn(GameObject go, float time, System.Action fun = null)
+    public static void FadeIn(GameObject go, float time, System.Action fun = null, float alpha = 1)
     {
         bool is_trigger = false;
         Component[] comps = go.GetComponentsInChildren<Component>();
@@ -45,7 +45,7 @@ public class UIEffectTools
             if (c is Graphic)
             {
                 (c as Graphic).
-                    DOFade(1, time)
+                    DOFade(alpha, time)
                     .OnComplete(() =>
                     {
                         if (fun != null && is_trigger == false)
@@ -57,7 +57,7 @@ public class UIEffectTools
             }
         }
     }
-    public static void FadeOut(GameObject go, float time, System.Action fun = null)
+    public static void FadeOut(GameObject go, float time, System.Action fun = null, float alpha=0)
     {
         bool is_trigger = false;
         Component[] comps = go.GetComponentsInChildren<Component>();
@@ -67,7 +67,7 @@ public class UIEffectTools
             if (c is Graphic)
             {
                 (c as Graphic).
-                    DOFade(0, time)
+                    DOFade(alpha, time)
                     .OnComplete(() =>
                     {
                         if (fun != null && is_trigger == false)
