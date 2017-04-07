@@ -29,14 +29,14 @@ public class Transformer
     public float m_fTransformTime = 0;  //变换持续时间
     public float m_fRootTimeOffset = 0; //在变换树中的时间偏移
 
-    public Transformer m_Root = null; //根变换器
+    public Transformer m_Root = null;   //根变换器
     protected List<Transformer> m_ChildrenList = new List<Transformer>();//子级变换器列表
 
-    public bool m_boEnded = false;//是否已结束自身变换
-    public bool m_boAllChildrenEnded = false;//是否已结束整个变换树
+    public bool m_boEnded = false;              //是否已结束自身变换
+    public bool m_boAllChildrenEnded = false;   //是否已结束整个变换树
     public bool m_boSelfControlChildren = false;//是否由变换器自身控制子成员列表
 
-    public Action OnComplete = null;
+    public Action OnComplete = null;    //完成事件
 
 
     //连接一个变换器到此变换器之后
@@ -103,7 +103,6 @@ public class Transformer
         m_boAllChildrenEnded = true;
         m_boEnded = true;
     }
-
 
     public virtual void update(float currTime)
 	{

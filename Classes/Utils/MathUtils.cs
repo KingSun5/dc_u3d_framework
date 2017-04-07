@@ -201,4 +201,34 @@ public class MathUtils
             return false;
         return true;
     }
+    /// <summary>
+    /// 转换为水平方向
+    /// </summary>
+    public static Vector3 ToHorizontal(Vector3 vec)
+    {
+        vec.y = 0;
+        return vec;
+    }
+    /// <summary>
+    /// 水平距离
+    /// </summary>
+    public static float HorizontalDistance(Vector3 vec1, Vector3 vec2)
+    {
+        vec1.y = 0;
+        vec2.y = 0;
+        return (vec1 - vec2).magnitude;
+    }
+    /// <summary>
+    /// 两点垂直夹角
+    /// </summary>
+    public static float VerticalAngle(Vector3 pt1, Vector3 pt2)
+    {
+        Vector3 pt_top, pt_bottom;
+        if (pt1.y > pt2.y)
+        { pt_top = pt1; pt_bottom = pt2; }
+        else
+        { pt_top = pt2; pt_bottom = pt1; }
+        Vector3 pt = new Vector3(pt_top.x, pt_bottom.y, pt_top.z);
+        return Vector3.Angle((pt_bottom - pt_top), (pt - pt_top));
+    }
 }

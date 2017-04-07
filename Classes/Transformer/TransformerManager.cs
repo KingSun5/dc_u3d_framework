@@ -2,6 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 
+/// <summary>
+/// 变换管理器
+/// @author hannibal
+/// @time 2017-4-5
+/// </summary>
 public class TransformerManager : Singleton<TransformerManager>
 {
     private List<Transformer> m_UpdateAllList = new List<Transformer>();
