@@ -196,7 +196,7 @@ public class SoundManager : Singleton<SoundManager>
         if (IsCloseEffectSound || fileName.Length == 0) return null;
 
         EffectSound sound = ObjectFactoryManager.Instance.CreateObject(SoundBase.POOLS_SOUND_EFFECT) as EffectSound;
-        sound.Setup(fileName, Vector3.zero, GetDefaultListener().transform, 0, 0, loop);
+        sound.Setup(fileName, Vector3.zero, GetDefaultListener().transform, 0, 500, loop);
         sound.LoadResource();
 
         return sound;
