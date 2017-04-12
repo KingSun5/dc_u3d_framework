@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using AntiCheat.ObscuredTypes;
 
 /// <summary>
 /// 本地数据
@@ -17,15 +18,15 @@ public class LocalValue
 	{
 		if (value.GetType() == typeof(int))
 		{
-			PlayerPrefs.SetInt(key, (int)(object)value);
+            ObscuredPrefs.SetInt(key, (int)(object)value);
 		}
 		else if(value.GetType() == typeof(string))
 		{
-			PlayerPrefs.SetString(key, (string)(object)value);
+            ObscuredPrefs.SetString(key, (string)(object)value);
 		}
 		else if(value.GetType() == typeof(float))
 		{
-			PlayerPrefs.SetFloat(key, (float)(object)value);
+            ObscuredPrefs.SetFloat(key, (float)(object)value);
 		}
 		else
 		{
@@ -36,15 +37,15 @@ public class LocalValue
 	{
 		if (typeof(T) == typeof(int))
 		{
-			return (T)(object)PlayerPrefs.GetInt(key,(int)(object)defaultVaule);
+            return (T)(object)ObscuredPrefs.GetInt(key, (int)(object)defaultVaule);
 		}
 		else if(typeof(T) == typeof(string))
 		{
-			return (T)(object)PlayerPrefs.GetString(key,(string)(object)defaultVaule);
+            return (T)(object)ObscuredPrefs.GetString(key, (string)(object)defaultVaule);
 		}
 		else if(typeof(T) == typeof(float))
 		{
-			return (T)(object)PlayerPrefs.GetFloat(key,(float)(object)defaultVaule);
+            return (T)(object)ObscuredPrefs.GetFloat(key, (float)(object)defaultVaule);
 		}
 		else
 		{
@@ -55,6 +56,6 @@ public class LocalValue
 
     public static bool HasKey(string key)
     {
-        return PlayerPrefs.HasKey(key);
+        return ObscuredPrefs.HasKey(key);
     }
 }

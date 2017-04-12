@@ -12,6 +12,7 @@ public class EngineManager : Singleton<EngineManager>
     {
         SetResolution(default_screen_w, default_screen_h, max_screen_w);
 
+        AntiCheatManager.Instance.Setup();
         TimerManager.Instance.Setup();
 		ObjectFactoryManager.Instance.Setup();
 		MultyBuildManager.Instance.Setup();
@@ -29,6 +30,7 @@ public class EngineManager : Singleton<EngineManager>
 	
 	public void Destroy()
 	{
+        AntiCheatManager.Instance.Destroy();
         TimerManager.Instance.Destroy();
 		ObjectFactoryManager.Instance.Destroy();
         MultyBuildManager.Instance.Destroy();
@@ -92,7 +94,7 @@ public class EngineManager : Singleton<EngineManager>
         Screen.SetResolution(w, h, true);
     }
     /// <summary>
-    /// 退出游戏
+    /// 双击退出游戏
     /// </summary>
     static private int m_ClickCounts = 0;
     static private float m_LastClickTick = 0;
