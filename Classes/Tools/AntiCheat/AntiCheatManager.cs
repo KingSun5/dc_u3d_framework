@@ -36,7 +36,7 @@ public class AntiCheatManager : Singleton<AntiCheatManager>
         SpeedHackDetector.StartDetection(OnSpeedHackDetected, 1, 5);
 
         //代码注入
-        InjectionDetector.StartDetection(OnInjectionDetected);
+        //InjectionDetector.StartDetection(OnInjectionDetected);
     }
 
     public void Destroy()
@@ -56,7 +56,7 @@ public class AntiCheatManager : Singleton<AntiCheatManager>
     private void OnSpeedHackDetected()
     {
         Log.Error("OnSpeedHackDetected");
-        //Application.Quit();
+        Application.Quit();
     }
 
     /// <summary>
@@ -64,7 +64,7 @@ public class AntiCheatManager : Singleton<AntiCheatManager>
     /// </summary>
     private void OnInjectionDetected()
     {
-        Log.Error("OnInjectionDetected!");
-        Application.Quit();
+        //Log.Error("OnInjectionDetected!");
+        //Application.Quit();
     }
 }
