@@ -91,7 +91,12 @@ public class EngineManager : Singleton<EngineManager>
     void SetResolution(int w, int h)
     {
         Log.Info("请求设置分辨率:" + w + "*" + h);
-        Screen.SetResolution(w, h, true);
+        bool fullScreen = true;
+#if UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX || UNITY_EDITOR
+        fullScreen = Screen.fullScreen;
+#else
+#endif
+        Screen.SetResolution(w, h, fullScreen);
     }
     /// <summary>
     /// 双击退出游戏
