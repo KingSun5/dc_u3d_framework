@@ -33,7 +33,7 @@ public class AntiCheatManager : Singleton<AntiCheatManager>
         ObscuredVector3.onCheatingDetected = OnMemoryCheatingDetected;
 
         //加速
-        SpeedHackDetector.StartDetection(OnSpeedHackDetected, 1, 5);
+        //SpeedHackDetector.StartDetection(OnSpeedHackDetected, 1, 5);
 
         //代码注入
         //InjectionDetector.StartDetection(OnInjectionDetected);
