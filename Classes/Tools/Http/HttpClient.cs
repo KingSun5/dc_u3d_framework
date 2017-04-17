@@ -25,13 +25,13 @@ public class HttpClient : MonoBehaviour
     {
         if (string.IsNullOrEmpty(m_URL))
         {
-            Log.Error("ReportMgr.PostData, url为空");
+            Log.Error("HttpClient.PostData, url为空");
             return;
         }
 
         if (!m_URL.StartsWith("http") && m_URL.StartsWith("https"))
         {
-            Log.Error("ReportMgr.PostData, url地址格式不正确, {0}", m_URL);
+            Log.Error("HttpClient.PostData, url地址格式不正确, {0}", m_URL);
             return;
         }
 
