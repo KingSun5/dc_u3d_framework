@@ -105,7 +105,7 @@ public class ScenePlaySound : MonoBehaviour
                 m_AudioSource = SoundManager.Instance.PlaySoundEffect(m_AudioClip, transform.position, 0, m_Range, m_Loop);
                 if (m_AudioSource == null) return;
                 AutoDestroyAudio component = m_AudioSource.GetComponent<AutoDestroyAudio>();
-                if (component != null) component.IsLoop = m_Loop;
+                if (component != null) component.PlayCount = m_Loop ? int.MaxValue : 1;
             }
             if (!m_AudioSource.isPlaying)
             {

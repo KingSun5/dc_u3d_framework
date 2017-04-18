@@ -31,9 +31,9 @@ public class BackgroundSound : SoundBase
             m_AudioSourceParent = null;
         }
     }
-    public override void Setup(string fileName, Vector3 pos, Transform parent, float min_distance, float max_distance, bool loop = false)
+    public override void Setup(string fileName, Vector3 pos, Transform parent, float min_distance, float max_distance, int count = 1)
     {
-        base.Setup(fileName, pos, parent, min_distance, max_distance, loop);
+        base.Setup(fileName, pos, parent, min_distance, max_distance, count);
 
         AudioClip clip = ResourceLoaderManager.Instance.Load(fileName) as AudioClip;
         if (clip == null)
@@ -48,7 +48,7 @@ public class BackgroundSound : SoundBase
             m_AudioSourceParent.transform.SetParent(listener.transform, false);
             m_SoundSource = m_AudioSourceParent.GetComponent<AudioSource>();
             m_SoundSource.clip = clip;
-            m_SoundSource.loop = loop;
+            m_SoundSource.loop = count > 1 ? true : false;
             m_SoundSource.volume = SoundManager.Instance.BGSoundVolume;
             m_SoundSource.Play();
         }

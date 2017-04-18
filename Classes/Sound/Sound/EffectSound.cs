@@ -25,9 +25,9 @@ public class EffectSound : SoundBase
             m_SoundSource = null;
         }
     }
-    public override void Setup(string fileName, Vector3 pos, Transform parent, float min_distance, float max_distance, bool loop = false)
+    public override void Setup(string fileName, Vector3 pos, Transform parent, float min_distance, float max_distance, int count = 1)
     {
-        base.Setup(fileName, pos, parent, min_distance, max_distance, loop);
+        base.Setup(fileName, pos, parent, min_distance, max_distance, count);
     }
     public override void Play()
     {
@@ -76,11 +76,11 @@ public class EffectSound : SoundBase
     public override void OnLoadComplete()
     {
         AudioSource aSrc = AudioPools.instance.SpawnAudioByFile(m_FileName, m_Position, m_ParentNode);
-        if (aSrc != null)
+        if (aSrc != null && aSrc.clip != null)
         {
             aSrc.pitch = 1;
             aSrc.volume = SoundManager.Instance.EffectSoundVolume;
-            aSrc.loop = m_IsLoop;
+            aSrc.loop = m_PlayCount > 1 ? true : false;
             aSrc.minDistance = m_MinDistance;
             aSrc.maxDistance = m_MaxDistance;
             if (m_IsPlay) aSrc.Play();
@@ -89,8 +89,8 @@ public class EffectSound : SoundBase
             AutoDestroyAudio component = aSrc.gameObject.GetComponent<AutoDestroyAudio>();
             if (component == null) component = aSrc.gameObject.AddComponent<AutoDestroyAudio>();
 
-            component.IsLoop = m_IsLoop;
-            component.m_DestroyCallback = OnComponentDestroy;
+            component.PlayCount = m_PlayCount;
+            component.DestroyCallback = OnComponentDestroy;
             m_SoundSource = aSrc;
         }
         else

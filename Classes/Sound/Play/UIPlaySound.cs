@@ -49,8 +49,8 @@ public class UIPlaySound : MonoBehaviour
                 AutoDestroyAudio component = aSrc.gameObject.GetComponent<AutoDestroyAudio>();
                 if (component == null) component = aSrc.gameObject.AddComponent<AutoDestroyAudio>();
 
-                component.IsLoop = false;
-                component.m_DestroyCallback = delegate()
+                component.PlayCount = 1;
+                component.DestroyCallback = delegate()
                 {
                     SoundManager.Instance.StopSoundEffect(aSrc);
                 };

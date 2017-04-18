@@ -20,7 +20,7 @@ public class SoundBase : IPoolsObject
     protected Vector3   m_Position;
     protected float     m_MinDistance;
     protected float     m_MaxDistance;
-    protected bool      m_IsLoop = false;
+    protected int       m_PlayCount;
 
     protected AudioSource m_SoundSource = null;
 
@@ -38,7 +38,7 @@ public class SoundBase : IPoolsObject
     public virtual void Release()
     {
     }
-    public virtual void Setup(string fileName, Vector3 pos, Transform parent, float min_distance, float max_distance, bool loop = false)
+    public virtual void Setup(string fileName, Vector3 pos, Transform parent, float min_distance, float max_distance, int count = 1)
     {
         m_Active = true;
         m_FileName = fileName;
@@ -46,7 +46,7 @@ public class SoundBase : IPoolsObject
         m_ParentNode = parent;
         m_MinDistance = min_distance;
         m_MaxDistance = max_distance;
-        m_IsLoop = loop;
+        m_PlayCount = count;
         m_IsPlay = true;
     }
     public virtual void Update()

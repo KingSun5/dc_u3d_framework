@@ -68,7 +68,7 @@ public class SoundManager : Singleton<SoundManager>
         if (string.IsNullOrEmpty(fileName)) return null;
 
         BackgroundSound sound = ObjectFactoryManager.Instance.CreateObject(SoundBase.POOLS_SOUND_BG) as BackgroundSound;
-        sound.Setup(fileName, Vector3.zero, null, 0, 0, loop);
+        sound.Setup(fileName, Vector3.zero, null, 0, 0, loop ? int.MaxValue : 1);
         sound.LoadResource();
         m_ListBGAudio.Add(sound);
 
@@ -132,12 +132,12 @@ public class SoundManager : Singleton<SoundManager>
 	/// <param name="pos">播放位置</param>
     /// <param name="loop">是否循环：如果是循环音效，需要手动清理(AudioPools.instance.DespawnAudio)</param>
 	/// <returns></returns>
-    public SoundBase PlaySoundEffect(string fileName, Vector3 pos, float min_distance, float max_distance, bool loop = false)
+    public SoundBase PlaySoundEffect(string fileName, Vector3 pos, float min_distance, float max_distance, int count = 1)
     {
         if (IsCloseEffectSound || fileName.Length == 0) return null;
 
         EffectSound sound = ObjectFactoryManager.Instance.CreateObject(SoundBase.POOLS_SOUND_EFFECT) as EffectSound;
-        sound.Setup(fileName, pos, null, min_distance, max_distance, loop);
+        sound.Setup(fileName, pos, null, min_distance, max_distance, count);
         sound.LoadResource();
 
         return sound;
@@ -191,12 +191,12 @@ public class SoundManager : Singleton<SoundManager>
     /// <summary>
     /// 忽视距离声音
     /// </summary>
-    public SoundBase PlayIgnoreListenerSound(string fileName, bool loop = false)
+    public SoundBase PlayIgnoreListenerSound(string fileName, int count = 1)
     {
         if (IsCloseEffectSound || fileName.Length == 0) return null;
 
         EffectSound sound = ObjectFactoryManager.Instance.CreateObject(SoundBase.POOLS_SOUND_EFFECT) as EffectSound;
-        sound.Setup(fileName, Vector3.zero, GetDefaultListener().transform, 0, 500, loop);
+        sound.Setup(fileName, Vector3.zero, GetDefaultListener().transform, 0, 500, count);
         sound.LoadResource();
 
         return sound;
