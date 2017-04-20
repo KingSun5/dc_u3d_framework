@@ -87,6 +87,21 @@ public class LangManager
         return "[NoDefine]" + key;
     }
 
+    public static string Format(string format, params object[] list)
+    {
+        if (format.Length <= 1)
+            return format;
+        format = format.Replace("\\n", "\n");
+        int paramNum = list.Length;
+        for (int i = 0; i < list.Length; i++)
+        {
+            object paramVal = list[i];
+            string paramString = "{" + (i + 1).ToString() + "}";
+            format = format.Replace(paramString, paramVal.ToString());
+        }
+        return format;
+    }
+
     private static string GetLanguageAB(SystemLanguage language)
     {
         switch (language)

@@ -59,7 +59,7 @@ public class ResourceManager : Singleton<ResourceManager>
     /// <returns></returns>
     public ulong AddSync(string path, eResType type)
     {
-        if (m_FrontLoadThread == null || path.Length == 0) return 0;
+        if (m_FrontLoadThread == null || string.IsNullOrEmpty(path)) return 0;
 
         ulong id = ShareGUID();
         sResLoadChunk info = new sResLoadChunk(path, type, null);
@@ -100,7 +100,7 @@ public class ResourceManager : Singleton<ResourceManager>
     /// <returns></returns>
     public ulong AddAsync(string path, eResType type, System.Action<sResLoadResult> callback)
     {
-        if (m_BackLoadThread == null) return 0;
+        if (m_BackLoadThread == null || string.IsNullOrEmpty(path)) return 0;
 
         //判断是否已经加载过
         Object res = ResourceLoaderManager.Instance.GetResource(path);
