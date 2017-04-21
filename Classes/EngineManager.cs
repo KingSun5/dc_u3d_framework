@@ -59,12 +59,12 @@ public class EngineManager : Singleton<EngineManager>
         AssetBundleManager.Instance.Tick(elapse, game_frame);
 	}
 
-    public void ProcessGC()
+    public void ProcessGC(bool release)
     {
         SpritePools.Clear();
         GameobjectPools.Clear();
         SoundManager.Instance.Clear();
-        ResourceManager.Instance.ProcessGC();
+        ResourceManager.Instance.ProcessGC(release);
     }
     /// <summary>
     /// 设置最大分辨率

@@ -34,6 +34,7 @@ public class ResourceLoadAsyncThread : ResourceLoadThread
                 sResLoadChunk info = m_LoadQueue[0];
                 if(m_CurLoadResPath == info.Path)
                 {
+                    Log.Debug("ResourceLoadAsyncThread load complete res:" + info.Path);
                     ResourceLoaderManager.Instance.AddResource(info.Path, m_LoadRequest.asset);
                     info.Stage = eResChunkStage.LOADED;
                     if (info.Callback != null) info.Callback(new sResLoadResult(true, info.Path));

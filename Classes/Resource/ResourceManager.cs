@@ -9,6 +9,7 @@ using System.Collections;
 public class ResourceManager : Singleton<ResourceManager> 
 {
     private static ulong m_ShareGUID = 0;
+    private bool m_EnableAutoGC = false;
     private ResourceLoadThread m_FrontLoadThread;   //同步加载线程
     private ResourceLoadThread m_BackLoadThread;    //异步加载线程
 
@@ -47,7 +48,10 @@ public class ResourceManager : Singleton<ResourceManager>
         {
             m_BackLoadThread.Update();
         }
-        HandleGC();
+        if (m_EnableAutoGC)
+        {
+            HandleGC();
+        }
     }
 
     /*～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～同步加载～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～*/
@@ -143,20 +147,20 @@ public class ResourceManager : Singleton<ResourceManager>
             uint total_mem = (uint)(Profiler.GetTotalAllocatedMemory() * MathUtils.BYTE_TO_M);
             if (total_mem > 150)
             {
-                ProcessGC();
+                ProcessGC(true);
             }
             tmpLastProcessGCTime = Time.realtimeSinceStartup + 3 * 60;
         }
     }
 
-    public void ProcessGC()
+    public void ProcessGC(bool release)
     {
-        uint begin_total_mem = (uint)(Profiler.GetTotalAllocatedMemory() * MathUtils.BYTE_TO_K);
-        Log.Debug("[mem] begin ProcessGC:" + begin_total_mem);
+        //uint begin_total_mem = (uint)(Profiler.GetTotalAllocatedMemory() * MathUtils.BYTE_TO_K);
+        //Log.Debug("[mem] begin ProcessGC:" + begin_total_mem);
         ResourceLoaderManager.Instance.Clear();
-        ResourceLoaderManager.Instance.UnloadUnusedAssets();
-        uint end_total_mem = (uint)(Profiler.GetTotalAllocatedMemory() * MathUtils.BYTE_TO_K);
-        Log.Debug("[mem] end ProcessGC:" + end_total_mem + " free mem:" + (begin_total_mem - end_total_mem));
+        if (release) ResourceLoaderManager.Instance.UnloadUnusedAssets();
+        //uint end_total_mem = (uint)(Profiler.GetTotalAllocatedMemory() * MathUtils.BYTE_TO_K);
+        //Log.Debug("[mem] end ProcessGC:" + end_total_mem + " free mem:" + (begin_total_mem - end_total_mem));
     }
 
     private ulong ShareGUID()
