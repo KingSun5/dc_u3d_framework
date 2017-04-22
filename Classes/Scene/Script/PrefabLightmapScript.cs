@@ -54,8 +54,8 @@ public class PrefabLightmapScript : MonoBehaviour
         for (int i = 0; i < lightmapData.Length; i++)
         {
             lightmapData[i] = new LightmapData();
-            lightmapData[i].lightmapFar = i < lightmapFar.Count ? lightmapFar[i] : null;
-            lightmapData[i].lightmapNear = i < lightmapNear.Count ? lightmapNear[i] : null;
+            lightmapData[i].lightmapColor = i < lightmapFar.Count ? lightmapFar[i] : null;
+            lightmapData[i].lightmapDir = i < lightmapNear.Count ? lightmapNear[i] : null;
         }
         LightmapSettings.lightmapsMode = lightmapsMode;
         LightmapSettings.lightmaps = lightmapData;
@@ -105,14 +105,14 @@ public class PrefabLightmapScript : MonoBehaviour
         for (int i = 0; i < LightmapSettings.lightmaps.Length; i++)
         {
             LightmapData data = LightmapSettings.lightmaps[i];
-            if (data.lightmapNear != null)
+            if (data.lightmapDir != null)
             {
-                lightmapNear.Add(data.lightmapNear);
+                lightmapNear.Add(data.lightmapDir);
             }
 
-            if (data.lightmapFar != null)
+            if (data.lightmapColor != null)
             {
-                lightmapFar.Add(data.lightmapFar);
+                lightmapFar.Add(data.lightmapColor);
             }
         }
         m_RendererInfo = new List<RendererInfo>();

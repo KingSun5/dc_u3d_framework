@@ -144,7 +144,7 @@ public class ResourceManager : Singleton<ResourceManager>
     {
         if(tmpLastProcessGCTime < Time.realtimeSinceStartup)
         {
-            uint total_mem = (uint)(Profiler.GetTotalAllocatedMemory() * MathUtils.BYTE_TO_M);
+            uint total_mem = (uint)(UnityEngine.Profiling.Profiler.GetTotalAllocatedMemory() * MathUtils.BYTE_TO_M);
             if (total_mem > 150)
             {
                 ProcessGC(true);

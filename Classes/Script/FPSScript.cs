@@ -48,7 +48,7 @@ public class FPSScript : MonoBehaviour
 		else if (m_FPS > 15)m_TextStyle.normal.textColor = Color.yellow;
 		else m_TextStyle.normal.textColor = Color.red;
 
-		string str = System.String.Format("FPS: {0:F2},Mem: {1:F2}", m_FPS,Profiler.GetTotalAllocatedMemory()/(1024f*1024f));
+		string str = System.String.Format("FPS: {0:F2},Mem: {1:F2}", m_FPS,UnityEngine.Profiling.Profiler.GetTotalAllocatedMemory()/(1024f*1024f));
 		GUI.Label(m_RectText, str, m_TextStyle);
 	}
 
