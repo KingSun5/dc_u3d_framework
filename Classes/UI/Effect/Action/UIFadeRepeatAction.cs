@@ -12,7 +12,17 @@ public class UIFadeRepeatAction : MonoBehaviour
     public float m_Duration = 1;
     public bool m_Repeat = true;
 
-    private bool m_Active = true;
+    private bool m_Active = false;
+
+    void OnEnable()
+    {
+        Start();
+    }
+
+    void OnDisable()
+    {
+        Stop(1);
+    }
 
     void OnFadeOut()
     {
