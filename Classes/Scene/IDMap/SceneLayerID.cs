@@ -12,8 +12,17 @@ public class SceneLayerID
     public const string Layer_UI            = "UI";
     public const string Layer_Scene         = "Scene";
     public const string Layer_Effect        = "Effect";
-    public const string Layer_Ball          = "Ball";
-    public const string Layer_ColorBall     = "ColorBall";
-    public const string Layer_TriggleBall   = "TriggleBall";
-    public const string Layer_MainBall      = "MainBall";
+    public const string Layer_Role          = "Role";
+    public const string Layer_Bullet        = "Bullet";
+    public const string Layer_Item          = "Item";
+    public const string Layer_Collider      = "Collider";
+
+    static public int GetSceneMask()
+    {
+        return (1 << LayerMask.NameToLayer(SceneLayerID.Layer_Scene));
+    }
+    static public int GetSceneRoleMask()
+    {
+        return (1 << LayerMask.NameToLayer(SceneLayerID.Layer_Scene) | 1 << LayerMask.NameToLayer(SceneLayerID.Layer_Role));
+    }
 }

@@ -57,11 +57,11 @@ public class FunctionUtils
 	/// <param name="str">源字符串</param>
 	/// <param name="split">分割符</param>
 	public static List<T> Split<T>(string str, char split)
-	{
-		string[] strArr = str.Split(split);
-		List<T> tmpList = new List<T>();
+    {
+        List<T> tmpList = new List<T>();
         if (str.Length == 0) return tmpList;
-		
+
+		string[] strArr = str.Split(split);
 		if (typeof(T) == typeof(int))
 		{
 			for (int i = 0; i < strArr.Length; i++)
