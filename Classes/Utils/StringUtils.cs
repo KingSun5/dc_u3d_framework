@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System.Text;
 using System;
 
@@ -21,8 +22,69 @@ public class StringUtils
 		n2 = s.IndexOf(s2, n1);             //结束位置  
 		if(n2 < 0)return "";
 		return s.Substring(n1, n2 - n1);   	//取搜索的条数，用结束的位置-开始的位置,并返回  
-	}  
+	}
 
+
+    /// <summary>
+    /// 分割字符串
+    /// </summary>
+    /// <param name="str">源字符串</param>
+    /// <param name="split">分割符</param>
+    public static List<T> Split<T>(string str, char split)
+    {
+        List<T> tmpList = new List<T>();
+        if (str.Length == 0) return tmpList;
+
+        string[] strArr = str.Split(split);
+        if (typeof(T) == typeof(int))
+        {
+            for (int i = 0; i < strArr.Length; i++)
+            {
+                tmpList.Add((T)(object)int.Parse(strArr[i]));
+            }
+        }
+        else if (typeof(T) == typeof(uint))
+        {
+            for (int i = 0; i < strArr.Length; i++)
+            {
+                tmpList.Add((T)(object)uint.Parse(strArr[i]));
+            }
+        }
+        else if (typeof(T) == typeof(float))
+        {
+            for (int i = 0; i < strArr.Length; i++)
+            {
+                tmpList.Add((T)(object)float.Parse(strArr[i]));
+            }
+        }
+        else if (typeof(T) == typeof(string))
+        {
+            for (int i = 0; i < strArr.Length; i++)
+            {
+                tmpList.Add((T)(object)strArr[i]);
+            }
+        }
+        else if (typeof(T) == typeof(byte))
+        {
+            for (int i = 0; i < strArr.Length; i++)
+            {
+                tmpList.Add((T)(object)byte.Parse(strArr[i]));
+            }
+        }
+        else if (typeof(T) == typeof(short))
+        {
+            for (int i = 0; i < strArr.Length; i++)
+            {
+                tmpList.Add((T)(object)short.Parse(strArr[i]));
+            }
+        }
+        else
+        {
+            Debug.LogError("Split : type error");
+        }
+
+        return tmpList;
+    }
 	//～～～～～～～～～～～～～～～～～～～～～～～time~～～～～～～～～～～～～～～～～～～～～～～～//
 	/**
 	 * 分钟与秒格式(如-> 40:15)
