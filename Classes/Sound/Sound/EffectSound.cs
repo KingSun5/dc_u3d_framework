@@ -18,12 +18,7 @@ public class EffectSound : SoundBase
     }
     public override void Release()
     {
-        if (m_SoundSource != null)
-        {
-            m_SoundSource.Stop();
-            AudioPools.instance.DespawnAudio(m_SoundSource.transform);
-            m_SoundSource = null;
-        }
+        base.Release();
     }
     public override void Setup(string fileName, Vector3 pos, Transform parent, float min_distance, float max_distance, int count = 1)
     {
@@ -105,7 +100,6 @@ public class EffectSound : SoundBase
     private void OnComponentDestroy()
     {
         m_Active = false;
-
         ObjectFactoryManager.Instance.RecoverObject(this);
     }
 }

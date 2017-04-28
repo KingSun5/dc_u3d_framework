@@ -37,6 +37,12 @@ public class SoundBase : IPoolsObject
     }
     public virtual void Release()
     {
+        if (m_SoundSource != null)
+        {
+            m_SoundSource.Stop();
+            AudioPools.instance.DespawnAudio(m_SoundSource.transform);
+            m_SoundSource = null;
+        }
     }
     public virtual void Setup(string fileName, Vector3 pos, Transform parent, float min_distance, float max_distance, int count = 1)
     {
