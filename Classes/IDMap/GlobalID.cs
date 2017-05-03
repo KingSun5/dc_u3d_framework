@@ -17,6 +17,7 @@ public class GlobalID
     public static bool IsLogLoad = false;           //是否显示加载日志
     public static bool IsLogBuild = false;          //是否显示对象构建日志
 
+    public static bool ShowFPS = false;
     public static int FPS = 24;                     //fps
     
     private static string m_GameName = "";             //游戏名
