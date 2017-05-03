@@ -33,7 +33,7 @@ public class StringUtils
     public static List<T> Split<T>(string str, char split)
     {
         List<T> tmpList = new List<T>();
-        if (str.Length == 0) return tmpList;
+        if (string.IsNullOrEmpty(str)) return tmpList;
 
         string[] strArr = str.Split(split);
         if (typeof(T) == typeof(int))

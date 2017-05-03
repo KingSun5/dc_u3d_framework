@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 
 /// <summary>
-/// UI按钮
+/// UI状态按钮
 /// @author hannibal
 /// @time 2017-2-25
 /// </summary>
