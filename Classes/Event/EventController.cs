@@ -91,10 +91,10 @@ public class EventController
     /// </summary>
     /// <param name="eventType"></param>
     /// <param name="handler"></param>
-    public void AddEventListener<T>(string eventType, Action<T> handler)
+    public void AddEventListener(string eventType, Action<GameEvent> handler)
     {
         OnListenerAdding(eventType, handler);
-        m_theRouter[eventType] = (Action<T>)m_theRouter[eventType] + handler;
+        m_theRouter[eventType] = (Action<GameEvent>)m_theRouter[eventType] + handler;
     }
 
     /// <summary>
@@ -102,11 +102,11 @@ public class EventController
     /// </summary>
     /// <param name="eventType"></param>
     /// <param name="handler"></param>
-    public void RemoveEventListener<T>(string eventType, Action<T> handler)
+    public void RemoveEventListener(string eventType, Action<GameEvent> handler)
     {
         if (OnListenerRemoving(eventType, handler))
         {
-            m_theRouter[eventType] = (Action<T>)m_theRouter[eventType] - handler;
+            m_theRouter[eventType] = (Action<GameEvent>)m_theRouter[eventType] - handler;
             OnListenerRemoved(eventType);
         }
     }
