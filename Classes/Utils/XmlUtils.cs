@@ -28,7 +28,7 @@ public class XmlNodeElement
     public void Reset() { elementValue = ""; }
     public void Read(string str) { elementValue = str; }
 
-    public string ToString() { return elementValue; }
+    public string ToString() { if (elementValue == "_")return ""; return elementValue; }
     public bool ToBool() { return ToInt64() != 0 ? true : false; }
     public byte ToByte() { return (byte)ToInt64(); }
     public sbyte ToSByte() { return (sbyte)ToInt64(); }
