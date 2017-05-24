@@ -22,7 +22,6 @@ public class EngineManager : Singleton<EngineManager>
 		SoundManager.Instance.Setup ();
 		InputSimulateManager.Instance.Setup();
 		InputSimulateManager.Instance.Enable = false;
-        GameConnect.Instance.SetUp();
         HttpDownloadManager.Instance.Setup();
         TransformerManager.Instance.Setup();
         AssetBundleManager.Instance.Setup();
@@ -40,7 +39,6 @@ public class EngineManager : Singleton<EngineManager>
 		SoundManager.Instance.Destroy ();
 		InputSimulateManager.Instance.Destroy();
         HttpDownloadManager.Instance.Destroy();
-        GameConnect.Instance.Destroy();
         TransformerManager.Instance.Destroy();
         AssetBundleManager.Instance.Destroy();
 	}
@@ -54,7 +52,6 @@ public class EngineManager : Singleton<EngineManager>
 		MultyBuildManager.Instance.Tick(elapse, game_frame);
 		DropSimulationManager.Instance.Tick(elapse, game_frame);
 		InputSimulateManager.Instance.Tick(elapse, game_frame);
-        GameConnect.Instance.Tick(elapse, game_frame);
         TransformerManager.Instance.Tick(elapse, game_frame);
         AssetBundleManager.Instance.Tick(elapse, game_frame);
 	}

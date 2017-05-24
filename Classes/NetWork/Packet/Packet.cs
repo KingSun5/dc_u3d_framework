@@ -1,14 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
 using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System;
+using System.Text;
+using UnityEngine;
 
+/// <summary>
+/// 协议包
+/// @author hannibal
+/// @time 2017-5-23
+/// </summary>
+public struct PacketBase
+{
+    public ushort header;
+    public RecvDataPacket data;
+}
 
-public  class DataPacket
+public class DataPacket
 {
     static public byte[] gTempReadBuffer = new byte[4096];
     public byte[] m_PackData = null;
@@ -65,6 +73,7 @@ public class SendDataPacket : DataPacket
         m_Length = 0;
         m_Position = 0;
     }
+    //by hannibal:数据量比较的时候，执行效率比较低，尽量少用
     public void Write<T>(T val)
     {
         int nSize = Marshal.SizeOf(((System.Object)val).GetType());
@@ -84,10 +93,14 @@ public class SendDataPacket : DataPacket
             m_Length = m_Position;
     }
 
-    public void WriteBuffer(byte[] array, int index, int count)
+    public void WriteBuffer(byte[] array, int index, int count )
     {
+        if (count == 0) count = array.Length;
         Reverse(m_Position + count);
-        Array.Copy(array, index, m_PackData, m_Position, count);
+        int length = count;
+        if (index + length > array.Length)
+            length = array.Length - index;
+        Array.Copy(array, index, m_PackData, m_Position, length);
         m_Position += count;
         if (m_Position > m_Length)
             m_Length = m_Position;
@@ -117,46 +130,50 @@ public class SendDataPacket : DataPacket
         }
         else
         {
-            byte[] bytes = Encoding.Default.GetBytes(val);
+            byte[] bytes = Encoding.UTF8.GetBytes(val);
             int length = (count - 1) > bytes.Length ? bytes.Length : (count - 1);
             Array.Copy(bytes, 0, m_PackData, m_Position, length);
             m_PackData[m_Position + count] = System.Convert.ToByte('\0');
         }
-        m_Position += count;
-        if (m_Position > m_Length)
-            m_Length = m_Position;
+        Offset(count);
     }
     public void WriteString(string val)
     {
         if (val == null)
         {
-            Write<ushort>(0);
-            Write<byte>(((byte)'\0'));
+            WriteUShort(0);
+            WriteByte(((byte)'\0'));
         }
         else
         {
-            byte[] bytes = Encoding.Default.GetBytes(val);
+            byte[] bytes = Encoding.UTF8.GetBytes(val);
             ushort length = (ushort)bytes.Length;
-            Write<ushort>(length);
+            WriteUShort(length);
             Reverse(m_Position + length);
             Array.Copy(bytes, 0, m_PackData, m_Position, length);
             m_Position += length;
-            Write<byte>(((byte)'\0'));
+            WriteByte(((byte)'\0'));
         }
     }
 
-    public void WriteFloat(float val) {  Write<float>(val); }
-    public void WriteDecimal(decimal val) {  Write<decimal>(val); }
-    public void WriteDouble(double val) {  Write<double>(val); }
-    public void WriteByte(byte val) {  Write<byte>(val); }
-    public void WriteSByte(sbyte val) {  Write<sbyte>(val); }
-    public void WriteChar(char val) {  Write<char>(val); }
-    public void WriteShort(short val) {  Write<short>(val); }
-    public void WriteUShort(ushort val) {  Write<ushort>(val); }
-    public void WriteInt(int val) {  Write<int>(val); }
-    public void WriteUInt(uint val) {  Write<uint>(val); }
-    public void WriteLong(long val) {  Write<long>(val); }
-    public void WriteULong(ulong val) {  Write<ulong>(val); }
+    public void Offset(int num)
+    {
+        m_Position += num;
+        if (m_Position > m_Length)
+            m_Length = m_Position;
+    }
+
+    public void WriteFloat(float val) { WriteBuffer(System.BitConverter.GetBytes(val), 0,4); }
+    public void WriteDouble(double val) { WriteBuffer(System.BitConverter.GetBytes(val), 0,8); }
+    public void WriteByte(byte val) { WriteBuffer(System.BitConverter.GetBytes(val), 0, 1); }
+    public void WriteSByte(sbyte val) { WriteBuffer(System.BitConverter.GetBytes(val), 0,1); }
+    public void WriteChar(char val) { WriteBuffer(System.BitConverter.GetBytes(val), 0, 1); }
+    public void WriteShort(short val) { WriteBuffer(System.BitConverter.GetBytes(val), 0,2); }
+    public void WriteUShort(ushort val) { WriteBuffer(System.BitConverter.GetBytes(val), 0,2); }
+    public void WriteInt(int val) { WriteBuffer(System.BitConverter.GetBytes(val), 0,4); }
+    public void WriteUInt(uint val) { WriteBuffer(System.BitConverter.GetBytes(val), 0,4); }
+    public void WriteLong(long val) { WriteBuffer(System.BitConverter.GetBytes(val), 0,8); }
+    public void WriteULong(ulong val) { WriteBuffer(System.BitConverter.GetBytes(val), 0,8); }
 };
 
 
@@ -175,6 +192,32 @@ public class RecvDataPacket : DataPacket
         if (m_Position + count > m_Length)
             return false;
         return true;
+    }
+
+    public T Read<T>(int size )
+    {
+        T val = default(T);
+        int nSize = size;
+        if (nSize == 0)
+            nSize = Marshal.SizeOf(((System.Object)val).GetType());
+        
+        if (!CheckSize(nSize))
+        {
+            m_Position = m_Length;
+            return val;
+        }
+
+        Array.Copy(m_PackData, m_Position, gTempReadBuffer, 0, nSize);
+        try
+        {
+            val = ByteUtils.BytesToStruct<T>(gTempReadBuffer, ((System.Object)val).GetType());
+        }
+        catch (Exception ex)
+        {
+            Log.Exception(ex.Message);
+        }
+        m_Position += nSize;
+        return val;
     }
 
     public T Read<T>()
@@ -234,32 +277,43 @@ public class RecvDataPacket : DataPacket
         }
         byte[] tempBuffer = new byte[count];
         Array.Copy(m_PackData, m_Position, tempBuffer,0,count);
-        val = Encoding.Default.GetString(tempBuffer);
+        val = Encoding.UTF8.GetString(tempBuffer);
         m_Position += count;
         return val.ToCharArray();
+    }
+
+    public void Offset(int num)
+    {
+        m_Position += num;
     }
 
 
     public string ReadString()
     {
         ushort length = 0;
-        length = Read<ushort>();
-        string val = Encoding.Default.GetString(m_PackData,m_Position,length);
+        length = ReadUShort();
+        string val = String.Empty;
+        do
+        {
+            if (length <= 0 || !CheckSize(length + 1))
+                break;
+            val = Encoding.UTF8.GetString(m_PackData, m_Position, length);
+        } while (false);
+
         m_Position += length + 1; //跳过末尾/0
         return val;
     }
 
-    public float ReadFloat() { return Read<float>();}
-    public decimal ReadDecimal() { return Read<decimal>();}
-    public double ReadDouble() { return Read<double>();}
-    public byte ReadByte() { return Read<byte>();}
-    public sbyte ReadSByte() { return Read<sbyte>();}
-    public char ReadChar() { return Read<char>();}
-    public short ReadShort() { return Read<short>();}
-    public ushort ReadUShort() { return Read<ushort>();}
-    public int ReadInt() { return Read<int>();}
-    public uint ReadUInt() { return Read<uint>();}
-    public long ReadLong() { return Read<long>();}
-    public ulong ReadULong() { return Read<ulong>();}
+    public float ReadFloat() { if (!CheckSize(4)) return 0.0f; float val = BitConverter.ToSingle(m_PackData, m_Position); Offset(4); return val; }
+    public double ReadDouble() { if (!CheckSize(8)) return 0; double val = BitConverter.ToDouble(m_PackData, m_Position); Offset(8); return val; }
+    public byte ReadByte() { if (!CheckSize(1)) return 0; byte val = m_PackData[m_Position]; Offset(1); return val; }
+    public sbyte ReadSByte() { if (!CheckSize(1)) return 0; sbyte val = (sbyte)m_PackData[m_Position]; Offset(1); return val; }
+    public char ReadChar() { if (!CheckSize(1)) return '0'; char val = (char)m_PackData[m_Position]; Offset(1); return val; }
+    public short ReadShort() { if (!CheckSize(2)) return 0; short val = BitConverter.ToInt16(m_PackData, m_Position); Offset(2); return val; }
+    public ushort ReadUShort() { if (!CheckSize(2)) return 0; ushort val = BitConverter.ToUInt16(m_PackData, m_Position); Offset(2); return val; }
+    public int ReadInt() { if (!CheckSize(4)) return 0; int val = BitConverter.ToInt32(m_PackData, m_Position); Offset(4); return val; }
+    public uint ReadUInt() { if (!CheckSize(4)) return 0; uint val = BitConverter.ToUInt32(m_PackData, m_Position); Offset(4); return val; }
+    public long ReadLong() { if (!CheckSize(8)) return 0; long val = BitConverter.ToInt64(m_PackData, m_Position); Offset(8); return val; }
+    public ulong ReadULong() { if (!CheckSize(8)) return 0; ulong val = BitConverter.ToUInt64(m_PackData, m_Position); Offset(8); return val; }
 
 };

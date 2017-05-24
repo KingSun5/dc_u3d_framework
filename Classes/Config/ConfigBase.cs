@@ -11,7 +11,7 @@ using System;
 public abstract class ConfigBase
 {
     protected string m_ConfigPathFileName;
-
+    
     public void SetConfigPath(string pathFile)
     {
         m_ConfigPathFileName = pathFile;
