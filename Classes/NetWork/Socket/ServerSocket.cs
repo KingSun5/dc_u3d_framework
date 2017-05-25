@@ -15,6 +15,7 @@ public class ServerSocket : SocketBase
 {
     private uint m_ShareConnID = 0;
     private List<NetChannel> m_NetChannels = new List<NetChannel>();
+    private Dictionary<uint, NetChannel> m_DicChannels = new Dictionary<uint, NetChannel>();
     
     public SocketBase.OnAcceptFunction OnAccept;
 
@@ -32,6 +33,7 @@ public class ServerSocket : SocketBase
             obj.Destroy();
         }
         m_NetChannels.Clear();
+        m_DicChannels.Clear();
 
         base.Destroy();
     }
@@ -79,6 +81,16 @@ public class ServerSocket : SocketBase
         return true;
     }
 
+    public override int Send(uint conn_id, ByteArray by)
+    {
+        NetChannel channel;
+        if(m_DicChannels.TryGetValue(conn_id, out channel))
+        {
+            return channel.Send(by);
+        }
+        return 0;
+    }
+
     /// <summary>  
     /// 监听客户端连接  
     /// </summary>  
@@ -91,12 +103,15 @@ public class ServerSocket : SocketBase
         NetChannel channel = new NetChannel(this, ++m_ShareConnID);
         channel.Setup(client_socket);
         m_NetChannels.Add(channel);
+        m_DicChannels.Add(channel.ConnID, channel);
         if (OnAccept != null) OnAccept(channel.ConnID);
 
         //等待新的客户端连接
         server_socket.BeginAccept(new AsyncCallback(OnAcceptClientConnect), server_socket);
     }
-
+    /// <summary>
+    /// 网络错误
+    /// </summary>
     public override void OnNetError(uint conn_id)
     {
         for (int i = 0; i < m_NetChannels.Count; ++i)
@@ -107,5 +122,6 @@ public class ServerSocket : SocketBase
                 break;
             }
         }
+        m_DicChannels.Remove(conn_id);
     }
 }

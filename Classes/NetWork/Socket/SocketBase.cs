@@ -15,7 +15,7 @@ public class SocketBase
 {
     public delegate void OnAcceptFunction(uint conn_id);
     public delegate void OnConnectedFunction(uint conn_id);
-    public delegate void OnReceiveFunction(uint conn_id, PacketBase packet);
+    public delegate void OnReceiveFunction(uint conn_id, RecvPacket packet);
     public delegate void OnCloseFunction(uint conn_id);
 
     protected Socket m_Socket;
@@ -36,6 +36,11 @@ public class SocketBase
     public virtual void Update(float elapse, int game_frame)
     {
 
+    }
+
+    public virtual int Send(uint conn_id, ByteArray by)
+    {
+        return 0;
     }
 
     public virtual void Close()

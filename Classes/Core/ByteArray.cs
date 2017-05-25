@@ -19,15 +19,7 @@ public class ByteArray
     protected uint m_Head;
     protected uint m_Tail;
 
-    public ByteArray()
-    {
-        m_BufferLen = 0;
-        m_MaxBufferLen = 0;
-        m_Head = 0;
-        m_Tail = 0;
-    }
-
-    public void Init(uint BufferSize, uint MaxBufferSize)
+    public ByteArray(uint BufferSize, uint MaxBufferSize)
     {
 	    m_Head = 0;
 	    m_Tail = 0;
@@ -38,13 +30,6 @@ public class ByteArray
 	    m_Buffer = new byte[m_BufferLen];
     }
 
-    public void Initsize()
-    {
-	    m_Head = 0;
-	    m_Tail = 0;
-
-	    m_Buffer = new byte[m_BufferLen];
-    }
     public bool Resize(uint size)
     {
 	    size = (uint)Mathf.Max(size, (int)(m_BufferLen >> 1));
@@ -148,8 +133,14 @@ public class ByteArray
 
         return val;
     }
-    //返回0表示没有读到数据
-    public uint Read(ref byte[] buf, uint len)
+    /// <summary>
+    /// 读取数据
+    /// </summary>
+    /// <param name="buf">接收缓冲区</param>
+    /// <param name="len">读取长度</param>
+    /// <param name="index">存放缓冲区起始位置</param>
+    /// <returns></returns>
+    public uint Read(ref byte[] buf, uint len, uint index=0)
     {
 	    if (len == 0)
 		    return 0;
@@ -159,7 +150,7 @@ public class ByteArray
 
 	    if (m_Head < m_Tail)
         {
-            Array.Copy(m_Buffer, m_Head, buf, 0, len);
+            Array.Copy(m_Buffer, m_Head, buf, index, len);
 		    //memcpy(buf, &m_Buffer[m_Head], len);
 	    }
 	    else
@@ -167,13 +158,13 @@ public class ByteArray
 		    uint rightLen = m_BufferLen - m_Head;
 		    if (len <= rightLen)
             {
-                Array.Copy(m_Buffer, m_Head, buf, 0, len);
+                Array.Copy(m_Buffer, m_Head, buf, index, len);
 			    //memcpy(buf, &m_Buffer[m_Head], len);
 		    }
 		    else
             {
-                Array.Copy(m_Buffer, m_Head, buf, 0, rightLen);
-                Array.Copy(m_Buffer, 0, buf, rightLen, len - rightLen);
+                Array.Copy(m_Buffer, m_Head, buf, index, rightLen);
+                Array.Copy(m_Buffer, 0, buf, rightLen + index, len - rightLen);
 			    //memcpy(buf, &m_Buffer[m_Head], rightLen);
 			    //memcpy(&buf[rightLen], m_Buffer, len - rightLen);
 		    }

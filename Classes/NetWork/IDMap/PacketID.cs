@@ -9,4 +9,7 @@ public class PacketID
 
     public const uint PacketHeadSize = 4;
     public const uint PacketHeadLengthSize = 2;
+
+    public const uint SendPacketMaxSize = 4096;
+    public const uint RecvPacketMaxSize = 4096;
 }

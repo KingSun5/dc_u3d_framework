@@ -17,20 +17,20 @@ public class NetChannel
     private uint m_ConnID;
     private Socket m_Socket;
     private SocketBase m_NetSocket;
-    private byte[] m_RecvBuffer = new byte[0xFFFF];
-    private ByteArray m_ByBuffer = new ByteArray();
+    private byte[] m_DataBuffer = new byte[0xFFFF];
+    private ByteArray m_ByBuffer;
 
     public NetChannel(SocketBase socket, uint conn_id)
     {
         m_NetSocket = socket;
         m_ConnID = conn_id;
+        m_ByBuffer = new ByteArray(PacketID.InitByteArraySize, PacketID.MaxByteArraySize);
     }
 
     public void Setup(Socket socket)
     {
         m_Socket = socket;
         m_Active = true;
-        m_ByBuffer.Init(PacketID.InitByteArraySize, PacketID.MaxByteArraySize);
     }
 
     public void Destroy()
@@ -46,10 +46,28 @@ public class NetChannel
     public void Update(float elapse, int game_frame)
     {
         if (!m_Active || m_Socket == null) return;
-
+        if(!IsSocketConnected(m_Socket))
+        {
+            HandleDisconnect();
+            return;
+        }
         HandleReceive();
     }
-
+    /// <summary>
+    /// 发射数据
+    /// </summary>
+    public int Send(ByteArray by)
+    {
+        uint data_len = by.Available();
+        byte[] b = System.BitConverter.GetBytes(data_len);
+        System.Array.Copy(b, 0, m_DataBuffer, 0, PacketID.PacketHeadLengthSize);
+        by.Read(ref m_DataBuffer, data_len, PacketID.PacketHeadLengthSize);
+        int n = m_Socket.Send(m_DataBuffer, 0, (int)(data_len + PacketID.PacketHeadLengthSize), SocketFlags.None);
+        return n;
+    }
+    /// <summary>
+    /// 接收数据
+    /// </summary>
     private void HandleReceive()
     {
         if (m_Socket == null || m_Socket.Available == 0) return;
@@ -57,21 +75,23 @@ public class NetChannel
         int len = 0;
         try
         {
-            len = m_Socket.Receive(m_RecvBuffer, SocketFlags.None);
+            len = m_Socket.Receive(m_DataBuffer, SocketFlags.None);
         }
         catch (SocketException e)
         {
             Log.Error("HandleReceive SocketException:" + e.Message);
-            m_NetSocket.OnNetError(m_ConnID);
-            if (m_NetSocket != null && m_NetSocket.OnClose != null)
-            {
-                m_NetSocket.OnClose(m_ConnID);
-            }
+            HandleDisconnect();
+            return;
+        }
+        catch(Exception e)
+        {
+            Log.Error(e.Message);
+            HandleDisconnect();
             return;
         }
         if (len == 0) return;
 
-        m_ByBuffer.WriteBytes(m_RecvBuffer, (uint)len);
+        m_ByBuffer.WriteBytes(m_DataBuffer, (uint)len);
 
         ParsePacket();
     }
@@ -89,12 +109,12 @@ public class NetChannel
                     //读取包数据
                     m_ByBuffer.Skip(PacketID.PacketHeadLengthSize);
                     ushort header = m_ByBuffer.ReadUShort();
-                    m_ByBuffer.Read(ref m_RecvBuffer, msg_length - (uint)sizeof(ushort));
+                    m_ByBuffer.Read(ref m_DataBuffer, msg_length - (uint)sizeof(ushort));
 
                     //构建数据包
-                    PacketBase packet = new PacketBase();
+                    RecvPacket packet = new RecvPacket();
                     packet.header = header;
-                    packet.data = new RecvDataPacket(m_RecvBuffer, 0, msg_length - sizeof(ushort));
+                    packet.data.Write(m_DataBuffer, (uint)(msg_length - sizeof(ushort)));
 
                     //派发数据
                     if (m_NetSocket != null && m_NetSocket.OnReceive != null)
@@ -108,6 +128,23 @@ public class NetChannel
             else
                 break;
         }
+    }
+
+    private void HandleDisconnect()
+    {
+        m_NetSocket.OnNetError(m_ConnID);
+        if (m_NetSocket != null && m_NetSocket.OnClose != null)
+        {
+            m_NetSocket.OnClose(m_ConnID);
+        }
+    }
+
+    private float tmpLastPollTime = 0;
+    private bool IsSocketConnected(Socket s)
+    {
+        if (Time.realtimeSinceStartup - tmpLastPollTime < 0) return true;
+        tmpLastPollTime = Time.realtimeSinceStartup + 1;
+        return !((s.Poll(1000, SelectMode.SelectRead) && (s.Available == 0)) || !s.Connected);
     }
 
     public uint ConnID
