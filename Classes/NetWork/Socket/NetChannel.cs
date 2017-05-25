@@ -62,8 +62,31 @@ public class NetChannel
         byte[] b = System.BitConverter.GetBytes(data_len);
         System.Array.Copy(b, 0, m_DataBuffer, 0, PacketID.PacketHeadLengthSize);
         by.Read(ref m_DataBuffer, data_len, PacketID.PacketHeadLengthSize);
-        int n = m_Socket.Send(m_DataBuffer, 0, (int)(data_len + PacketID.PacketHeadLengthSize), SocketFlags.None);
-        return n;
+        int n = 0;
+        int total_size = (int)(data_len + PacketID.PacketHeadLengthSize);
+        int send_size = total_size;
+        while (send_size > 0)
+        {//循环发射剩余内容
+            try
+            {
+                n = m_Socket.Send(m_DataBuffer, total_size - send_size, send_size, SocketFlags.None);
+                send_size = send_size - n;
+            }
+            catch (SocketException e)
+            {
+                Log.Error("Send SocketException:" + e.Message);
+                HandleDisconnect();
+                break;
+            }
+            catch (Exception e)
+            {
+                Log.Error(e.Message);
+                HandleDisconnect();
+                break;
+            }
+        }
+
+        return total_size - send_size;
     }
     /// <summary>
     /// 接收数据
@@ -89,13 +112,20 @@ public class NetChannel
             HandleDisconnect();
             return;
         }
-        if (len == 0) return;
+
+        if (len == 0)
+        {
+            Log.Error("HandleReceive Recv Error");
+            HandleDisconnect();
+            return;
+        }
 
         m_ByBuffer.WriteBytes(m_DataBuffer, (uint)len);
-
         ParsePacket();
     }
-
+    /// <summary>
+    /// 解析数据包
+    /// </summary>
     private void ParsePacket()
     {
         while (m_ByBuffer.Available() >= PacketID.PacketHeadSize)
