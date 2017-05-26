@@ -24,7 +24,7 @@ public class NetChannel
     {
         m_NetSocket = socket;
         m_ConnID = conn_id;
-        m_ByBuffer = new ByteArray(PacketID.InitByteArraySize, PacketID.MaxByteArraySize);
+        m_ByBuffer = new ByteArray(NetID.InitByteArraySize, NetID.MaxByteArraySize);
     }
 
     public void Setup(Socket socket)
@@ -60,10 +60,10 @@ public class NetChannel
     {
         uint data_len = by.Available();
         byte[] b = System.BitConverter.GetBytes(data_len);
-        System.Array.Copy(b, 0, m_DataBuffer, 0, PacketID.PacketHeadLengthSize);
-        by.Read(ref m_DataBuffer, data_len, PacketID.PacketHeadLengthSize);
+        System.Array.Copy(b, 0, m_DataBuffer, 0, NetID.PacketHeadLengthSize);
+        by.Read(ref m_DataBuffer, data_len, NetID.PacketHeadLengthSize);
         int n = 0;
-        int total_size = (int)(data_len + PacketID.PacketHeadLengthSize);
+        int total_size = (int)(data_len + NetID.PacketHeadLengthSize);
         int send_size = total_size;
         while (send_size > 0)
         {//循环发射剩余内容
@@ -128,16 +128,16 @@ public class NetChannel
     /// </summary>
     private void ParsePacket()
     {
-        while (m_ByBuffer.Available() >= PacketID.PacketHeadSize)
+        while (m_ByBuffer.Available() >= NetID.PacketHeadSize)
         {
-            byte[] by = new byte[PacketID.PacketHeadLengthSize];
-            if(m_ByBuffer.Peek(ref by, PacketID.PacketHeadLengthSize))
+            byte[] by = new byte[NetID.PacketHeadLengthSize];
+            if(m_ByBuffer.Peek(ref by, NetID.PacketHeadLengthSize))
             {
                 ushort msg_length = BitConverter.ToUInt16(by, 0);
-                if (m_ByBuffer.Available() >= msg_length + PacketID.PacketHeadLengthSize)
+                if (m_ByBuffer.Available() >= msg_length + NetID.PacketHeadLengthSize)
                 {
                     //读取包数据
-                    m_ByBuffer.Skip(PacketID.PacketHeadLengthSize);
+                    m_ByBuffer.Skip(NetID.PacketHeadLengthSize);
                     ushort header = m_ByBuffer.ReadUShort();
                     m_ByBuffer.Read(ref m_DataBuffer, msg_length - (uint)sizeof(ushort));
 

@@ -24,7 +24,7 @@ public class RecvPacket : PacketBase
 
     public RecvPacket()
     {
-        data = new ByteArray(1024, PacketID.RecvPacketMaxSize);
+        data = new ByteArray(1024, NetID.RecvPacketMaxSize);
     }
 }
 
@@ -34,6 +34,6 @@ public class SendPacket : PacketBase
 
     public SendPacket()
     {
-        data = new ByteArray(1024, PacketID.SendPacketMaxSize);
+        data = new ByteArray(1024, NetID.SendPacketMaxSize);
     }
 }

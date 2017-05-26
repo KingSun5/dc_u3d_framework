@@ -69,6 +69,7 @@ public class ClientSocket : SocketBase
             m_Socket.ReceiveBufferSize = 0xFFFF;
             m_Socket.SendTimeout = 0xbb8;
             m_Socket.ReceiveTimeout = 0xbb8;
+            m_Socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true);
 
             m_ClientChannel = new NetChannel(this, 0);
             m_ClientChannel.Setup(m_Socket);

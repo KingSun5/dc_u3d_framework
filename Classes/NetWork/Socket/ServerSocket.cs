@@ -73,6 +73,7 @@ public class ServerSocket : SocketBase
         m_Socket.ReceiveBufferSize = 0xFFFF;
         m_Socket.SendTimeout = 0xbb8;
         m_Socket.ReceiveTimeout = 0xbb8;
+        m_Socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true);
         Log.Info("server setup succeed");
 
         //开始接受连接，异步。
