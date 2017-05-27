@@ -57,6 +57,15 @@ public class ClientSocket : SocketBase
         m_Socket.BeginConnect(ipEndpoint, new AsyncCallback(OnConnect), m_Socket);
     }
 
+    public override int Send(uint conn_id, ByteArray by)
+    {
+        if (m_ClientChannel != null)
+        {
+            return m_ClientChannel.Send(by);
+        }
+        return 0;
+    }
+
     private void OnConnect(IAsyncResult ar)
     {
         try
