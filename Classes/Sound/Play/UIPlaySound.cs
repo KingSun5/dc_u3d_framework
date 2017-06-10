@@ -1,18 +1,21 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 /// <summary>
 /// UI播放声音
 /// @author hannibal
 /// @time 2016-11-11
 /// </summary>
-public class UIPlaySound : MonoBehaviour
+public class UIPlaySound : MonoBehaviour, IPointerClickHandler
 {
     public enum Trigger
     {
         OnClick,
+        Enable,
+        Disable,
     }
     public Trigger trigger = Trigger.OnClick;
-
     public AudioClip audioClip;
 
     void Awake()
@@ -21,25 +24,42 @@ public class UIPlaySound : MonoBehaviour
 
     void OnEnable()
     {
-        UIEventTriggerListener.Get(gameObject).onClick += OnClick;
+        switch (trigger)
+        {
+            case Trigger.Enable:
+                {
+                    PlaySound();
+                }
+                break;
+        }
     }
 
-    void OnDestroy()
+    void OnDisable()
     {
-        UIEventTriggerListener.Get(gameObject).onClick -= OnClick;
+        switch (trigger)
+        {
+            case Trigger.Disable:
+                {
+                    PlaySound();
+                }
+                break;
+        }
     }
 
-    void OnClick(GameObject go, Vector2 delta)
+    public void OnPointerClick(PointerEventData eventData)
     {
-        play();
+        if (trigger == Trigger.OnClick)
+        {
+            PlaySound();
+        }
     }
 
     public void Play()
     {
-        play();
+        PlaySound();
     }
 
-    void play()
+    void PlaySound()
     {
         if (audioClip != null)
         {
