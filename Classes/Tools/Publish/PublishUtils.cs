@@ -13,10 +13,11 @@ public class PublishUtils
     {
         switch (type)
         {
-            case ePublishPlatformType.Android: return "Android";
-            case ePublishPlatformType.iOS: return "IOS";
-            case ePublishPlatformType.Win: return "Win";
-            case ePublishPlatformType.WebGL: return "WebGL";
+            case ePublishPlatformType.Android:  return "Android";
+            case ePublishPlatformType.iOS:      return "IOS";
+            case ePublishPlatformType.Win64:    return "Win64";
+            case ePublishPlatformType.Win32:    return "Win32";
+            case ePublishPlatformType.WebGL:    return "WebGL";
         }
         return string.Empty;
     }
@@ -29,10 +30,11 @@ public class PublishUtils
         string target_dir = Application.dataPath.Substring(0, Application.dataPath.LastIndexOf('/'));
         switch (type)
         {
-            case ePublishPlatformType.Android: target_dir = target_dir + "/build/Android"; break;
-            case ePublishPlatformType.iOS: target_dir = target_dir + "/build/IOS"; break;
-            case ePublishPlatformType.Win: target_dir = target_dir + "/build/Win"; break;
-            case ePublishPlatformType.WebGL: target_dir = target_dir + "/build/WebGL"; break;
+            case ePublishPlatformType.Android:  target_dir = target_dir + "/build/Android"; break;
+            case ePublishPlatformType.iOS:      target_dir = target_dir + "/build/IOS"; break;
+            case ePublishPlatformType.Win64:    target_dir = target_dir + "/build/Win64"; break;
+            case ePublishPlatformType.Win32:    target_dir = target_dir + "/build/Win32"; break;
+            case ePublishPlatformType.WebGL:    target_dir = target_dir + "/build/WebGL"; break;
         }
         return target_dir;
     }
@@ -45,5 +47,12 @@ public class PublishUtils
         TextAsset textAsset = Resources.Load(PublishID.ResourcePlatformPath) as TextAsset;
         PublishPlatformCollection platform_coll = JsonUtility.FromJson<PublishPlatformCollection>(textAsset.text);
         return platform_coll;
+    }
+    /// <summary>
+    /// 写入配置表数据
+    /// </summary>
+    public static void WritePlatformConfig(PublishPlatformCollection data)
+    {
+        //TODO
     }
 }

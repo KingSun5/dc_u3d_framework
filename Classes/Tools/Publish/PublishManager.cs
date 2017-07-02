@@ -23,6 +23,14 @@ public class PublishManager : Singleton<PublishManager>
 
     }
     /// <summary>
+    /// 发布完成，清理工作
+    /// </summary>
+    public void OnPublishComplete()
+    {
+        PublishUtils.WritePlatformConfig(m_PlatformConfig);
+    }
+
+    /// <summary>
     /// 获取对应平台配置表数据
     /// </summary>
     /// <param name="type">平台类型</param>

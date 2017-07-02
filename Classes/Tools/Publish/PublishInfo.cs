@@ -16,7 +16,7 @@ public class PublishPlatformInfo
     public string   BundleVersion;      //版本号
     public int      BundleVersionCode;  //编译版本号
     public string   PackageName;        //包名
-    public string   CompileDefine;      //编译选项
+    public string   CompileDefine;      //预定义宏
 }
 
 [Serializable]
@@ -34,24 +34,43 @@ public class PublishPlatformCollection
 }
 
 /// <summary>
-/// 平台缓存
+/// 平台数据缓存
 /// </summary>
 public class PublishCachePlatformInfo
 {
-    public ScreenOrientation Orientation;//横屏竖屏
+    public ScreenOrientation Orientation;   //横屏竖屏
     public RenderingPath RenderPath;
+    public eScriptingImplementation ScriptBackend;
+    public eApiCompatibilityLevel ApiLevel;
+    public eTargetDevice TargetDevice;      //目标设备
+    public eInstallLocation InstallLocation;//安装目录
+    public eStrippingLevel StrippingLevel;  //代码剥离
     public bool EnableUnitySplash = false;  //闪屏
-    public bool AutoGraphicsAPI = false;  //图像引擎
+    public bool AutoGraphicsAPI = false;    //图像引擎
     public UnityEngine.Rendering.GraphicsDeviceType GraphicsDevice;
     public bool StaticBatch = true;
     public bool DynamicBatch = true;
     public bool GUPSkin = false;
-    public eScriptingImplementation ScriptBackend;
+    public bool MultiThreadRender = true;   //多线程渲染
 
-    public string KeyStorePath;//签名相关
+    //安卓
+    public eAndroidSdkVersions MinAndroidSdkVersion;//最小sdk版本
+    public bool SDCardPermission = true;    //SD卡
+
+    public string KeyStorePath;             //签名
     public string KetStorePass;
     public string KeyAliasName;
     public string KeyAliasPass;
+
+    //ios
+    public eIOSSdkVerions IOSSdkVerions;    //是否真机运行
+    public string OSVersionString = "6.0";  //最小目标版本
+    public eIOSScriptCallOptimizationLevel IOSOptLevel;//脚本优化
+
+    //pc
+    public bool DefaultFullScreen = false;  //是否默认全屏
+    public int DefaultScreenWidth = 800;
+    public int DefaultScreenHeight = 600;
 }
 
 public class PublishCachePlatformSet
@@ -60,7 +79,7 @@ public class PublishCachePlatformSet
 }
 
 /// <summary>
-/// 渠道缓存
+/// 渠道数据缓存
 /// </summary>
 public class PublishCacheChannelInfo
 {
