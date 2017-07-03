@@ -9,7 +9,7 @@ using UnityEngine;
 /// </summary>
 public class PublishManager : Singleton<PublishManager>
 {
-    private PublishPlatformCollection m_PlatformConfig;
+    private PublishPlatformCollection m_PlatformConfig = null;
     private PublishCachePlatformSet m_CachePlatformInfo = new PublishCachePlatformSet();
     private PublishCacheChannelSet m_CacheChannelInfo = new PublishCacheChannelSet();
 

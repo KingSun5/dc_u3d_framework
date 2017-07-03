@@ -82,7 +82,7 @@ public class BuildPackage
         }
 
         ///2.发布
-        BuildAll(publish_path, target, platform_config, cache_platform_info);
+        PublishAll(publish_path, target, platform_config, cache_platform_info);
 
         ///3.发布完成
         PublishManager.Instance.OnPublishComplete();
@@ -94,8 +94,9 @@ public class BuildPackage
     /// <param name="target_dir"></param>
     /// <param name="build_target"></param>
     /// <param name="build_options"></param>
-    private static void BuildAll(string publish_path, ePublishPlatformType target, PublishPlatformSet platform_config, PublishCachePlatformInfo cache_platform_info)
+    private static void PublishAll(string publish_path, ePublishPlatformType target, PublishPlatformSet platform_config, PublishCachePlatformInfo cache_platform_info)
     {
+        string publish_packet = "";
         PublishPlatformInfo platform_info;
         PublishCacheChannelInfo cache_channel_info;
         for (int i = 0; i < platform_config.list.Count; ++i)
@@ -105,10 +106,11 @@ public class BuildPackage
             if (cache_channel_info.IsBuild)
             {
                 BuildOne(publish_path, target, platform_config, platform_info, cache_channel_info, cache_platform_info);
+                publish_packet += platform_info.PackageName + "\n";
             }
         }
 
-        EditorUtility.DisplayDialog("提示", "发布完成", "确定");
+        EditorUtility.DisplayDialog("提示", "发布完成，以下是发布的版本:\n" + publish_packet, "确定");
     }
     /// <summary>
     /// 发布一个
@@ -126,8 +128,9 @@ public class BuildPackage
 
         //发布
         EditorUserBuildSettings.SwitchActiveBuildTarget(target_group, build_target);
-        BuildPipeline.BuildPlayer(scenes, GetBuildPath(publish_path, target, platform_info.PackageName), build_target, BuildOptions.None);
-        Log.Info("发布完成:" + platform_info.PackageName);
+        BuildPipeline.BuildPlayer(scenes, GetSavePath(publish_path, target, platform_info.PackageName), build_target, BuildOptions.None);
+
+        Log.Info("发布完成一个:" + platform_info.PackageName);
     }
     #endregion
 
@@ -275,6 +278,9 @@ public class BuildPackage
             case eStrippingLevel.StripByteCode: PlayerSettings.strippingLevel = StrippingLevel.StripByteCode; break;
             case eStrippingLevel.UseMicroMSCorlib: PlayerSettings.strippingLevel = StrippingLevel.UseMicroMSCorlib; break;
         }
+
+        //是否分包
+        PlayerSettings.Android.useAPKExpansionFiles = cache_plat_info.APKExpansionFiles;
         
         PlayerSettings.Android.bundleVersionCode = platform_info.BundleVersionCode;
         if (!string.IsNullOrEmpty(cache_plat_info.KeyStorePath))
@@ -347,11 +353,18 @@ public class BuildPackage
             //UnityEngine.Rendering.GraphicsDeviceType[] gdt = new UnityEngine.Rendering.GraphicsDeviceType[] { UnityEngine.Rendering.GraphicsDeviceType.we};
             //PlayerSettings.SetGraphicsAPIs(buildTarget, gdt);
         }
+
+        //是否可以改变窗口大小
+        PlayerSettings.displayResolutionDialog = cache_plat_info.DisplayResDialog ? ResolutionDialogSetting.Enabled : ResolutionDialogSetting.Disabled;
+        PlayerSettings.resizableWindow = cache_plat_info.ResizeableWindow;
     }
     #endregion
 
     #region 工具类
-    private static string GetBuildPath(string publish_path, ePublishPlatformType platform_type, string app_name)
+    /// <summary>
+    /// 保存路径
+    /// </summary>
+    private static string GetSavePath(string publish_path, ePublishPlatformType platform_type, string app_name)
     {
         string target_path = "";
         string target_dir = publish_path;

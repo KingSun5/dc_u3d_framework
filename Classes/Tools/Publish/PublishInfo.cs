@@ -17,6 +17,17 @@ public class PublishPlatformInfo
     public int      BundleVersionCode;  //编译版本号
     public string   PackageName;        //包名
     public string   CompileDefine;      //预定义宏
+
+
+    public void Copy(PublishPlatformInfo other)
+    {
+        Name = other.Name;
+        BundleIdentifier = other.BundleIdentifier;
+        BundleVersion = other.BundleVersion;
+        BundleVersionCode = other.BundleVersionCode;
+        PackageName = other.PackageName;
+        CompileDefine = other.CompileDefine;
+    }
 }
 
 [Serializable]
@@ -25,12 +36,34 @@ public class PublishPlatformSet
     public int type;
     public string name;
     public List<PublishPlatformInfo> list = new List<PublishPlatformInfo>();
+
+    public void Copy(PublishPlatformSet other)
+    {
+        type = other.type;
+        name = other.name;
+        foreach(var obj in other.list)
+        {
+            PublishPlatformInfo info = new PublishPlatformInfo();
+            info.Copy(obj);
+            list.Add(info);
+        }
+    }
 }
 
 [Serializable]
 public class PublishPlatformCollection
 {
     public List<PublishPlatformSet> plats = new List<PublishPlatformSet>();
+
+    public void Copy(PublishPlatformCollection other)
+    {
+        foreach (var obj in other.plats)
+        {
+            PublishPlatformSet info = new PublishPlatformSet();
+            info.Copy(obj);
+            plats.Add(info);
+        }
+    }
 }
 
 /// <summary>
@@ -56,6 +89,7 @@ public class PublishCachePlatformInfo
     //安卓
     public eAndroidSdkVersions MinAndroidSdkVersion;//最小sdk版本
     public bool SDCardPermission = true;    //SD卡
+    public bool APKExpansionFiles = false;  //是否分包
 
     public string KeyStorePath;             //签名
     public string KetStorePass;
@@ -71,6 +105,8 @@ public class PublishCachePlatformInfo
     public bool DefaultFullScreen = false;  //是否默认全屏
     public int DefaultScreenWidth = 800;
     public int DefaultScreenHeight = 600;
+    public bool DisplayResDialog = false;
+    public bool ResizeableWindow = false;
 }
 
 public class PublishCachePlatformSet

@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class PublishUtils
@@ -53,6 +55,21 @@ public class PublishUtils
     /// </summary>
     public static void WritePlatformConfig(PublishPlatformCollection data)
     {
-        //TODO
+        string jsonStr = JsonUtility.ToJson(data);
+        try
+        {
+            string resFilePath = Path.Combine(Application.dataPath + "/Resources", PublishID.ResourcePlatformPath + ".json");
+            using (FileStream resfs = new FileStream(resFilePath, FileMode.Create))
+            {
+                using (StreamWriter resSw = new StreamWriter(resfs, System.Text.Encoding.UTF8))
+                {
+                    resSw.Write(jsonStr);
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Log.Error("保存配置表错误:" + e.Message);
+        }
     }
 }

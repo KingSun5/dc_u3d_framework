@@ -68,7 +68,7 @@ public enum eAndroidSdkVersions
     AndroidApiLevel25 = 25,
 }
 /// <summary>
-/// 代码剥离级别，可以建设apk大小
+/// 代码剥离级别，可以减少apk大小
 /// </summary>
 public enum eStrippingLevel
 {

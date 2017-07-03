@@ -50,7 +50,10 @@ public class PublishWindow : EditorWindow
     #region 渲染界面
     void OnGUI()
     {
-        if (m_CachePlatformInfo == null) return;
+        if (m_CachePlatformInfo == null)
+        {
+            return;
+        }
 
         BeginWindows();
         GUILayout.Window(0, new Rect(20, 20, position.width - 40, position.height * 0.5f), DrawPlatformWindow, "Platforms", GUILayout.Width(position.width - 40));
@@ -146,7 +149,7 @@ public class PublishWindow : EditorWindow
     int IOSOptLevelIndex = 0;
     int InstallLocationIndex = 2;
     int MinAndroidSDK = 1;
-    int StripLevel = 0;
+    int StripLevel = 3;
     void DrawAndroidWindow()
     {
         //渲染引擎
@@ -165,6 +168,7 @@ public class PublishWindow : EditorWindow
         }
         GUILayout.EndHorizontal();
 
+        GUILayout.Space(5);
         //横屏竖屏,渲染方式
         GUILayout.BeginHorizontal();
             GUILayout.Label("横屏竖屏", GUILayout.Width(100));
@@ -191,7 +195,7 @@ public class PublishWindow : EditorWindow
             }
 
             GUILayout.Space(20);
-            GUILayout.Label(".Net 版本", GUILayout.Width(100));
+            GUILayout.Label(".Net版本", GUILayout.Width(100));
             string[] net_options = { eApiCompatibilityLevel.NET_2_0.ToString(), eApiCompatibilityLevel.NET_2_0_Subset.ToString() };
             NetLevelIndex = EditorGUILayout.Popup(NetLevelIndex, net_options);
             switch (NetLevelIndex)
@@ -205,6 +209,7 @@ public class PublishWindow : EditorWindow
             m_CachePlatformInfo.MultiThreadRender = EditorGUILayout.Toggle(m_CachePlatformInfo.MultiThreadRender, GUILayout.Width(30));
         GUILayout.EndHorizontal();
 
+        GUILayout.Space(5);
         GUILayout.BeginHorizontal();
             GUILayout.Label("目标设备", GUILayout.Width(100));
             string[] device_options = { eTargetDevice.FAT.ToString(), eTargetDevice.ARMv7.ToString(), eTargetDevice.x86.ToString() };
@@ -228,7 +233,7 @@ public class PublishWindow : EditorWindow
             }
 
             GUILayout.Space(20);
-            GUILayout.Label("最小安卓版本", GUILayout.Width(100));
+            GUILayout.Label("最低安卓版本", GUILayout.Width(100));
             string[] sdk_options = { eAndroidSdkVersions.AndroidApiLevelAuto.ToString(), eAndroidSdkVersions.AndroidApiLevel16.ToString(), eAndroidSdkVersions.AndroidApiLevel17.ToString(), eAndroidSdkVersions.AndroidApiLevel18.ToString(), eAndroidSdkVersions.AndroidApiLevel19.ToString(), eAndroidSdkVersions.AndroidApiLevel21.ToString(), eAndroidSdkVersions.AndroidApiLevel22.ToString(), eAndroidSdkVersions.AndroidApiLevel23.ToString(), eAndroidSdkVersions.AndroidApiLevel24.ToString(), eAndroidSdkVersions.AndroidApiLevel25.ToString() };
             MinAndroidSDK = EditorGUILayout.Popup(MinAndroidSDK, sdk_options);
             switch (MinAndroidSDK)
@@ -246,10 +251,11 @@ public class PublishWindow : EditorWindow
             }
 
             GUILayout.Space(20);
-            GUILayout.Label("SD读写", GUILayout.Width(100));
+            GUILayout.Label("SD卡读写", GUILayout.Width(100));
             m_CachePlatformInfo.SDCardPermission = EditorGUILayout.Toggle(m_CachePlatformInfo.SDCardPermission, GUILayout.Width(30));
         GUILayout.EndHorizontal();
 
+        GUILayout.Space(5);
         GUILayout.BeginHorizontal();
             GUILayout.Label("代码剥离", GUILayout.Width(100));
             string[] strip_options = { eStrippingLevel.Disabled.ToString(), eStrippingLevel.StripAssemblies.ToString(), eStrippingLevel.StripByteCode.ToString(), eStrippingLevel.UseMicroMSCorlib.ToString() };
@@ -263,7 +269,7 @@ public class PublishWindow : EditorWindow
             }
         GUILayout.EndHorizontal();
 
-
+        GUILayout.Space(5);
         //签名
         GUILayout.Space(30);
         GUILayout.BeginHorizontal();
@@ -303,6 +309,7 @@ public class PublishWindow : EditorWindow
             }
         GUILayout.EndHorizontal();
 
+        GUILayout.Space(5);
         //横屏竖屏,渲染方式
         GUILayout.BeginHorizontal();
             GUILayout.Label("横屏竖屏", GUILayout.Width(100));
@@ -344,6 +351,7 @@ public class PublishWindow : EditorWindow
 
         GUILayout.EndHorizontal();
 
+        GUILayout.Space(5);
         GUILayout.BeginHorizontal();
             GUILayout.Label("目标设备", GUILayout.Width(100));
             string[] device_options = { eTargetDevice.iPadOnly.ToString(), eTargetDevice.iPhoneOnly.ToString(), eTargetDevice.iPhoneAndiPad.ToString() };
@@ -378,7 +386,7 @@ public class PublishWindow : EditorWindow
             GUILayout.Space(157);
         GUILayout.EndHorizontal();
 
-
+        GUILayout.Space(5);
         GUILayout.BeginHorizontal();
             GUILayout.Label("最低IOS版本", GUILayout.Width(100));
             m_CachePlatformInfo.OSVersionString = EditorGUILayout.TextField(m_CachePlatformInfo.OSVersionString, GUILayout.Width(160));
@@ -406,6 +414,7 @@ public class PublishWindow : EditorWindow
             }
         GUILayout.EndHorizontal();
 
+        GUILayout.Space(5);
         GUILayout.BeginHorizontal();
             GUILayout.Label(".Net 版本", GUILayout.Width(100));
             string[] net_options = { eApiCompatibilityLevel.NET_2_0.ToString(), eApiCompatibilityLevel.NET_2_0_Subset.ToString() };
@@ -417,17 +426,26 @@ public class PublishWindow : EditorWindow
             }
         GUILayout.EndHorizontal();
 
+        GUILayout.Space(5);
         GUILayout.BeginHorizontal();
             GUILayout.Label("默认全屏", GUILayout.Width(100));
             m_CachePlatformInfo.DefaultFullScreen = EditorGUILayout.Toggle(m_CachePlatformInfo.DefaultFullScreen, GUILayout.Width(30));
             if (!m_CachePlatformInfo.DefaultFullScreen)
             {
                 GUILayout.Label("宽", GUILayout.Width(20));
-                m_CachePlatformInfo.DefaultScreenWidth = EditorGUILayout.IntField(m_CachePlatformInfo.DefaultScreenWidth, GUILayout.Width(160));
+                m_CachePlatformInfo.DefaultScreenWidth = EditorGUILayout.IntField(m_CachePlatformInfo.DefaultScreenWidth, GUILayout.Width(118));
 
                 GUILayout.Space(20);
                 GUILayout.Label("高", GUILayout.Width(20));
-                m_CachePlatformInfo.DefaultScreenHeight = EditorGUILayout.IntField(m_CachePlatformInfo.DefaultScreenHeight, GUILayout.Width(160));
+                m_CachePlatformInfo.DefaultScreenHeight = EditorGUILayout.IntField(m_CachePlatformInfo.DefaultScreenHeight, GUILayout.Width(118));
+
+                GUILayout.Space(20);
+                GUILayout.Label("选择分辨率", GUILayout.Width(75));
+                m_CachePlatformInfo.DisplayResDialog = EditorGUILayout.Toggle(m_CachePlatformInfo.DisplayResDialog, GUILayout.Width(30));
+
+                GUILayout.Space(20);
+                GUILayout.Label("改变窗口大小", GUILayout.Width(80));
+                m_CachePlatformInfo.ResizeableWindow = EditorGUILayout.Toggle(m_CachePlatformInfo.ResizeableWindow, GUILayout.Width(30));
             }
         GUILayout.EndHorizontal();
     }
@@ -448,6 +466,8 @@ public class PublishWindow : EditorWindow
                 }
             }
         GUILayout.EndHorizontal();
+
+        GUILayout.Space(5);
         //横屏竖屏,渲染方式
         GUILayout.BeginHorizontal();
             GUILayout.Label("横屏竖屏", GUILayout.Width(100));
@@ -464,14 +484,15 @@ public class PublishWindow : EditorWindow
             }
         GUILayout.EndHorizontal();
 
+        GUILayout.Space(5);
         GUILayout.BeginHorizontal();
             GUILayout.Label("界面大小", GUILayout.Width(100));
-            GUILayout.Label("宽", GUILayout.Width(20));
-            m_CachePlatformInfo.DefaultScreenWidth = EditorGUILayout.IntField(m_CachePlatformInfo.DefaultScreenWidth, GUILayout.Width(160));
+            GUILayout.Label("宽", GUILayout.Width(30));
+            m_CachePlatformInfo.DefaultScreenWidth = EditorGUILayout.IntField(m_CachePlatformInfo.DefaultScreenWidth, GUILayout.Width(135));
 
             GUILayout.Space(20);
-            GUILayout.Label("高", GUILayout.Width(20));
-            m_CachePlatformInfo.DefaultScreenHeight = EditorGUILayout.IntField(m_CachePlatformInfo.DefaultScreenHeight, GUILayout.Width(160));
+            GUILayout.Label("高", GUILayout.Width(30));
+            m_CachePlatformInfo.DefaultScreenHeight = EditorGUILayout.IntField(m_CachePlatformInfo.DefaultScreenHeight, GUILayout.Width(135));
         GUILayout.EndHorizontal();
     }
 
@@ -506,6 +527,7 @@ public class PublishWindow : EditorWindow
         GUILayout.Label("GPU Skin", GUILayout.Width(60));
         m_CachePlatformInfo.GUPSkin = EditorGUILayout.Toggle(m_CachePlatformInfo.GUPSkin, GUILayout.Width(30));
         GUILayout.EndHorizontal();
+        GUILayout.Space(5);
     }
 
     void DrawBuildWindow()
@@ -514,6 +536,13 @@ public class PublishWindow : EditorWindow
         GUILayout.BeginHorizontal();
         GUILayout.Label("发布路径", GUILayout.Width(100));
         m_PublishPath = EditorGUILayout.TextField(m_PublishPath, GUILayout.Width(488));
+
+        if(m_PlatformType == ePublishPlatformType.Android)
+        {
+            GUILayout.Space(20);
+            GUILayout.Label("是否分包", GUILayout.Width(60));
+            m_CachePlatformInfo.APKExpansionFiles = EditorGUILayout.Toggle(m_CachePlatformInfo.APKExpansionFiles, GUILayout.Width(30));
+        }
         GUILayout.EndHorizontal();
 
         GUILayout.Space(20);
@@ -562,18 +591,16 @@ public class PublishWindow : EditorWindow
             }
         }
         GUILayout.Space(40);
-        if (GUILayout.Button("取  消", GUILayout.Width(100), GUILayout.Height(35)))
+        if (GUILayout.Button("关  闭", GUILayout.Width(100), GUILayout.Height(35)))
         {
-            Destroy();
+            if (EditorUtility.DisplayDialog("警告", "是否取消发布?", "是", "否"))
+            {
+                Destroy();
+            }
         }
         GUILayout.EndHorizontal();
     }
 
-    void DrawBtn(string btnName, System.Action callback, int width, int height)
-    {
-        if (GUILayout.Button(btnName, GUILayout.Width(width), GUILayout.Height(height)))
-            if (callback != null) callback();
-    }
     void DrawLine()
     {
         GUILayout.Label("---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
