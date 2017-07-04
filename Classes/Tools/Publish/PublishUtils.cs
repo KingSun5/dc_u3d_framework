@@ -41,14 +41,37 @@ public class PublishUtils
         return target_dir;
     }
     /// <summary>
+    /// 配置表全路径
+    /// </summary>
+    public static string GetPublishConfigPath()
+    {
+        return Path.Combine(Application.dataPath, PublishID.PlatformConfigPath+"/"+PublishID.PlatformConfigFile);
+    }
+    /// <summary>
+    /// 配置表目录
+    /// </summary>
+    public static string GetPublishConfigDir()
+    {
+        return Path.Combine(Application.dataPath, PublishID.PlatformConfigPath);
+    }
+    /// <summary>
     /// 读取平台配置表
     /// </summary>
     /// <returns></returns>
     public static PublishPlatformCollection ReadPlatformConfig()
     {
-        TextAsset textAsset = Resources.Load(PublishID.ResourcePlatformPath) as TextAsset;
-        PublishPlatformCollection platform_coll = JsonUtility.FromJson<PublishPlatformCollection>(textAsset.text);
-        return platform_coll;
+        try
+        {
+            string resFilePath = GetPublishConfigPath();
+            string str_text = File.ReadAllText(resFilePath);
+            PublishPlatformCollection platform_coll = JsonUtility.FromJson<PublishPlatformCollection>(str_text);
+            return platform_coll;
+        }
+        catch (Exception e)
+        {
+            Log.Error("读取配置表错误:" + e.Message);
+            return null;
+        }
     }
     /// <summary>
     /// 写入配置表数据
@@ -58,7 +81,7 @@ public class PublishUtils
         string jsonStr = JsonUtility.ToJson(data);
         try
         {
-            string resFilePath = Path.Combine(Application.dataPath + "/Resources", PublishID.ResourcePlatformPath + ".json");
+            string resFilePath = GetPublishConfigPath();
             using (FileStream resfs = new FileStream(resFilePath, FileMode.Create))
             {
                 using (StreamWriter resSw = new StreamWriter(resfs, System.Text.Encoding.UTF8))

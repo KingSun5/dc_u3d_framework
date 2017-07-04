@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class PublishID 
 {
-    public static string ResourcePlatformPath = "Publish/platform";
+    public static string PlatformConfigPath = "Publish";
+    public static string PlatformConfigFile = "platform.json";
 }
 
 public enum ePublishPlatformType

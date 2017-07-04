@@ -110,10 +110,10 @@ public class PublishWindow : EditorWindow
         GUILayout.Label("平台名称", GUILayout.Width(100));
         GUILayout.Label(platform_info.Name, GUILayout.Width(140));
         GUILayout.Space(20);
-        GUILayout.Label("BundleIdentifier:", GUILayout.Width(120));
+        GUILayout.Label("BundleIdentifier", GUILayout.Width(120));
         GUILayout.Label(platform_info.BundleIdentifier, GUILayout.Width(140));
         GUILayout.Space(20);
-        GUILayout.Label("Build:", GUILayout.Width(75));
+        GUILayout.Label("Build", GUILayout.Width(75));
         cache_channel_info.IsBuild = EditorGUILayout.Toggle(cache_channel_info.IsBuild, GUILayout.Width(30));
         GUILayout.EndHorizontal();
 
@@ -135,21 +135,6 @@ public class PublishWindow : EditorWindow
         GUILayout.EndHorizontal();
     }
 
-    int OrientationIndex = 3;
-    int RenderPathIndex = 2;
-    int GraphicsAPIAndIndex = 1;
-    int GraphicsAPIIOSIndex = 1;
-    int GraphicsAPIWinIndex = 1;
-    int GraphicsAPIWebIndex = 0;
-    int ScriptBackemdIndex = 1;
-    int NetLevelIndex = 1;
-    int AndroidDeviceIndex = 1;
-    int IOSDeviceIndex = 2;
-    int IOSSDKIndex = 0;
-    int IOSOptLevelIndex = 0;
-    int InstallLocationIndex = 2;
-    int MinAndroidSDK = 1;
-    int StripLevel = 3;
     void DrawAndroidWindow()
     {
         //渲染引擎
@@ -159,8 +144,8 @@ public class PublishWindow : EditorWindow
         if (!m_CachePlatformInfo.AutoGraphicsAPI)
         {
             string[] graphics_options = { UnityEngine.Rendering.GraphicsDeviceType.OpenGLES2.ToString(), UnityEngine.Rendering.GraphicsDeviceType.OpenGLES3.ToString() };
-            GraphicsAPIAndIndex = EditorGUILayout.Popup(GraphicsAPIAndIndex, graphics_options);
-            switch (GraphicsAPIAndIndex)
+            PublishManager.Instance.GraphicsAPIAndIndex = EditorGUILayout.Popup(PublishManager.Instance.GraphicsAPIAndIndex, graphics_options);
+            switch (PublishManager.Instance.GraphicsAPIAndIndex)
             {
                 case 0: m_CachePlatformInfo.GraphicsDevice = UnityEngine.Rendering.GraphicsDeviceType.OpenGLES2; break;
                 case 1: m_CachePlatformInfo.GraphicsDevice = UnityEngine.Rendering.GraphicsDeviceType.OpenGLES3; break;
@@ -173,8 +158,8 @@ public class PublishWindow : EditorWindow
         GUILayout.BeginHorizontal();
             GUILayout.Label("横屏竖屏", GUILayout.Width(100));
             string[] ori_options = { ScreenOrientation.Unknown.ToString(), ScreenOrientation.Portrait.ToString(), ScreenOrientation.PortraitUpsideDown.ToString(), ScreenOrientation.LandscapeLeft.ToString(), ScreenOrientation.LandscapeRight.ToString(), ScreenOrientation.AutoRotation.ToString() };
-            OrientationIndex = EditorGUILayout.Popup(OrientationIndex, ori_options);
-            switch(OrientationIndex)
+            PublishManager.Instance.OrientationIndex = EditorGUILayout.Popup(PublishManager.Instance.OrientationIndex, ori_options);
+            switch (PublishManager.Instance.OrientationIndex)
             {
                 case 0: m_CachePlatformInfo.Orientation = ScreenOrientation.Unknown; break;
                 case 1: m_CachePlatformInfo.Orientation = ScreenOrientation.Portrait; break;
@@ -187,8 +172,8 @@ public class PublishWindow : EditorWindow
             GUILayout.Space(20);
             GUILayout.Label("编译环境", GUILayout.Width(100));
             string[] script_options = { ScriptingImplementation.Mono2x.ToString(), ScriptingImplementation.IL2CPP.ToString() };
-            ScriptBackemdIndex = EditorGUILayout.Popup(ScriptBackemdIndex, script_options);
-            switch (ScriptBackemdIndex)
+            PublishManager.Instance.ScriptBackemdIndex = EditorGUILayout.Popup(PublishManager.Instance.ScriptBackemdIndex, script_options);
+            switch (PublishManager.Instance.ScriptBackemdIndex)
             {
                 case 0: m_CachePlatformInfo.ScriptBackend = eScriptingImplementation.Mono2x; break;
                 case 1: m_CachePlatformInfo.ScriptBackend = eScriptingImplementation.IL2CPP; break;
@@ -197,8 +182,8 @@ public class PublishWindow : EditorWindow
             GUILayout.Space(20);
             GUILayout.Label(".Net版本", GUILayout.Width(100));
             string[] net_options = { eApiCompatibilityLevel.NET_2_0.ToString(), eApiCompatibilityLevel.NET_2_0_Subset.ToString() };
-            NetLevelIndex = EditorGUILayout.Popup(NetLevelIndex, net_options);
-            switch (NetLevelIndex)
+            PublishManager.Instance.NetLevelIndex = EditorGUILayout.Popup(PublishManager.Instance.NetLevelIndex, net_options);
+            switch (PublishManager.Instance.NetLevelIndex)
             {
                 case 0: m_CachePlatformInfo.ApiLevel = eApiCompatibilityLevel.NET_2_0; break;
                 case 1: m_CachePlatformInfo.ApiLevel = eApiCompatibilityLevel.NET_2_0_Subset; break;
@@ -213,8 +198,8 @@ public class PublishWindow : EditorWindow
         GUILayout.BeginHorizontal();
             GUILayout.Label("目标设备", GUILayout.Width(100));
             string[] device_options = { eTargetDevice.FAT.ToString(), eTargetDevice.ARMv7.ToString(), eTargetDevice.x86.ToString() };
-            AndroidDeviceIndex = EditorGUILayout.Popup(AndroidDeviceIndex, device_options);
-            switch (AndroidDeviceIndex)
+            PublishManager.Instance.AndroidDeviceIndex = EditorGUILayout.Popup(PublishManager.Instance.AndroidDeviceIndex, device_options);
+            switch (PublishManager.Instance.AndroidDeviceIndex)
             {
                 case 0: m_CachePlatformInfo.TargetDevice = eTargetDevice.FAT; break;
                 case 1: m_CachePlatformInfo.TargetDevice = eTargetDevice.ARMv7; break;
@@ -224,8 +209,8 @@ public class PublishWindow : EditorWindow
             GUILayout.Space(20);
             GUILayout.Label("安装位置", GUILayout.Width(100));
             string[] install_options = { eInstallLocation.Auto.ToString(), eInstallLocation.ForceInternal.ToString(), eInstallLocation.PreferExternal.ToString() };
-            InstallLocationIndex = EditorGUILayout.Popup(InstallLocationIndex, install_options);
-            switch (InstallLocationIndex)
+            PublishManager.Instance.InstallLocationIndex = EditorGUILayout.Popup(PublishManager.Instance.InstallLocationIndex, install_options);
+            switch (PublishManager.Instance.InstallLocationIndex)
             {
                 case 0: m_CachePlatformInfo.InstallLocation = eInstallLocation.Auto; break;
                 case 1: m_CachePlatformInfo.InstallLocation = eInstallLocation.ForceInternal; break;
@@ -235,8 +220,8 @@ public class PublishWindow : EditorWindow
             GUILayout.Space(20);
             GUILayout.Label("最低安卓版本", GUILayout.Width(100));
             string[] sdk_options = { eAndroidSdkVersions.AndroidApiLevelAuto.ToString(), eAndroidSdkVersions.AndroidApiLevel16.ToString(), eAndroidSdkVersions.AndroidApiLevel17.ToString(), eAndroidSdkVersions.AndroidApiLevel18.ToString(), eAndroidSdkVersions.AndroidApiLevel19.ToString(), eAndroidSdkVersions.AndroidApiLevel21.ToString(), eAndroidSdkVersions.AndroidApiLevel22.ToString(), eAndroidSdkVersions.AndroidApiLevel23.ToString(), eAndroidSdkVersions.AndroidApiLevel24.ToString(), eAndroidSdkVersions.AndroidApiLevel25.ToString() };
-            MinAndroidSDK = EditorGUILayout.Popup(MinAndroidSDK, sdk_options);
-            switch (MinAndroidSDK)
+            PublishManager.Instance.MinAndroidSDK = EditorGUILayout.Popup(PublishManager.Instance.MinAndroidSDK, sdk_options);
+            switch (PublishManager.Instance.MinAndroidSDK)
             {
                 case 0: m_CachePlatformInfo.MinAndroidSdkVersion = eAndroidSdkVersions.AndroidApiLevelAuto; break;
                 case 1: m_CachePlatformInfo.MinAndroidSdkVersion = eAndroidSdkVersions.AndroidApiLevel16; break;
@@ -259,8 +244,8 @@ public class PublishWindow : EditorWindow
         GUILayout.BeginHorizontal();
             GUILayout.Label("代码剥离", GUILayout.Width(100));
             string[] strip_options = { eStrippingLevel.Disabled.ToString(), eStrippingLevel.StripAssemblies.ToString(), eStrippingLevel.StripByteCode.ToString(), eStrippingLevel.UseMicroMSCorlib.ToString() };
-            StripLevel = EditorGUILayout.Popup(StripLevel, strip_options);
-            switch (StripLevel)
+            PublishManager.Instance.StripLevel = EditorGUILayout.Popup(PublishManager.Instance.StripLevel, strip_options);
+            switch (PublishManager.Instance.StripLevel)
             {
                 case 0: m_CachePlatformInfo.StrippingLevel = eStrippingLevel.Disabled; break;
                 case 1: m_CachePlatformInfo.StrippingLevel = eStrippingLevel.StripAssemblies; break;
@@ -299,8 +284,8 @@ public class PublishWindow : EditorWindow
             if (!m_CachePlatformInfo.AutoGraphicsAPI)
             {
                 string[] graphics_options = { UnityEngine.Rendering.GraphicsDeviceType.OpenGLES2.ToString(), UnityEngine.Rendering.GraphicsDeviceType.OpenGLES3.ToString(), UnityEngine.Rendering.GraphicsDeviceType.Metal.ToString() };
-                GraphicsAPIIOSIndex = EditorGUILayout.Popup(GraphicsAPIIOSIndex, graphics_options);
-                switch (GraphicsAPIIOSIndex)
+                PublishManager.Instance.GraphicsAPIIOSIndex = EditorGUILayout.Popup(PublishManager.Instance.GraphicsAPIIOSIndex, graphics_options);
+                switch (PublishManager.Instance.GraphicsAPIIOSIndex)
                 {
                     case 0: m_CachePlatformInfo.GraphicsDevice = UnityEngine.Rendering.GraphicsDeviceType.OpenGLES2; break;
                     case 1: m_CachePlatformInfo.GraphicsDevice = UnityEngine.Rendering.GraphicsDeviceType.OpenGLES3; break;
@@ -314,8 +299,8 @@ public class PublishWindow : EditorWindow
         GUILayout.BeginHorizontal();
             GUILayout.Label("横屏竖屏", GUILayout.Width(100));
             string[] ori_options = { ScreenOrientation.Unknown.ToString(), ScreenOrientation.Portrait.ToString(), ScreenOrientation.PortraitUpsideDown.ToString(), ScreenOrientation.LandscapeLeft.ToString(), ScreenOrientation.LandscapeRight.ToString(), ScreenOrientation.AutoRotation.ToString() };
-            OrientationIndex = EditorGUILayout.Popup(OrientationIndex, ori_options);
-            switch (OrientationIndex)
+            PublishManager.Instance.OrientationIndex = EditorGUILayout.Popup(PublishManager.Instance.OrientationIndex, ori_options);
+            switch (PublishManager.Instance.OrientationIndex)
             {
                 case 0: m_CachePlatformInfo.Orientation = ScreenOrientation.Unknown; break;
                 case 1: m_CachePlatformInfo.Orientation = ScreenOrientation.Portrait; break;
@@ -328,8 +313,8 @@ public class PublishWindow : EditorWindow
             GUILayout.Space(20);
             GUILayout.Label("编译环境", GUILayout.Width(100));
             string[] script_options = { ScriptingImplementation.Mono2x.ToString(), ScriptingImplementation.IL2CPP.ToString() };
-            ScriptBackemdIndex = EditorGUILayout.Popup(ScriptBackemdIndex, script_options);
-            switch (ScriptBackemdIndex)
+            PublishManager.Instance.ScriptBackemdIndex = EditorGUILayout.Popup(PublishManager.Instance.ScriptBackemdIndex, script_options);
+            switch (PublishManager.Instance.ScriptBackemdIndex)
             {
                 case 0: m_CachePlatformInfo.ScriptBackend = eScriptingImplementation.Mono2x; break;
                 case 1: m_CachePlatformInfo.ScriptBackend = eScriptingImplementation.IL2CPP; break;
@@ -338,8 +323,8 @@ public class PublishWindow : EditorWindow
             GUILayout.Space(20);
             GUILayout.Label(".Net 版本", GUILayout.Width(100));
             string[] net_options = { eApiCompatibilityLevel.NET_2_0.ToString(), eApiCompatibilityLevel.NET_2_0_Subset.ToString() };
-            NetLevelIndex = EditorGUILayout.Popup(NetLevelIndex, net_options);
-            switch (NetLevelIndex)
+            PublishManager.Instance.NetLevelIndex = EditorGUILayout.Popup(PublishManager.Instance.NetLevelIndex, net_options);
+            switch (PublishManager.Instance.NetLevelIndex)
             {
                 case 0: m_CachePlatformInfo.ApiLevel = eApiCompatibilityLevel.NET_2_0; break;
                 case 1: m_CachePlatformInfo.ApiLevel = eApiCompatibilityLevel.NET_2_0_Subset; break;
@@ -355,8 +340,8 @@ public class PublishWindow : EditorWindow
         GUILayout.BeginHorizontal();
             GUILayout.Label("目标设备", GUILayout.Width(100));
             string[] device_options = { eTargetDevice.iPadOnly.ToString(), eTargetDevice.iPhoneOnly.ToString(), eTargetDevice.iPhoneAndiPad.ToString() };
-            IOSDeviceIndex = EditorGUILayout.Popup(IOSDeviceIndex, device_options);
-            switch (IOSDeviceIndex)
+            PublishManager.Instance.IOSDeviceIndex = EditorGUILayout.Popup(PublishManager.Instance.IOSDeviceIndex, device_options);
+            switch (PublishManager.Instance.IOSDeviceIndex)
             {
                 case 0: m_CachePlatformInfo.TargetDevice = eTargetDevice.iPadOnly; break;
                 case 1: m_CachePlatformInfo.TargetDevice = eTargetDevice.iPhoneOnly; break;
@@ -366,8 +351,8 @@ public class PublishWindow : EditorWindow
             GUILayout.Space(20);
             GUILayout.Label("真机发布", GUILayout.Width(100));
             string[] skd_options = { eIOSSdkVerions.DeviceSDK.ToString(), eIOSSdkVerions.SimulatorSDK.ToString() };
-            IOSSDKIndex = EditorGUILayout.Popup(IOSSDKIndex, skd_options);
-            switch (IOSSDKIndex)
+            PublishManager.Instance.IOSSDKIndex = EditorGUILayout.Popup(PublishManager.Instance.IOSSDKIndex, skd_options);
+            switch (PublishManager.Instance.IOSSDKIndex)
             {
                 case 0: m_CachePlatformInfo.IOSSdkVerions = eIOSSdkVerions.DeviceSDK; break;
                 case 1: m_CachePlatformInfo.IOSSdkVerions = eIOSSdkVerions.SimulatorSDK; break;
@@ -376,8 +361,8 @@ public class PublishWindow : EditorWindow
             GUILayout.Space(20);
             GUILayout.Label("脚本优化", GUILayout.Width(100));
             string[] opt_level_options = { eIOSScriptCallOptimizationLevel.SlowAndSafe.ToString(), eIOSScriptCallOptimizationLevel.FastButNoExceptions.ToString() };
-            IOSOptLevelIndex = EditorGUILayout.Popup(IOSOptLevelIndex, opt_level_options);
-            switch (IOSOptLevelIndex)
+            PublishManager.Instance.IOSOptLevelIndex = EditorGUILayout.Popup(PublishManager.Instance.IOSOptLevelIndex, opt_level_options);
+            switch (PublishManager.Instance.IOSOptLevelIndex)
             {
                 case 0: m_CachePlatformInfo.IOSOptLevel = eIOSScriptCallOptimizationLevel.SlowAndSafe; break;
                 case 1: m_CachePlatformInfo.IOSOptLevel = eIOSScriptCallOptimizationLevel.FastButNoExceptions; break;
@@ -401,8 +386,8 @@ public class PublishWindow : EditorWindow
             if (!m_CachePlatformInfo.AutoGraphicsAPI)
             {
                 string[] graphics_options = { UnityEngine.Rendering.GraphicsDeviceType.Direct3D9.ToString(), UnityEngine.Rendering.GraphicsDeviceType.Direct3D11.ToString(), UnityEngine.Rendering.GraphicsDeviceType.Direct3D12.ToString(), UnityEngine.Rendering.GraphicsDeviceType.OpenGLES2.ToString(), UnityEngine.Rendering.GraphicsDeviceType.OpenGLES3.ToString(), UnityEngine.Rendering.GraphicsDeviceType.OpenGLCore.ToString() };
-                GraphicsAPIWinIndex = EditorGUILayout.Popup(GraphicsAPIWinIndex, graphics_options);
-                switch (GraphicsAPIWinIndex)
+                PublishManager.Instance.GraphicsAPIWinIndex = EditorGUILayout.Popup(PublishManager.Instance.GraphicsAPIWinIndex, graphics_options);
+                switch (PublishManager.Instance.GraphicsAPIWinIndex)
                 {
                     case 0: m_CachePlatformInfo.GraphicsDevice = UnityEngine.Rendering.GraphicsDeviceType.Direct3D9; break;
                     case 1: m_CachePlatformInfo.GraphicsDevice = UnityEngine.Rendering.GraphicsDeviceType.Direct3D11; break;
@@ -418,8 +403,8 @@ public class PublishWindow : EditorWindow
         GUILayout.BeginHorizontal();
             GUILayout.Label(".Net 版本", GUILayout.Width(100));
             string[] net_options = { eApiCompatibilityLevel.NET_2_0.ToString(), eApiCompatibilityLevel.NET_2_0_Subset.ToString() };
-            NetLevelIndex = EditorGUILayout.Popup(NetLevelIndex, net_options);
-            switch (NetLevelIndex)
+            PublishManager.Instance.NetLevelIndex = EditorGUILayout.Popup(PublishManager.Instance.NetLevelIndex, net_options);
+            switch (PublishManager.Instance.NetLevelIndex)
             {
                 case 0: m_CachePlatformInfo.ApiLevel = eApiCompatibilityLevel.NET_2_0; break;
                 case 1: m_CachePlatformInfo.ApiLevel = eApiCompatibilityLevel.NET_2_0_Subset; break;
@@ -459,8 +444,8 @@ public class PublishWindow : EditorWindow
             {
                 //TODO
                 string[] graphics_options = { UnityEngine.Rendering.GraphicsDeviceType.Null.ToString() };
-                GraphicsAPIWebIndex = EditorGUILayout.Popup(GraphicsAPIWebIndex, graphics_options);
-                switch (GraphicsAPIWebIndex)
+                PublishManager.Instance.GraphicsAPIWebIndex = EditorGUILayout.Popup(PublishManager.Instance.GraphicsAPIWebIndex, graphics_options);
+                switch (PublishManager.Instance.GraphicsAPIWebIndex)
                 {
                     case 0: m_CachePlatformInfo.GraphicsDevice = UnityEngine.Rendering.GraphicsDeviceType.Null; break;
                 }
@@ -472,8 +457,8 @@ public class PublishWindow : EditorWindow
         GUILayout.BeginHorizontal();
             GUILayout.Label("横屏竖屏", GUILayout.Width(100));
             string[] ori_options = { ScreenOrientation.Unknown.ToString(), ScreenOrientation.Portrait.ToString(), ScreenOrientation.PortraitUpsideDown.ToString(), ScreenOrientation.LandscapeLeft.ToString(), ScreenOrientation.LandscapeRight.ToString(), ScreenOrientation.AutoRotation.ToString() };
-            OrientationIndex = EditorGUILayout.Popup(OrientationIndex, ori_options);
-            switch (OrientationIndex)
+            PublishManager.Instance.OrientationIndex = EditorGUILayout.Popup(PublishManager.Instance.OrientationIndex, ori_options);
+            switch (PublishManager.Instance.OrientationIndex)
             {
                 case 0: m_CachePlatformInfo.Orientation = ScreenOrientation.Unknown; break;
                 case 1: m_CachePlatformInfo.Orientation = ScreenOrientation.Portrait; break;
@@ -502,8 +487,8 @@ public class PublishWindow : EditorWindow
 
         GUILayout.Label("渲染方式", GUILayout.Width(100));
         string[] render_options = { RenderingPath.UsePlayerSettings.ToString(), RenderingPath.VertexLit.ToString(), RenderingPath.Forward.ToString(), RenderingPath.DeferredLighting.ToString(), RenderingPath.DeferredShading.ToString() };
-        RenderPathIndex = EditorGUILayout.Popup(RenderPathIndex, render_options);
-        switch (RenderPathIndex)
+        PublishManager.Instance.RenderPathIndex = EditorGUILayout.Popup(PublishManager.Instance.RenderPathIndex, render_options);
+        switch (PublishManager.Instance.RenderPathIndex)
         {
             case 0: m_CachePlatformInfo.RenderPath = RenderingPath.UsePlayerSettings; break;
             case 1: m_CachePlatformInfo.RenderPath = RenderingPath.VertexLit; break;

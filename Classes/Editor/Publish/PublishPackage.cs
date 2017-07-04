@@ -38,6 +38,18 @@ public class BuildPackage
     {
         ShowWindow(ePublishPlatformType.WebGL);
     }
+    [MenuItem("Tools/Publish/打开配置表目录")]
+    static void PerformOpenConfig()
+    {
+        string path = PublishUtils.GetPublishConfigDir();
+        path = path.Replace("/", "\\");
+        System.Diagnostics.Process.Start("explorer", "/n, " + path);
+    }
+    [MenuItem("Tools/Publish/重置缓存数据")]
+    static void PerformResetData()
+    {
+        PublishManager.Instance.ResetData();
+    }
     static void ShowWindow(ePublishPlatformType type)
     {
         PublishManager.Instance.Setup();
