@@ -8,46 +8,52 @@ using System.Collections.Generic;
 /// </summary>
 public class EventDispatcher
 {
-    private static EventController m_eventController = new EventController();
+    public delegate void RegistFunction(GameEvent evt);
+    private Dictionary<string, RegistFunction> m_dispathcerMap;
 
-    /// <summary>
-    /// 清除非永久性注册的事件
-    /// </summary>
-    public static void Cleanup()
+    public EventDispatcher()
     {
-        m_eventController.Cleanup();
+        m_dispathcerMap = new Dictionary<string, RegistFunction>();
     }
 
-    /// <summary>
-    ///  增加监听器， 固定GameEvent类型参数
-    /// </summary>
-    /// <param name="eventType"></param>
-    /// <param name="handler"></param>
-    public static void AddEventListener(string eventType, Action<GameEvent> handler)
+    public void AddEventListener(string EventID, RegistFunction pFunction)
     {
-        m_eventController.AddEventListener(eventType, handler);
+        if (!m_dispathcerMap.ContainsKey(EventID))
+        {
+            m_dispathcerMap.Add(EventID, pFunction);
+        }
+        else
+        {
+            m_dispathcerMap[EventID] += pFunction;
+        }
     }
-
-    /// <summary>
-    ///  移除监听器， 带固定GameEvent参数类型
-    /// </summary>
-    /// <param name="eventType"></param>
-    /// <param name="handler"></param>
-    public static void RemoveEventListener(string eventType, Action<GameEvent> handler)
+    public void RemoveEventListener(string EventID, RegistFunction pFunction)
     {
-        m_eventController.RemoveEventListener(eventType, handler);
+        if (m_dispathcerMap.ContainsKey(EventID))
+        {
+            m_dispathcerMap[EventID] -= pFunction;
+        }
     }
-
-    /// <summary>
-    ///  触发事件， GameEvent对象传递方式
-    /// </summary>
-    /// <param name="eventType"></param>
-    /// <param name="handler"></param>
-    static public GameEvent m_DefaultGameEvent = new GameEvent(0);
-    public static void TriggerEvent(string eventType,params object[] list)
+    public void TriggerEvent(string EventID, GameEvent info)
     {
-        GameEvent gameEvent = new GameEvent(list);
-        gameEvent.type = eventType;
-        m_eventController.TriggerEvent(eventType, gameEvent);
+        info.type = EventID;
+        if (m_dispathcerMap.ContainsKey(EventID) && m_dispathcerMap[EventID] != null)
+        {
+            m_dispathcerMap[EventID](info);
+        }
+    }
+    static public GameEvent m_DefaultGameEvent = new GameEvent();
+    public void TriggerEvent(string EventID, params object[] list)
+    {
+        m_DefaultGameEvent.Init(list);
+        m_DefaultGameEvent.type = EventID;
+        if (m_dispathcerMap.ContainsKey(EventID) && m_dispathcerMap[EventID] != null)
+        {
+            m_dispathcerMap[EventID](m_DefaultGameEvent);
+        }
+    }
+    public void Cleanup()
+    {
+        m_dispathcerMap.Clear();
     }
 }

@@ -3,8 +3,29 @@ using System.Collections;
 using System;
 
 
+/// <summary>
+/// 数字
+/// @author hannibal
+/// @time 2014-11-26
+/// </summary>
 public class IntUtils
 {
+    static public bool HasFlag(uint a, uint b)
+    {
+        return ((a & b) == 0) ? false : true;
+    }
+
+    static public uint InsertFlag(uint a, uint b)
+    {
+        a |= b;
+        return a;
+    }
+    static public uint RemoveFlag(uint a, uint b)
+    {
+        a ^= b;
+        return a;
+    }
+
 	/**
 	 * 转16进制字符串*
 	 * 123->ffff
@@ -28,12 +49,23 @@ public class IntUtils
         return v;
     }
 
-    static public long max(long v, long u)
+    /** 比较两个单精度浮点是否相等
+    * @param 
+    * @return 如符合指定精度返回true;否则返回false.
+    */
+    static public bool FloatEqual(float fFirst, float fSecond, float fOffset)
     {
-        return v > u ? v : u;
+        return (Mathf.Abs(fFirst - fSecond) <= fOffset ? true : false);
     }
-    static public double max(double v, double u)
+
+    /** 判断一个浮点数是否是0
+    * @param fValue - 比较的数
+    * @param fOffset - 比较精度
+    * @return 如符合指定精度返回true;否则返回false.
+    */
+    static public bool FloatEqualZERO(float fValue, float fOffset = 0.00001f)
     {
-        return v > u ? v : u;
+        return (Mathf.Abs(fValue) <= fOffset ? true : false);
     }
+
 }

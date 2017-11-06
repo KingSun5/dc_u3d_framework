@@ -37,7 +37,7 @@ public class ResourceLoadSyncThread : ResourceLoadThread
                 info.Stage = eResChunkStage.LOADED;
                 m_LoadQueue.RemoveAt(0);
                 m_LoadRequest = null;
-                EventDispatcher.TriggerEvent(ResourceID.RESOURCE_LOAD_PROGRESS, m_TotalCount - m_LoadQueue.Count, m_TotalCount, info.Path);
+                EventController.TriggerEvent(ResourceID.RESOURCE_LOAD_PROGRESS, m_TotalCount - m_LoadQueue.Count, m_TotalCount, info.Path);
 
                 CheckLoadComplate();
             }
@@ -126,7 +126,7 @@ public class ResourceLoadSyncThread : ResourceLoadThread
             {
                 info.Stage = eResChunkStage.LOADED;
                 m_LoadQueue.RemoveAt(0);
-                EventDispatcher.TriggerEvent(ResourceID.RESOURCE_LOAD_PROGRESS, m_TotalCount - m_LoadQueue.Count, m_TotalCount, info.Path);
+                EventController.TriggerEvent(ResourceID.RESOURCE_LOAD_PROGRESS, m_TotalCount - m_LoadQueue.Count, m_TotalCount, info.Path);
             }
             else
             {
@@ -135,7 +135,7 @@ public class ResourceLoadSyncThread : ResourceLoadThread
                 {
                     info.Stage = eResChunkStage.LOADED;
                     m_LoadQueue.RemoveAt(0);
-                    EventDispatcher.TriggerEvent(ResourceID.RESOURCE_LOAD_PROGRESS, m_TotalCount - m_LoadQueue.Count, m_TotalCount, info.Path);
+                    EventController.TriggerEvent(ResourceID.RESOURCE_LOAD_PROGRESS, m_TotalCount - m_LoadQueue.Count, m_TotalCount, info.Path);
                 }
                 else
                 {
@@ -176,7 +176,7 @@ public class ResourceLoadSyncThread : ResourceLoadThread
         if (m_LoadQueue.Count == 0)
         {
             Log.Info("[load]load complate");
-            EventDispatcher.TriggerEvent(ResourceID.RESOURCE_LOAD_COMPLATE, m_TotalCount);
+            EventController.TriggerEvent(ResourceID.RESOURCE_LOAD_COMPLATE, m_TotalCount);
             Stop();
             return true;
         }

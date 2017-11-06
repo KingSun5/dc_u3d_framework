@@ -226,17 +226,17 @@ public class SoundManager : Singleton<SoundManager>
     /*～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～事件～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～*/
     private void RegisterEvent()
     {
-        EventDispatcher.AddEventListener(SoundID.SWITCH_BG_SOUND, OnSoundEvent);
-        EventDispatcher.AddEventListener(SoundID.SWITCH_EFFECT_SOUND, OnSoundEvent);
-        EventDispatcher.AddEventListener(SoundID.ADJUST_BG_VOLUME, OnSoundEvent);
-        EventDispatcher.AddEventListener(SoundID.ADJUST_EFFECT_VOLUME, OnSoundEvent);
+        EventController.AddEventListener(SoundID.SWITCH_BG_SOUND, OnSoundEvent);
+        EventController.AddEventListener(SoundID.SWITCH_EFFECT_SOUND, OnSoundEvent);
+        EventController.AddEventListener(SoundID.ADJUST_BG_VOLUME, OnSoundEvent);
+        EventController.AddEventListener(SoundID.ADJUST_EFFECT_VOLUME, OnSoundEvent);
     }
     private void UnRegisterEvent()
     {
-        EventDispatcher.RemoveEventListener(SoundID.SWITCH_BG_SOUND, OnSoundEvent);
-        EventDispatcher.RemoveEventListener(SoundID.SWITCH_EFFECT_SOUND, OnSoundEvent);
-        EventDispatcher.RemoveEventListener(SoundID.ADJUST_BG_VOLUME, OnSoundEvent);
-        EventDispatcher.RemoveEventListener(SoundID.ADJUST_EFFECT_VOLUME, OnSoundEvent);
+        EventController.RemoveEventListener(SoundID.SWITCH_BG_SOUND, OnSoundEvent);
+        EventController.RemoveEventListener(SoundID.SWITCH_EFFECT_SOUND, OnSoundEvent);
+        EventController.RemoveEventListener(SoundID.ADJUST_BG_VOLUME, OnSoundEvent);
+        EventController.RemoveEventListener(SoundID.ADJUST_EFFECT_VOLUME, OnSoundEvent);
     }
     private void OnSoundEvent(GameEvent evt)
 	{

@@ -62,7 +62,7 @@ public class InputSimulateManager : Singleton<InputSimulateManager>
             if (event_type != InputID.TOUCH_NONE)
 			{
 				m_TouchInfo.setTouchInfo(Input.mousePosition);
-				EventDispatcher.TriggerEvent(event_type, m_TouchInfo);
+				EventController.TriggerEvent(event_type, m_TouchInfo);
 			}
 		}
 		else

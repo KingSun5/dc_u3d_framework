@@ -23,12 +23,12 @@ public class ThirdFixedFollowTarget : MonoBehaviour
 	
 	void OnEnable()
 	{
-        EventDispatcher.AddEventListener(CameraID.CAMERA_FOLLOW_TARGET, OnBindTarget);
+        EventController.AddEventListener(CameraID.CAMERA_FOLLOW_TARGET, OnBindTarget);
 	}
 	
 	void OnDisable()
 	{
-        EventDispatcher.RemoveEventListener(CameraID.CAMERA_FOLLOW_TARGET, OnBindTarget);
+        EventController.RemoveEventListener(CameraID.CAMERA_FOLLOW_TARGET, OnBindTarget);
 	}
 	/**绑定目标*/
     void OnBindTarget(GameEvent evt)

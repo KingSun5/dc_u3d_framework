@@ -123,7 +123,7 @@ public class HttpDownloadManager : Singleton<HttpDownloadManager>
         else
         {
             Log.Error("[download]下载失败,原因:" + e.Error.Message);
-            EventDispatcher.TriggerEvent(EVT_DOWNLOAD_FAILED);
+            EventController.TriggerEvent(EVT_DOWNLOAD_FAILED);
         }
     }
 
@@ -138,7 +138,7 @@ public class HttpDownloadManager : Singleton<HttpDownloadManager>
         progressInfo.Percent = e.ProgressPercentage;
         progressInfo.TotalBytes = e.TotalBytesToReceive;
         progressInfo.ReceivedBytes = e.BytesReceived;
-        EventDispatcher.TriggerEvent(EVT_DOWNLOAD_PROGRESS, progressInfo);
+        EventController.TriggerEvent(EVT_DOWNLOAD_PROGRESS, progressInfo);
     }
     /// <summary>
     /// 下载完成
@@ -146,7 +146,7 @@ public class HttpDownloadManager : Singleton<HttpDownloadManager>
     private void OnDownFinish()
     {
         Log.Info("[download]下载完成");
-        EventDispatcher.TriggerEvent(EVT_DOWNLOAD_COMPLETED);
+        EventController.TriggerEvent(EVT_DOWNLOAD_COMPLETED);
         m_ListDownFiles.Clear();
         m_LoadQueue.Clear();
         if (m_Thread != null)

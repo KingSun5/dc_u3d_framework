@@ -42,11 +42,11 @@ public class UISwitchButton : MonoBehaviour
 
     void RegisterEvent()
     {
-        UIEventTriggerListener.Get(gameObject).onClick += OnClick;
+        UIEventListener.Get(gameObject).onClick += OnClick;
     }
     void UnRegisterEvent()
     {
-        UIEventTriggerListener.Get(gameObject).onClick -= OnClick;
+        UIEventListener.Get(gameObject).onClick -= OnClick;
     }
 
     void OnClick(GameObject go, Vector2 delta)

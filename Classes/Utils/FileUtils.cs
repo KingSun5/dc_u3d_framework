@@ -6,29 +6,13 @@ using System.Text;
 using System.Xml;
 using System;
 
+/// <summary>
+/// 文件+目录操作
+/// @author hannibal
+/// @time 2014-11-20
+/// </summary>
 public class FileUtils
 {
-    /// <summary>
-    /// 获取不带扩展名的文件
-    /// </summary>
-	static string GetPathWithNoExtend (string path)
-	{
-		int idx = path.LastIndexOf (".");
-		string noext = path.Substring (0, idx);
-		return noext;
-	}
-
-	/// <summary>
-    /// add "/" to the head
-	/// </summary>
-	public static string ConfirmSlashAhead (string name)
-	{
-		name = name.Trim ();
-		if (name [0] != '/')
-			name = "/" + name;
-		return name;
-	}
-
 	static public string MD5ByPathName(string pathName)
 	{
 		try
@@ -55,14 +39,14 @@ public class FileUtils
     /// </summary>
     /// <param name="dir">查找的目录</param>
     /// <param name="listFiles">文件列表</param>
-    static public void GetFullDirectoryFiles(string dir_path, ref List<string> list_files)
+    static public void GetDirectoryFiles(string dir_path, ref List<string> list_files)
     {
         if (!Directory.Exists(dir_path)) return;
 
         DirectoryInfo dir = new DirectoryInfo(dir_path);
-        RecursiveFullDirectory(dir, dir_path + '/', ref list_files);
+        RecursiveDirectory(dir, dir_path + '/', ref list_files);
     }
-    static private void RecursiveFullDirectory(DirectoryInfo dir, string parent_path, ref List<string> list_files)
+    static private void RecursiveDirectory(DirectoryInfo dir, string parent_path, ref List<string> list_files)
     {
         FileInfo[] allFile = dir.GetFiles();
         foreach (FileInfo fi in allFile)
@@ -77,7 +61,7 @@ public class FileUtils
         {
             if (d.Name == "." || d.Name == "..") continue;
             if ((d.Attributes & FileAttributes.Hidden) == FileAttributes.Hidden) continue;
-            RecursiveFullDirectory(d, parent_path+d.Name+'/', ref list_files);
+            RecursiveDirectory(d, parent_path + d.Name + '/', ref list_files);
         }
     }
 	/// <summary>
@@ -108,4 +92,64 @@ public class FileUtils
 		}
 #endif
 	}
+    /// <summary>
+    /// 删除目录下所有文件
+    /// </summary>
+    /// <param name="srcPath"></param>
+    public static void DelectDir(string srcPath)
+    {
+        try
+        {
+            DirectoryInfo dir = new DirectoryInfo(srcPath);
+            FileSystemInfo[] fileinfo = dir.GetFileSystemInfos();  //返回目录中所有文件和子目录
+            foreach (FileSystemInfo i in fileinfo)
+            {
+                if (i is DirectoryInfo)            //判断是否文件夹
+                {
+                    DirectoryInfo subdir = new DirectoryInfo(i.FullName);
+                    subdir.Delete(true);          //删除子目录和文件
+                }
+                else
+                {
+                    File.Delete(i.FullName);      //删除指定文件
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Log.Exception(e);
+        }
+    }
+    /// <summary>
+    /// 存储二进制到文件
+    /// </summary>
+    /// <param name="bytes"></param>
+    /// <param name="vTargetPath"></param>
+    /// <returns></returns>
+    public static bool StoreBufferToTargetPath(byte[] bytes, string vTargetPath)
+    {
+        try
+        {
+            string dir = Path.GetDirectoryName(vTargetPath);
+
+            if (File.Exists(vTargetPath))
+                File.Delete(vTargetPath);
+
+            if (!Directory.Exists(dir))
+                Directory.CreateDirectory(dir);
+
+            using (FileStream stream = new FileStream(vTargetPath, FileMode.Create))
+            {
+                stream.Write(bytes, 0, bytes.Length);
+                stream.Flush();
+                stream.Close();
+            }
+            return true;
+        }
+        catch(Exception e)
+        {
+            Log.Exception(e);
+            return false;
+        }
+    }
 }

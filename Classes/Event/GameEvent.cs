@@ -27,6 +27,17 @@ public struct GameEvent
         }
     }
 
+    public void Init(params object[] list)
+    {
+        m_type = "";
+        m_Length = 0;
+        if (m_data == null) m_data = new object[CAPACITY];
+        for (int i = 0; i < list.Length; i++)
+        {
+            Set(i, list[i]);
+        }
+    }
+
     public T Get<T>(int idx)
     {
         if (idx >= m_Length)

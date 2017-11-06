@@ -43,4 +43,38 @@ public class EncodingUtils
 		
 		return (sb.ToString());
 	}
+
+    /// <summary>
+    /// base64转string
+    /// </summary>
+    /// <param name="code_type"></param>
+    /// <param name="code"></param>
+    /// <returns></returns>
+    public static string DecodeBase64(string code_type, string code)
+    {
+        string decode = "";
+        byte[] bytes = Convert.FromBase64String(code);
+        try
+        {
+            decode = Encoding.GetEncoding(code_type).GetString(bytes);
+        }
+        catch
+        {
+            decode = code;
+        }
+        return decode;
+    }
+
+    /// <summary>
+    /// base64转byte[]
+    /// </summary>
+    /// <param name="code_type"></param>
+    /// <param name="code"></param>
+    /// <returns></returns>
+    public static byte[] DecodeBase64Tobytes(string code_type, string code)
+    {
+        string decode = DecodeBase64(code_type, code);
+        byte[] bytes = Encoding.GetEncoding(code_type).GetBytes(decode);
+        return bytes;
+    } 
 }

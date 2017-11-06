@@ -46,14 +46,14 @@ public class AlertView : UIPanelBase
 	{
 		for(int i = 0; i < m_ArrBtn.Length; ++i)
 		{
-			UIEventTriggerListener.Get(m_ArrBtn[i].gameObject).onClick += OnBtnClick;
+			UIEventListener.Get(m_ArrBtn[i].gameObject).onClick += OnBtnClick;
 		}
 	}
 	public override void UnRegisterEvent ()
 	{
 		for(int i = 0; i < m_ArrBtn.Length; ++i)
 		{
-			UIEventTriggerListener.Get(m_ArrBtn[i].gameObject).onClick -= OnBtnClick;
+			UIEventListener.Get(m_ArrBtn[i].gameObject).onClick -= OnBtnClick;
 		}
 	}
 	

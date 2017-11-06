@@ -33,12 +33,12 @@ public class SceneLoaderManagerr : Singleton<SceneLoaderManagerr>
         if (m_LoadAsync.isDone)
         {
             SetSceneActive(m_CurScene);
-            EventDispatcher.TriggerEvent(LOAD_COMPLATE);
+            EventController.TriggerEvent(LOAD_COMPLATE);
             m_LoadAsync = null;
         }
         else
         {
-            EventDispatcher.TriggerEvent(LOAD_PROGRESS, m_LoadAsync.progress);
+            EventController.TriggerEvent(LOAD_PROGRESS, m_LoadAsync.progress);
         }
     }
 
@@ -48,7 +48,7 @@ public class SceneLoaderManagerr : Singleton<SceneLoaderManagerr>
 
         ResourceLoaderManager.Instance.LoadScene(scene_name);
         m_CurScene = scene_name;
-        EventDispatcher.TriggerEvent(LOAD_COMPLATE);
+        EventController.TriggerEvent(LOAD_COMPLATE);
     }
 
     public void AsyncLoadScene(string scene_name)

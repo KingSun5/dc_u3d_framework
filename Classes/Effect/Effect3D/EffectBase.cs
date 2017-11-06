@@ -22,7 +22,7 @@ public class EffectBase : MonoBehaviour
     protected bool m_IsLoadComplete = false;
 
     protected Transform m_RootNode = null;
-    protected EventController m_Observer = new EventController();
+    protected EventDispatcher m_Observer = new EventDispatcher();
 
     public EffectBase()
     {
@@ -145,7 +145,7 @@ public class EffectBase : MonoBehaviour
         get { return m_TotalTime; }
         set { m_TotalTime = value; }
     }
-    public EventController Observer
+    public EventDispatcher Observer
     {
         get { return m_Observer; }
     }

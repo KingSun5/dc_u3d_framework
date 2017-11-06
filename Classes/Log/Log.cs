@@ -164,4 +164,15 @@ public class Log
         UnityEngine.Debug.LogException(new Exception(msg));
         if (MsgFun != null) MsgFun(msg);
     }
+    /// <summary>
+    /// 抛出异常
+    /// </summary>
+    static public void Exception(Exception e)
+    {
+        if (LogLv > eLogLevel.LV_EXCEPTION) return;
+        if (!EnableType[(int)eLogLevel.LV_EXCEPTION]) return;
+
+        UnityEngine.Debug.LogException(e);
+        if (MsgFun != null) MsgFun(e.Message);
+    }
 }

@@ -30,7 +30,7 @@ public class LocalValue
 		}
 		else
 		{
-			Debug.LogError("SetValue : type error");
+			Log.Error("SetValue : type error");
 		}
 	}
 	public static T GetValue<T>(string key, T defaultVaule)
@@ -49,10 +49,15 @@ public class LocalValue
 		}
 		else
 		{
-			Debug.LogError("GetValue : type error");
+            Log.Error("GetValue : type error");
 			return (T)(object)0;
 		}
 	}
+
+    public static void DeleteKey(string key)
+    {
+        PlayerPrefs.DeleteKey(key);
+    }
 
     public static bool HasKey(string key)
     {

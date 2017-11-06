@@ -30,15 +30,15 @@ public class UIPressScaleAction : MonoBehaviour
 
     void RegisterEvent()
     {
-        UIEventTriggerListener.Get(gameObject).onDown += OnDown;
-        UIEventTriggerListener.Get(gameObject).onUp += OnUp;
-        UIEventTriggerListener.Get(gameObject).onExit += OnExit;
+        UIEventListener.Get(gameObject).onDown += OnDown;
+        UIEventListener.Get(gameObject).onUp += OnUp;
+        UIEventListener.Get(gameObject).onExit += OnExit;
     }
     void UnRegisterEvent()
     {
-        UIEventTriggerListener.Get(gameObject).onDown -= OnDown;
-        UIEventTriggerListener.Get(gameObject).onUp -= OnUp;
-        UIEventTriggerListener.Get(gameObject).onExit -= OnExit;
+        UIEventListener.Get(gameObject).onDown -= OnDown;
+        UIEventListener.Get(gameObject).onUp -= OnUp;
+        UIEventListener.Get(gameObject).onExit -= OnExit;
     }
 
     void OnDown(GameObject go, Vector2 delta)

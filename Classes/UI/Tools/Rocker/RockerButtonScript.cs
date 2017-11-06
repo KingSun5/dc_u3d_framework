@@ -27,8 +27,8 @@ public class RockerButtonScript : MonoBehaviour
 
     void OnEnable()
     {
-        UIEventTriggerListener.Get(gameObject).onDown = OnDown;
-        UIEventTriggerListener.Get(gameObject).onUp = OnUp;
+        UIEventListener.Get(gameObject).onDown = OnDown;
+        UIEventListener.Get(gameObject).onUp = OnUp;
     }
     void OnDisable()
     {

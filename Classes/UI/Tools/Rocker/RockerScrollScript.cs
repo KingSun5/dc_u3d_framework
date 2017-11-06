@@ -31,8 +31,8 @@ public class RockerScrollScript : ScrollRect
     protected override void OnEnable()
     {
         base.OnEnable();
-        UIEventTriggerListener.Get(gameObject).onDown = OnDown;
-        UIEventTriggerListener.Get(gameObject).onUp = OnUp;
+        UIEventListener.Get(gameObject).onDown = OnDown;
+        UIEventListener.Get(gameObject).onUp = OnUp;
     }
     protected override void OnDisable()
     {

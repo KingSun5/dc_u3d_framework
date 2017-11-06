@@ -9,7 +9,7 @@ using System.Collections.Generic;
 /// @author hannibal
 /// @time 2014-10-22
 /// </summary>
-public class UIEventTriggerListener : EventTrigger
+public class UIEventListener : EventTrigger
 {
 	public delegate void VoidDelegate(GameObject go);
 	public delegate void VectorDelegate(GameObject go, Vector2 delta);
@@ -26,12 +26,12 @@ public class UIEventTriggerListener : EventTrigger
 	public VectorDelegate   onDrag;
 	public VoidDelegate     onDragEnd; 
 	
-	static public UIEventTriggerListener Get (GameObject go)
+	static public UIEventListener Get (GameObject go)
 	{
 		if (go == null)return null;
 
-		UIEventTriggerListener listener = go.GetComponent<UIEventTriggerListener>();
-		if (listener == null) listener = go.AddComponent<UIEventTriggerListener>();
+		UIEventListener listener = go.GetComponent<UIEventListener>();
+		if (listener == null) listener = go.AddComponent<UIEventListener>();
 		return listener;
 	}
     public override void OnBeginDrag(PointerEventData eventData)

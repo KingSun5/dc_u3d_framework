@@ -110,17 +110,6 @@ public class MathUtils
 		
 		return num;
 	}
-
-	/**
-	 * 测试 flag中是否包含testFlag状态:
-	 * @param flag
-	 * @param testFlag
-	 * @return true-包含；false-不包含。比如testFlag(3, 1)返回true
-	 */		
-	public static bool TestFlag(uint flag, uint testFlag)
-	{
-		return ((uint)(flag&testFlag) != 0 ? true : false);
-	}
     /// <summary>
     /// 合并两个bounds
     /// </summary>

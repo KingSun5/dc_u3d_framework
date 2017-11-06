@@ -11,7 +11,7 @@ public class GameObjectUtils
 {
     static public GameObject BuildObject(string file)
     {
-        if (file.Length == 0)
+        if (string.IsNullOrEmpty(file))
             return null;
 
         UnityEngine.Object res = ResourceLoaderManager.Instance.Load(file);
@@ -30,7 +30,9 @@ public class GameObjectUtils
     /// <param name="Target"></param>
     /// <returns></returns>
 	static public Transform GetChildWithName(string Name ,Transform Target)
-	{
+    {
+        if (Target == null) return null;
+
 		if (Target.name == Name)
 			return Target;
 		
@@ -45,6 +47,8 @@ public class GameObjectUtils
 	}
     static public void GetChildsWithName(string Name, Transform Target, ref List<Transform> list)
     {
+        if (Target == null) return;
+
         if (Target.name == Name)
             list.Add(Target);
 
@@ -55,21 +59,36 @@ public class GameObjectUtils
 
         return;
     }
+
+    /// <summary>
+    /// 删除子节点
+    /// </summary>
+    /// <param name="Target">父节点</param>
+    /// <param name="recursion">是否递归</param>
 	static public void RemoveAllChild(Transform Target, bool recursion)
-	{
+    {
+        if (Target == null) return;
 		while (Target.childCount > 0) 
 		{
 			Transform obj = Target.GetChild(0);
 			if(recursion)RemoveAllChild(obj, true);
 			GameObject.Destroy(obj.gameObject);
-			obj.parent = null;
+            obj.SetParent(null);
 		}
 	}
 
-	static public void InitTransform(Transform obj)
-	{
-		obj.localPosition = Vector3.zero;
-		//obj.position = Vector3.zero;
+    /// <summary>
+    /// 初始化方位信息
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="is_world"></param>
+	static public void InitTransform(Transform obj, bool is_world = false)
+    {
+        if (obj == null) return;
+        if(!is_world)
+		    obj.localPosition = Vector3.zero;
+        else
+            obj.position = Vector3.zero;
 		obj.localScale = Vector3.one;
 		obj.Rotate(Vector3.zero);
 	}
@@ -81,6 +100,7 @@ public class GameObjectUtils
     /// <param name="recursion">是否递归</param>
     static public void SetActiveAllChild(Transform Target, bool active, bool recursion)
     {
+        if (Target == null) return;
         for (int i = 0; i < Target.childCount; i++)
         {
             Transform obj = Target.GetChild(i);
@@ -89,8 +109,14 @@ public class GameObjectUtils
         }
     }
 
+    /// <summary>
+    /// 设置对象层级
+    /// </summary>
+    /// <param name="go"></param>
+    /// <param name="layer"></param>
     static public void SetLayer(GameObject go, int layer)
     {
+        if (go == null) return;
         if (layer <= 31)
         {
             go.layer = layer;
@@ -101,8 +127,15 @@ public class GameObjectUtils
         }
     }
 
+    /// <summary>
+    /// 设置节点名
+    /// </summary>
+    /// <param name="go"></param>
+    /// <param name="name"></param>
+    /// <param name="recursion">是否影响子节点</param>
     static public void SetName(GameObject go, string name, bool recursion)
     {
+        if (go == null) return;
         go.name = name;
         if (recursion)
         {
@@ -112,4 +145,19 @@ public class GameObjectUtils
             }
         }
     }
+
+    /// <summary>
+    /// 判断节点是否激活
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    static public bool IsEnable(GameObject obj)
+    {
+        if (!obj) return false;
+        if (!obj.activeSelf) return false;
+        if (obj.transform.parent != null)
+            return IsEnable(obj.transform.parent.gameObject);
+        return true;
+    }
+
 }

@@ -32,13 +32,13 @@ public class ScenePlaySound : MonoBehaviour
 
     void OnEnable()
     {
-        EventDispatcher.AddEventListener(SoundID.SOUND_LISTENER_ENTER, OnListenerEvt);
-        EventDispatcher.AddEventListener(SoundID.SOUND_LISTENER_LEAVE, OnListenerEvt);
+        EventController.AddEventListener(SoundID.SOUND_LISTENER_ENTER, OnListenerEvt);
+        EventController.AddEventListener(SoundID.SOUND_LISTENER_LEAVE, OnListenerEvt);
     }
     void OnDisable()
     {
-        EventDispatcher.RemoveEventListener(SoundID.SOUND_LISTENER_ENTER, OnListenerEvt);
-        EventDispatcher.RemoveEventListener(SoundID.SOUND_LISTENER_LEAVE, OnListenerEvt);
+        EventController.RemoveEventListener(SoundID.SOUND_LISTENER_ENTER, OnListenerEvt);
+        EventController.RemoveEventListener(SoundID.SOUND_LISTENER_LEAVE, OnListenerEvt);
         stop();
     }
     void OnDestroy()
