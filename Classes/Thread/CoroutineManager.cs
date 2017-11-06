@@ -2,7 +2,7 @@
 using System.Collections;
 
 /// <summary>
-/// 协程
+/// 协程；使用必须挂接到场景对象
 /// @author hannibal
 /// @time 2014-12-1
 /// </summary>

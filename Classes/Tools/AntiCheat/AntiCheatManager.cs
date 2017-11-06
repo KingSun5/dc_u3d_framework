@@ -55,8 +55,8 @@ public class AntiCheatManager : Singleton<AntiCheatManager>
     /// </summary>
     private void OnSpeedHackDetected()
     {
-        Log.Error("OnSpeedHackDetected");
-        Application.Quit();
+        //Log.Error("OnSpeedHackDetected");
+        //Application.Quit();
     }
 
     /// <summary>

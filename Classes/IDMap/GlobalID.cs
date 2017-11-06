@@ -20,7 +20,7 @@ public class GlobalID
     public static bool ShowFPS = false;
     public static int FPS = 24;                     //fps
     
-    private static string m_GameName = "";             //游戏名
+    private static string m_GameName = "";          //游戏名
     public static string GameName
     {
         get { return m_GameName; }
@@ -35,7 +35,7 @@ public class GlobalID
             return Application.persistentDataPath + "/"+GameName;
 #elif UNITY_ANDROID
             return "/sdcard/oayx/"+GameName;
-#elif UNITY_IPHONE
+#elif UNITY_IPHONE || UNITY_IOS
             return Application.persistentDataPath+ "/"+GameName;
 #else
             return Application.persistentDataPath+ "/"+GameName;

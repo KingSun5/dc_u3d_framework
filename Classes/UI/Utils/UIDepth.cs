@@ -21,15 +21,22 @@ public class UIDepth : MonoBehaviour
 {
     public int order;
     public bool isUI = true;
+
+    private Canvas m_Canvas;
+    public Canvas Canvas
+    {
+        get
+        {
+            if (m_Canvas == null)
+                m_Canvas = UIHelper.GetComponent<Canvas>(gameObject);
+            return m_Canvas;
+        }
+    }
+
     void Start()
     {
-        Canvas canvas = GetComponent<Canvas>();
-        if (canvas == null)
-        {
-            canvas = gameObject.AddComponent<Canvas>();
-        }
-        canvas.overrideSorting = true;
-        canvas.sortingOrder = order;
+        Canvas.overrideSorting = true;
+        Canvas.sortingOrder = order;
 
         GraphicRaycaster cast = gameObject.GetComponent<GraphicRaycaster>();
         if (cast == null)
@@ -42,6 +49,8 @@ public class UIDepth : MonoBehaviour
     public void SetOrder(int nOrder)
     {
         order = nOrder;
+        Canvas.overrideSorting = true;
+        Canvas.sortingOrder = order;
 
         RefreshRender();
     }

@@ -24,11 +24,9 @@ public class ObjPlaySound : MonoBehaviour
     public float m_MaxDistance = 50;
 
     private AudioSource m_AudioSource = null;
-    private Transform m_ParentTransform;
 
     void Awake()
     {
-        m_ParentTransform = gameObject.transform;
     }
 
     void OnEnable()
@@ -53,7 +51,7 @@ public class ObjPlaySound : MonoBehaviour
     {
         if (m_AudioSource != null)
         {
-            m_AudioSource.transform.position = m_ParentTransform.position;
+            m_AudioSource.transform.position = transform.position;
         }
     }
 
@@ -73,7 +71,7 @@ public class ObjPlaySound : MonoBehaviour
     {
         if (m_AudioClip != null)
         {
-            m_AudioSource = SoundManager.Instance.PlaySoundEffect(m_AudioClip, m_ParentTransform.position, m_MinDistance, m_MaxDistance, m_Loop);
+            m_AudioSource = SoundManager.Instance.PlaySoundEffect(m_AudioClip, transform.position, m_MinDistance, m_MaxDistance, m_Loop);
         }
     }
     void stop()
