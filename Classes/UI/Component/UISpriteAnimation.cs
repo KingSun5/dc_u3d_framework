@@ -10,7 +10,7 @@ using System;
 /// @time 2016-12-11
 /// </summary>
 [RequireComponent(typeof(Image))]
-public class UGUISpriteAnimation : MonoBehaviour
+public class UISpriteAnimation : UIComponentBase
 {
     private Image ImageSource;
     private int mCurFrame = 0;
@@ -23,15 +23,7 @@ public class UGUISpriteAnimation : MonoBehaviour
     public bool AutoPlay = false;
     public bool Loop = false;
 
-    public int FrameCount
-    {
-        get
-        {
-            return SpriteFrames.Count;
-        }
-    }
-
-    void Awake()
+    public override void Awake()
     {
         ImageSource = GetComponent<Image>();
     }
@@ -51,7 +43,7 @@ public class UGUISpriteAnimation : MonoBehaviour
     private void SetSprite(int idx)
     {
         ImageSource.sprite = SpriteFrames[idx];
-//         ImageSource.SetNativeSize();
+//      ImageSource.SetNativeSize();
     }
 
     public void Play()
@@ -141,4 +133,13 @@ public class UGUISpriteAnimation : MonoBehaviour
         SetSprite(mCurFrame);
         Play();
     }
+
+    public int FrameCount
+    {
+        get
+        {
+            return SpriteFrames.Count;
+        }
+    }
+
 }

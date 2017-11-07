@@ -31,12 +31,14 @@ public class RockerScrollScript : ScrollRect
     protected override void OnEnable()
     {
         base.OnEnable();
-        UIEventListener.Get(gameObject).onDown = OnDown;
-        UIEventListener.Get(gameObject).onUp = OnUp;
+        UIEventListener.Get(gameObject).AddEventListener(eUIEventType.Down, OnDown);
+        UIEventListener.Get(gameObject).AddEventListener(eUIEventType.Up, OnUp);
     }
     protected override void OnDisable()
     {
         base.OnDisable();
+        UIEventListener.Get(gameObject).RemoveEventListener(eUIEventType.Down, OnDown);
+        UIEventListener.Get(gameObject).RemoveEventListener(eUIEventType.Up, OnUp);
     }
 
     public void SetPosition(float x, float y)
@@ -55,11 +57,11 @@ public class RockerScrollScript : ScrollRect
         }
     }
 
-    void OnDown(GameObject go, Vector2 pos)
+    void OnDown(UIEventArgs evt)
     {
         m_IsDrag = true;
     }
-    void OnUp(GameObject go, Vector2 pos)
+    void OnUp(UIEventArgs evt)
     {
         m_IsDrag = false;
         if (OnRockerStop != null)

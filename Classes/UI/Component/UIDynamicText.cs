@@ -9,7 +9,7 @@ using System.Collections;
 /// @author hannibal
 /// @time 2015-2-1
 /// </summary>
-public class UIDynamicTextAction : MonoBehaviour
+public class UIDynamicText : MonoBehaviour
 {
 	/**时间：控制改变速度*/
 	public float 	m_TotalTime = 1f;

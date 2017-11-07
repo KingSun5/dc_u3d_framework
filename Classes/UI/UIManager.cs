@@ -208,8 +208,8 @@ public class UIManager : Singleton<UIManager>
             currCanvas.overrideSorting = true;
             if (maxCanvasSortingOrder == 0)
             {
-                currCanvas.sortingOrder = UILayerID * UIID.ORDERLAYERINTERVAL;
-                currView.MaxSortingOrder = UILayerID * UIID.ORDERLAYERINTERVAL;
+                currCanvas.sortingOrder = UILayerID * UIID.OrderLyaerInterval;
+                currView.MaxSortingOrder = UILayerID * UIID.OrderLyaerInterval;
             }
             else
             {

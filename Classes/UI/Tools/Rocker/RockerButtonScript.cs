@@ -27,14 +27,16 @@ public class RockerButtonScript : MonoBehaviour
 
     void OnEnable()
     {
-        UIEventListener.Get(gameObject).onDown = OnDown;
-        UIEventListener.Get(gameObject).onUp = OnUp;
+        UIEventListener.Get(gameObject).AddEventListener(eUIEventType.Down, OnDown);
+        UIEventListener.Get(gameObject).AddEventListener(eUIEventType.Up, OnUp);
     }
     void OnDisable()
     {
+        UIEventListener.Get(gameObject).RemoveEventListener(eUIEventType.Down, OnDown);
+        UIEventListener.Get(gameObject).RemoveEventListener(eUIEventType.Up, OnUp);
     }
 
-    void OnDown(GameObject go, Vector2 pos)
+    void OnDown(UIEventArgs evt)
     {
         m_IsDrag = true;
         if (OnRockerDown != null)
@@ -42,7 +44,7 @@ public class RockerButtonScript : MonoBehaviour
             OnRockerDown();
         }
     }
-    void OnUp(GameObject go, Vector2 pos)
+    void OnUp(UIEventArgs evt)
     {
         m_IsDrag = false;
         if (OnRockerUp != null)

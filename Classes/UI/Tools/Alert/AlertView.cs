@@ -46,23 +46,23 @@ public class AlertView : UIWindowBase
 	{
 		for(int i = 0; i < m_ArrBtn.Length; ++i)
 		{
-			UIEventListener.Get(m_ArrBtn[i].gameObject).onClick += OnBtnClick;
+			UIEventListener.Get(m_ArrBtn[i].gameObject).AddEventListener(eUIEventType.Click, OnBtnClick);
 		}
 	}
 	public override void UnRegisterEvent ()
 	{
 		for(int i = 0; i < m_ArrBtn.Length; ++i)
 		{
-			UIEventListener.Get(m_ArrBtn[i].gameObject).onClick -= OnBtnClick;
+			UIEventListener.Get(m_ArrBtn[i].gameObject).RemoveEventListener(eUIEventType.Click, OnBtnClick);
 		}
 	}
 	
 	/**点击*/
-	private void OnBtnClick(GameObject obj, Vector2 pos)
+	private void OnBtnClick(UIEventArgs evt)
 	{
 		if(m_Fun != null)
 		{
-            m_Fun((eAlertBtnType)(System.Convert.ToInt32(obj.name)));
+            m_Fun((eAlertBtnType)(System.Convert.ToInt32(evt.target.name)));
 
 			AlertManager.Instance.Remove();
 		}

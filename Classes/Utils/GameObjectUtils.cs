@@ -9,6 +9,11 @@ using System.Collections.Generic;
 /// </summary>
 public class GameObjectUtils
 {
+    /// <summary>
+    /// 构建对象
+    /// </summary>
+    /// <param name="file">资源目录</param>
+    /// <returns></returns>
     static public GameObject BuildObject(string file)
     {
         if (string.IsNullOrEmpty(file))
@@ -45,6 +50,12 @@ public class GameObjectUtils
 		
 		return null;
 	}
+    /// <summary>
+    /// 获取子子节点下所有同名节点
+    /// </summary>
+    /// <param name="Name"></param>
+    /// <param name="Target"></param>
+    /// <param name="list"></param>
     static public void GetChildsWithName(string Name, Transform Target, ref List<Transform> list)
     {
         if (Target == null) return;
@@ -124,6 +135,10 @@ public class GameObjectUtils
             {
                 SetLayer(go.transform.GetChild(i).gameObject, layer);
             }
+        }
+        else
+        {
+            Log.Error("设置错误的层级:" + layer);
         }
     }
 

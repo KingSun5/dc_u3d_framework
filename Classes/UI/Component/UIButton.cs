@@ -8,7 +8,7 @@ using System.Collections;
 /// @time 2017-2-25
 /// </summary>
 [RequireComponent(typeof(Image))]
-public class UIButton : MonoBehaviour
+public class UIButton : UIComponentBase
 {
     public enum Status
     {
@@ -24,32 +24,32 @@ public class UIButton : MonoBehaviour
 
     private Image ImgComponent;
 
-    void Awake()
+    public override void Awake()
     {
         if (NormalBtn == null) Log.Error("没有设置按钮基础状态");
         ImgComponent = GetComponent<Image>();
     }
 
-    void OnEnable()
+    public override void OnEnable()
     {
         SetStatus(BtnStatus);
-        RegisterEvent();
+        base.OnEnable();
     }
-    void OnDisable()
+    public override void OnDisable()
     {
-        UnRegisterEvent();
+        base.OnDisable();
     }
 
-    void RegisterEvent()
+    public override void RegisterEvent()
     {
-        UIEventListener.Get(gameObject).onClick += OnClick;
+        this.AddUIEventListener(gameObject, eUIEventType.Click, OnClick);
     }
-    void UnRegisterEvent() 
+    public override void UnRegisterEvent()
     {
-        UIEventListener.Get(gameObject).onClick -= OnClick;
+        this.RemoveUIEventListener(gameObject, eUIEventType.Click, OnClick);
     }
 
-    void OnClick(GameObject go, Vector2 delta)
+    void OnClick(UIEventArgs args)
     {
         switch (BtnStatus)
         {

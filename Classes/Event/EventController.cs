@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 /// <summary>
 /// 事件控制器
@@ -23,12 +22,12 @@ public class EventController
     {
         m_Observer.TriggerEvent(EventID, info);
     }
-    static public GameEvent m_DefaultGameEvent = new GameEvent();
     public static void TriggerEvent(string eventType, params object[] list)
     {
-        m_DefaultGameEvent.Init(list);
-        m_DefaultGameEvent.type = eventType;
-        m_Observer.TriggerEvent(eventType, m_DefaultGameEvent);
+        GameEvent info = new GameEvent();
+        info.Init(list);
+        info.type = eventType;
+        m_Observer.TriggerEvent(eventType, info);
     }
     public static void Cleanup()
     {

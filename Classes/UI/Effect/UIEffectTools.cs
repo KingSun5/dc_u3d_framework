@@ -22,17 +22,17 @@ public class UIEffectTools
     {
         if (receive_obj == null || influence_obj == null) return;
 
-        UIEventListener.Get(receive_obj).onDown = delegate(GameObject go, Vector2 delta) { influence_obj.transform.DOScale(Vector3.one * scale, time); };
-        UIEventListener.Get(receive_obj).onUp = delegate(GameObject go, Vector2 delta) { influence_obj.transform.DOScale(Vector3.one, time); };
-        UIEventListener.Get(receive_obj).onExit = delegate(GameObject go, Vector2 delta) { influence_obj.transform.DOScale(Vector3.one, time); };
+        UIEventListener.Get(receive_obj).AddEventListener(eUIEventType.Down, delegate(UIEventArgs evt) { influence_obj.transform.DOScale(Vector3.one * scale, time); });
+        UIEventListener.Get(receive_obj).AddEventListener(eUIEventType.Up, delegate(UIEventArgs evt) { influence_obj.transform.DOScale(Vector3.one, time); });
+        UIEventListener.Get(receive_obj).AddEventListener(eUIEventType.Exit, delegate(UIEventArgs evt) { influence_obj.transform.DOScale(Vector3.one, time); });
     }
     static public void RemovePressScaleAnim(GameObject receive_obj)
     {
         if (receive_obj == null) return;
 
-        UIEventListener.Get(receive_obj).onDown = null;
-        UIEventListener.Get(receive_obj).onUp = null;
-        UIEventListener.Get(receive_obj).onExit = null;
+        UIEventListener.Get(receive_obj).ClearEventListener(eUIEventType.Down);
+        UIEventListener.Get(receive_obj).ClearEventListener(eUIEventType.Up);
+        UIEventListener.Get(receive_obj).ClearEventListener(eUIEventType.Exit);
     }
     //～～～～～～～～～～～～～～～～～～～～～～～渐隐动画~～～～～～～～～～～～～～～～～～～～～～～～//
     public static void FadeIn(GameObject go, float time, System.Action fun = null, float alpha = 1)

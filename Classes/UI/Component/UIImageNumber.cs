@@ -10,21 +10,23 @@ using System.Collections.Generic;
 /// @author hannibal
 /// @time 2015-1-6
 /// </summary>
-public class UIImageNumber : MonoBehaviour
+public class UIImageNumber : UIComponentBase
 {
     public string m_RootPathName = "";
 
     private int m_NumValue = int.MaxValue;
     private List<GameObject> m_NumImage = new List<GameObject>();
 
-	private void OnEnable()
+    public override void OnEnable()
 	{
         if (m_NumValue != int.MaxValue) SetData(m_NumValue);
+        base.OnEnable();
 	}
-	private void OnDisable()
+    public override void OnDisable()
 	{
         Clear();
         m_NumImage.Clear();
+        base.OnDisable();
 	}
 
 	public void SetData(int num)

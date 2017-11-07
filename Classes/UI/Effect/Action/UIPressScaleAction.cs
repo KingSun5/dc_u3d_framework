@@ -30,28 +30,28 @@ public class UIPressScaleAction : MonoBehaviour
 
     void RegisterEvent()
     {
-        UIEventListener.Get(gameObject).onDown += OnDown;
-        UIEventListener.Get(gameObject).onUp += OnUp;
-        UIEventListener.Get(gameObject).onExit += OnExit;
+        UIEventListener.Get(gameObject).AddEventListener(eUIEventType.Down, OnDown);
+        UIEventListener.Get(gameObject).AddEventListener(eUIEventType.Up, OnUp);
+        UIEventListener.Get(gameObject).AddEventListener(eUIEventType.Exit, OnExit);
     }
     void UnRegisterEvent()
     {
-        UIEventListener.Get(gameObject).onDown -= OnDown;
-        UIEventListener.Get(gameObject).onUp -= OnUp;
-        UIEventListener.Get(gameObject).onExit -= OnExit;
+        UIEventListener.Get(gameObject).RemoveEventListener(eUIEventType.Down, OnDown);
+        UIEventListener.Get(gameObject).RemoveEventListener(eUIEventType.Up, OnUp);
+        UIEventListener.Get(gameObject).RemoveEventListener(eUIEventType.Exit, OnExit);
     }
 
-    void OnDown(GameObject go, Vector2 delta)
+    void OnDown(UIEventArgs evt)
     {
         GameObject influence_obj = InfluenceObject != null ? InfluenceObject : gameObject;
         influence_obj.transform.DOScale(Vector3.one * scale, time);
     }
-    void OnUp(GameObject go, Vector2 delta)
+    void OnUp(UIEventArgs evt)
     {
         GameObject influence_obj = InfluenceObject != null ? InfluenceObject : gameObject;
         influence_obj.transform.DOScale(Vector3.one, time); 
     }
-    void OnExit(GameObject go, Vector2 delta)
+    void OnExit(UIEventArgs evt)
     {
         GameObject influence_obj = InfluenceObject != null ? InfluenceObject : gameObject;
         influence_obj.transform.DOScale(Vector3.one, time);

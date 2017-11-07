@@ -17,7 +17,7 @@ public class UIID
     public static float InvScreenScaleY = 1;
 
     /*不同节点下的sortLayer层数*/
-    public const int ORDERLAYERINTERVAL = 1000;
+    public const int OrderLyaerInterval = 1000;
 
 }
 /// <summary>
