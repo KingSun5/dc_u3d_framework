@@ -9,7 +9,7 @@ using System.Collections;
 /// @author hannibal
 /// @time 2015-2-1
 /// </summary>
-public class UIDynamicText : MonoBehaviour
+public class UIDynamicText : UIComponentBase
 {
 	/**时间：控制改变速度*/
 	public float 	m_TotalTime = 1f;
@@ -35,7 +35,7 @@ public class UIDynamicText : MonoBehaviour
 
 	public System.Action<Text> m_OnComplete = null;
 
-	void Start () 
+    public override void Awake() 
 	{
 		m_TextComponent = gameObject.GetComponent<Text>();
 	}
@@ -58,12 +58,11 @@ public class UIDynamicText : MonoBehaviour
 			m_OnComplete(m_TextComponent);
 		}
 	}
-
-	/**
-	 * 显示动画
-	 * to_value 目标值
-	 * time 动画时间
-	 */
+	/// <summary>
+    /// 显示动画
+	/// </summary>
+	/// <param name="to_value"></param>
+	/// <param name="on_end"></param>
 	public void To(int to_value, System.Action<Text> on_end = null)
 	{
 		m_Active = true;
@@ -82,11 +81,12 @@ public class UIDynamicText : MonoBehaviour
 			m_TotalTime = time > m_TotalTime ? m_TotalTime : time;
 		}
 	}
-	
-	public void Destroy()
+	/// <summary>
+	/// 停止动画
+	/// </summary>
+	public void Stop()
 	{
 		if(!m_Active)return;
-		
 		m_Active = false;
 	}
 

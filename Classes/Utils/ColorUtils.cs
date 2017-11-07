@@ -41,9 +41,10 @@ public class ColorUtils
 	 */
 	static public string Color2RGBA(Color color)
 	{
-		return IntUtils.ToHexString((long)color.r*255)+
+		string str = "#" + IntUtils.ToHexString((long)color.r*255)+
 				IntUtils.ToHexString((long)color.g*255)+
 				IntUtils.ToHexString((long)color.b*255)+
 				IntUtils.ToHexString((long)color.a*255);
+        return str;
 	}
 }
