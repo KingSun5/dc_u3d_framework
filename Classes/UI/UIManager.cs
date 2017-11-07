@@ -191,7 +191,7 @@ public class UIManager : Singleton<UIManager>
     {
         GameObject obj = UIManager.Instance.Find(id);
         if (obj == null) return;
-        UIPanelBase currView = obj.GetComponent<UIPanelBase>();
+        UIWindowBase currView = obj.GetComponent<UIWindowBase>();
         if (currView == null) return;
 
         currView.MaxSortingOrder = 0;
@@ -246,7 +246,7 @@ public class UIManager : Singleton<UIManager>
         for (int i = 0; i < childCounts; ++i)
         {
             GameObject child = obj.transform.GetChild(i).gameObject;
-            UIPanelBase currView = child.GetComponent<UIPanelBase>();
+            UIWindowBase currView = child.GetComponent<UIWindowBase>();
             if (currView == null) continue;
             if (maxSortingOrder < currView.MaxSortingOrder)
             {

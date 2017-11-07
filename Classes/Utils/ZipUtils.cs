@@ -9,7 +9,7 @@ using System;
 /// <summary>
 /// zip工具类，依赖SharpZipLib库
 /// </summary>
-public class ZipUtils 
+public sealed class ZipUtils 
 {
     /// <summary>
     /// 压缩多个文件/文件夹

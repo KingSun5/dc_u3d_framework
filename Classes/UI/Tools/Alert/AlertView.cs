@@ -9,7 +9,7 @@ using UnityEngine.UI;
 /// @author hannibal
 /// @time 2017-2-15
 /// </summary>
-public class AlertView : UIPanelBase
+public class AlertView : UIWindowBase
 {
 	public Button[]     m_ArrBtn = new Button[(int)eAlertBtnType.MAX];
 	public Text         m_ContentText;

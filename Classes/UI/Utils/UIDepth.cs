@@ -8,7 +8,7 @@ using UnityEngine.UI;
 /// <summary>
 /// 修改UI元素渲染层级类
 /// 使用方法：直接在UI元素中加入，调用SetOrder即可。注：SetOrder会把子节点所有元素都设为该层级
-/// 1.界面基类UIViewBase里都有个m_UIMaxSortingOrder，
+/// 1.界面基类UIPanelBase里都有个m_UIMaxSortingOrder，
 ///   每次使用这个类修改了层级，都要重新设置m_UIMaxSortingOrder
 ///   这样做的原因：保证每个UI里的特效都不会越界，渗透到其他UI界面
 /// 2.RefreshRender可以重新把子阶段所有元素设置为order层级

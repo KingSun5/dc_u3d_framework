@@ -38,7 +38,7 @@ public class EffectUI : EffectBase
         base.OnLoadComplete(obj);
 
         //提示特效层级
-        UIPanelBase parent_component = GetComponentInParent<UIPanelBase>();
+        UIWindowBase parent_component = GetComponentInParent<UIWindowBase>();
         if (parent_component != null)
         {
             UIDepth effectDepth = gameObject.AddComponent<UIDepth>();
