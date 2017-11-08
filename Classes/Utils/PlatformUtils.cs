@@ -97,3 +97,37 @@ RuntimePlatform
 		在Android平台的播放器中。
 
 */
+/**
+UNITY_EDITOR	define directive for calling Unity Editor scripts from your game code.
+UNITY_EDITOR_WIN	define directive for Editor code on Windows.
+UNITY_EDITOR_OSX	define directive for Editor code on Mac OSX.
+UNITY_STANDALONE_OSX	define directive for compiling/executing code specifically for OS X (including Universal, PPC and Intel architectures).
+UNITY_STANDALONE_WIN	define directive for compiling/executing code specifically for Windows standalone applications.
+UNITY_STANDALONE_LINUX	define directive for compiling/executing code specifically for Linux standalone applications.
+UNITY_STANDALONE	define directive for compiling/executing code for any standalone platform (OS X, Windows or Linux).
+UNITY_WII	define directive for compiling/executing code for the Wii console.
+UNITY_IOS	define directive for compiling/executing code for the iOS platform.
+UNITY_IPHONE	Deprecated. Use UNITY_IOS instead.
+UNITY_ANDROID	define directive for the Android platform.
+UNITY_PS3	define directive for running PlayStation 3 code.
+UNITY_PS4	define directive for running PlayStation 4 code.
+UNITY_SAMSUNGTV	define directive for executing Samsung TV code.
+UNITY_XBOX360	define directive for executing Xbox 360 code.
+UNITY_XBOXONE	define directive for executing Xbox One code.
+UNITY_TIZEN	define directive for the Tizen platform.
+UNITY_TVOS	define directive for the Apple TV platform.
+UNITY_WP_8	define directive for Windows Phone 8.
+UNITY_WP_8_1	define directive for Windows Phone 8.1.
+UNITY_WSA	define directive for Windows Store Apps. Additionally, NETFX_CORE is defined when compiling C# files against .NET Core.
+UNITY_WSA_8_0	define directive for Windows Store Apps when targeting SDK 8.0.
+UNITY_WSA_8_1	define directive for Windows Store Apps when targeting SDK 8.1.
+UNITY_WSA_10_0	define directive for Windows Store Apps when targeting Universal Windows 10 Apps. Additionally WINDOWS_UWP and NETFX_CORE are defined when compiling C# files against .NET Core.
+UNITY_WINRT	Equivalent to UNITY_WP_8 \ UNITY_WSA.
+UNITY_WINRT_8_0	Equivalent to UNITY_WP_8 \ UNITY_WSA_8_0.
+UNITY_WINRT_8_1	Equivalent to UNITY_WP_8_1 \ UNITY_WSA_8_1. This is also defined when compiling against Universal SDK 8.1.
+UNITY_WINRT_10_0	Equivalent to UNITY_WSA_10_0
+UNITY_WEBGL	define directive for WebGL.
+UNITY_ADS	define directive for calling Unity Ads methods from your game code. Version 5.2 and above.
+UNITY_ANALYTICS	define directive for calling Unity Analytics methods from your game code. Version 5.2 and above.
+UNITY_ASSERTIONS	define directive for assertions control process. 
+ */

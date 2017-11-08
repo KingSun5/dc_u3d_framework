@@ -8,21 +8,19 @@ using System.Collections;
 /// </summary>
 public class UIOutFocusDestroy : MonoBehaviour 
 {
-
-	// Use this for initialization
-	void Start ()
+	void Awake ()
     {
-	
+	    
 	}
 	
-	// Update is called once per frame
 	void Update () 
     {
-	
+
 	}
 
     void OnEnable()
     {
+
     }
 
     void OnDisable()

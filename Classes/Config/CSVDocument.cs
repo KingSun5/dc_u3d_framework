@@ -121,7 +121,7 @@ public class LoadCSVData
             if (rowSkip)
                 continue;
 
-            string[] columnArray = lineArray[i].Split(',');
+            string[] columnArray = readLine(columnText);
             if (i == 0)
             {
                 mColNum = columnArray.Length;
@@ -197,13 +197,14 @@ public class LoadCSVData
     }
 	//读取第rowIndex行columnIndex列的数据
     static ColumElement m_DefaultElement = new ColumElement();
-    public ColumElement getValue(int rowIndex, int columnIndex)
+    public ColumElement getValue(int rowIndex, string columnName)
     {
         m_DefaultElement.Value = "";
-        if (rowIndex <0 || mDocumentText.Count <= rowIndex)
+        int columnIndex = mDocumentColumNameList.IndexOf(columnName);
+        if (rowIndex < 0 || mDocumentText.Count <= rowIndex)
             return m_DefaultElement;
-        List<string> tempStrList =  mDocumentText[rowIndex];
-        if (columnIndex <0 || tempStrList.Count <= columnIndex)
+        List<string> tempStrList = mDocumentText[rowIndex];
+        if (columnIndex < 0 || tempStrList.Count <= columnIndex)
             return m_DefaultElement;
         m_DefaultElement.Value = tempStrList[columnIndex];
         return m_DefaultElement;

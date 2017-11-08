@@ -29,13 +29,13 @@ public class GlobalID
 
     public static string RootSDCard
     {
-        get 
-        { 
-#if UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX || UNITY_EDITOR
+        get
+        {
+#if UNITY_STANDALONE || UNITY_EDITOR
             return Application.persistentDataPath + "/"+GameName;
 #elif UNITY_ANDROID
             return "/sdcard/oayx/"+GameName;
-#elif UNITY_IPHONE || UNITY_IOS
+#elif UNITY_IOS
             return Application.persistentDataPath+ "/"+GameName;
 #else
             return Application.persistentDataPath+ "/"+GameName;

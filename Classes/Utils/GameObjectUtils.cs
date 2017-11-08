@@ -70,6 +70,24 @@ public class GameObjectUtils
 
         return;
     }
+    /// <summary>
+    /// 判断是否有父节点
+    /// </summary>
+    /// <param name="Name"></param>
+    /// <param name="Target"></param>
+    /// <returns></returns>
+    static public bool IsParent(string Name, Transform Target)
+    {
+        if (Target == null) return false;
+        if(Target.parent != null)
+        {
+            if (Target.parent.name == Name)
+                return true;
+            else
+                IsParent(Name, Target.parent);
+        }
+        return false;
+    }
 
     /// <summary>
     /// 删除子节点

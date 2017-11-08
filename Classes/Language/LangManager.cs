@@ -39,41 +39,38 @@ public class LangManager
     public static void SetLanguage(SystemLanguage _language)
     {
         m_Language = _language;
-        ReadXmlConfig(m_LanguageFile, OnReadFile);
+        ReadCsvConfig(m_LanguageFile, OnReadFile);
     }
 
-    private static bool ReadXmlConfig(string fileName, Action<XmlDocument> handler)
+    //读取CSV配置
+    public static bool ReadCsvConfig(string fileName, Action<LoadCSVData> handler)
     {
-        Log.Info("ReadXmlConfig:" + fileName);
+        Log.Info("ReadCsvConfig:" + fileName);
         TextAsset textAsset = ResourceLoaderManager.Instance.LoadTextAsset(fileName);
         if (textAsset == null)
         {
-            Log.Error("LangConfig::ReadXmlConfig - load error:" + fileName);
+            Log.Error("ConfigBase::ReadCsvConfig - load error:" + fileName);
             return false;
         }
-        else
-        {
-            XmlDocument xmlDoc = new XmlDocument();
-            xmlDoc.LoadXml(textAsset.text);
-            handler(xmlDoc);
-            xmlDoc = null;
-            ResourceLoaderManager.Instance.UnloadAsset(textAsset);
-            textAsset = null;
-        }
+        LoadCSVData csvDocument = new LoadCSVData();
+        csvDocument.Load(textAsset.text);
+        handler(csvDocument);
+        csvDocument.Clear();
+        ResourceLoaderManager.Instance.UnloadAsset(textAsset);
+        textAsset = null;
         return true;
     }
 
-    private static void OnReadFile(XmlDocument doc)
+    private static void OnReadFile(LoadCSVData doc)
     {
         m_DicInfo.Clear();
         string language = GetLanguageAB(m_Language);
 
-        XmlNodeList nodeList = doc.SelectSingleNode("Lines").ChildNodes;
-        foreach (XmlElement xe in nodeList)
+        int total_count = doc.numRows();
+        for (int i = 0; i < total_count; ++i)
         {
-            int ID = XmlConvert.ToInt32(xe.GetAttribute("KEY"));
-            string value = xe.GetAttribute(language);
-
+            int ID = doc.getValue(i, "KEY").ToInt32();
+            string value = doc.getValue(i, language).ToString();
             m_DicInfo.Add(ID, value);
         }
     }
