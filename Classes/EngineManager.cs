@@ -14,7 +14,6 @@ public class EngineManager : Singleton<EngineManager>
 
         AntiCheatManager.Instance.Setup();
         TimerManager.Instance.Setup();
-		ObjectFactoryManager.Instance.Setup();
 		MultyBuildManager.Instance.Setup();
         ResourceManager.Instance.Setup();
 		UIManager.Instance.Setup();
@@ -30,7 +29,6 @@ public class EngineManager : Singleton<EngineManager>
 	{
         AntiCheatManager.Instance.Destroy();
         TimerManager.Instance.Destroy();
-		ObjectFactoryManager.Instance.Destroy();
         MultyBuildManager.Instance.Destroy();
         ResourceManager.Instance.Destroy();
 		UIManager.Instance.Destroy();

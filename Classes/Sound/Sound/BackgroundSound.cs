@@ -10,27 +10,6 @@ public class BackgroundSound : SoundBase
 {
     private GameObject m_AudioSourceParent;
 
-    static public IPoolsObject CreateObject()
-    {
-        return new BackgroundSound();
-    }
-    public override string GetPoolsType()
-    {
-        return SoundBase.POOLS_SOUND_BG;
-    }
-    public override void Init()
-    {
-        base.Init();
-    }
-    public override void Release()
-    {
-        base.Release();
-        if (m_AudioSourceParent != null)
-        {
-            GameObject.Destroy(m_AudioSourceParent);
-            m_AudioSourceParent = null;
-        }
-    }
     public override void Setup(string fileName, Vector3 pos, Transform parent, float min_distance, float max_distance, int count = 1)
     {
         base.Setup(fileName, pos, parent, min_distance, max_distance, count);
@@ -51,6 +30,15 @@ public class BackgroundSound : SoundBase
             m_SoundSource.loop = count > 1 ? true : false;
             m_SoundSource.volume = SoundManager.Instance.BGSoundVolume;
             m_SoundSource.Play();
+        }
+    }
+    public override void Destroy()
+    {
+        base.Destroy();
+        if (m_AudioSourceParent != null)
+        {
+            GameObject.Destroy(m_AudioSourceParent);
+            m_AudioSourceParent = null;
         }
     }
     public override void Play()

@@ -3,23 +3,6 @@ using System.Collections;
 
 public class EffectSound : SoundBase
 {
-    static public IPoolsObject CreateObject()
-    {
-        return new EffectSound();
-    }
-    public override string GetPoolsType()
-    {
-        return SoundBase.POOLS_SOUND_EFFECT;
-    }
-
-    public override void Init()
-    {
-        base.Init();
-    }
-    public override void Release()
-    {
-        base.Release();
-    }
     public override void Setup(string fileName, Vector3 pos, Transform parent, float min_distance, float max_distance, int count = 1)
     {
         base.Setup(fileName, pos, parent, min_distance, max_distance, count);
@@ -44,7 +27,8 @@ public class EffectSound : SoundBase
     {
         if (m_FileName.Length == 0)
         {
-            ObjectFactoryManager.Instance.RecoverObject(this);
+            this.Destroy();
+            CommonObjectPools.Despawn(this);
             return;
         }
 
@@ -55,7 +39,8 @@ public class EffectSound : SoundBase
             {
                 if (!m_Active)
                 {
-                    ObjectFactoryManager.Instance.RecoverObject(this);
+                    this.Destroy();
+                    CommonObjectPools.Despawn(this);
                     return;
                 }
 
@@ -70,7 +55,7 @@ public class EffectSound : SoundBase
     }
     public override void OnLoadComplete()
     {
-        AudioSource aSrc = AudioPools.instance.SpawnAudioByFile(m_FileName, m_Position, m_ParentNode);
+        AudioSource aSrc = AudioSourcePools.instance.SpawnByFile(m_FileName, m_Position, m_ParentNode);
         if (aSrc != null && aSrc.clip != null)
         {
             aSrc.pitch = 1;
@@ -90,7 +75,8 @@ public class EffectSound : SoundBase
         }
         else
         {
-            ObjectFactoryManager.Instance.RecoverObject(this);
+            this.Destroy();
+            CommonObjectPools.Despawn(this);
             return;
         }
     }
@@ -100,6 +86,7 @@ public class EffectSound : SoundBase
     private void OnComponentDestroy()
     {
         m_Active = false;
-        ObjectFactoryManager.Instance.RecoverObject(this);
+        this.Destroy();
+        CommonObjectPools.Despawn(this);
     }
 }

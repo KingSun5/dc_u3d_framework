@@ -27,33 +27,29 @@ public class SoundBase : IPoolsObject
     public SoundBase()
     {
     }
-    public virtual string GetPoolsType()
-    {
-        return "";
-    }
-
     public virtual void Init()
     {
     }
-    public virtual void Release()
+
+    public virtual void Setup(string fileName, Vector3 pos, Transform parent, float min_distance, float max_distance, int count = 1)
+    {
+        m_Active = true;
+        m_IsPlay = true;
+        m_FileName = fileName;
+        m_ParentNode = parent;
+        m_Position = pos;
+        m_MinDistance = min_distance;
+        m_MaxDistance = max_distance;
+        m_PlayCount = count;
+    }
+    public virtual void Destroy()
     {
         if (m_SoundSource != null)
         {
             m_SoundSource.Stop();
-            AudioPools.instance.DespawnAudio(m_SoundSource.transform);
+            AudioSourcePools.instance.Despawn(m_SoundSource.transform);
             m_SoundSource = null;
         }
-    }
-    public virtual void Setup(string fileName, Vector3 pos, Transform parent, float min_distance, float max_distance, int count = 1)
-    {
-        m_Active = true;
-        m_FileName = fileName;
-        m_Position = pos;
-        m_ParentNode = parent;
-        m_MinDistance = min_distance;
-        m_MaxDistance = max_distance;
-        m_PlayCount = count;
-        m_IsPlay = true;
     }
     public virtual void Update()
     {

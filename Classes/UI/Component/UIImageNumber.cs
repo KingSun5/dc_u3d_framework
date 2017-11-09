@@ -46,8 +46,8 @@ public class UIImageNumber : UIComponentBase
             image.transform.SetParent(transform);
             image.transform.localScale = Vector3.one;
             image.gameObject.SetActive(true);
-            if (image.sprite != null) SpritePools.Recover(image.sprite);
-            image.sprite = SpritePools.Get(m_RootPathName + arr[i]);
+            if (image.sprite != null) SpritePools.Despawn(image.sprite);
+            image.sprite = SpritePools.Spawn(m_RootPathName + arr[i]);
 		}
 	}
 
@@ -58,7 +58,7 @@ public class UIImageNumber : UIComponentBase
             if (m_NumImage[i] == null)
                 continue;
             Image image = m_NumImage[i].GetComponent<Image>();
-            if (image != null && image.sprite != null) SpritePools.Recover(image.sprite);
+            if (image != null && image.sprite != null) SpritePools.Despawn(image.sprite);
             m_NumImage[i].gameObject.SetActive(false);
         }
 	}

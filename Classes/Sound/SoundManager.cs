@@ -28,16 +28,11 @@ public class SoundManager : Singleton<SoundManager>
         m_IsCloseEffectSound = LocalValue.GetValue<int>(SoundID.LOCAL_EFFECT_SOUND_CLOSE, 0) == 1 ? true : false;
         m_BGSoundVolume = LocalValue.GetValue<float>(SoundID.LOCAL_BGSOUND_VOLUME, 1) ;
         m_EffectSoundVolume = LocalValue.GetValue<float>(SoundID.LOCAL_EFFECT_SOUND_VOLUME, 1);
-
-        ObjectFactoryManager.Instance.RegisterFactory(SoundBase.POOLS_SOUND_EFFECT, EffectSound.CreateObject);
-        ObjectFactoryManager.Instance.RegisterFactory(SoundBase.POOLS_SOUND_BG, BackgroundSound.CreateObject);
         RegisterEvent();
 	}
 	
 	public void Destroy()
     {
-        ObjectFactoryManager.Instance.UnregisterFactory(SoundBase.POOLS_SOUND_EFFECT);
-        ObjectFactoryManager.Instance.UnregisterFactory(SoundBase.POOLS_SOUND_BG);
         UnRegisterEvent();
 	}
 
@@ -50,7 +45,7 @@ public class SoundManager : Singleton<SoundManager>
     public void StopAll()
     {
         StopBGSound();
-        AudioPools.instance.StopAll();
+        AudioSourcePools.instance.StopAll();
     }
     /// <summary>
     /// 释放音效资源
@@ -58,7 +53,7 @@ public class SoundManager : Singleton<SoundManager>
     public void Clear()
     {
         ClearBGSound();
-        AudioPools.instance.Clear();
+        AudioSourcePools.instance.Clear();
     }
     /*～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～背景声音～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～*/
     /**背景声音*/
@@ -67,7 +62,7 @@ public class SoundManager : Singleton<SoundManager>
         if (m_IsCloseBGSound) return null;
         if (string.IsNullOrEmpty(fileName)) return null;
 
-        BackgroundSound sound = ObjectFactoryManager.Instance.CreateObject(SoundBase.POOLS_SOUND_BG) as BackgroundSound;
+        BackgroundSound sound = CommonObjectPools.Spawn<BackgroundSound>();
         sound.Setup(fileName, Vector3.zero, null, 0, 0, loop ? int.MaxValue : 1);
         sound.LoadResource();
         m_ListBGAudio.Add(sound);
@@ -103,7 +98,8 @@ public class SoundManager : Singleton<SoundManager>
         if (sound != null)
         {
             sound.Stop();
-            ObjectFactoryManager.Instance.RecoverObject(sound);
+            sound.Destroy();
+            CommonObjectPools.Despawn(sound);
             m_ListBGAudio.Remove(sound);
         }
     }
@@ -120,7 +116,8 @@ public class SoundManager : Singleton<SoundManager>
         {
             SoundBase sound = m_ListBGAudio[i];
             sound.Stop();
-            ObjectFactoryManager.Instance.RecoverObject(sound);
+            sound.Destroy();
+            CommonObjectPools.Despawn(sound);
         }
         m_ListBGAudio.Clear();
     }
@@ -130,13 +127,13 @@ public class SoundManager : Singleton<SoundManager>
 	/// </summary>
 	/// <param name="fileName">资源文件</param>
 	/// <param name="pos">播放位置</param>
-    /// <param name="loop">是否循环：如果是循环音效，需要手动清理(AudioPools.instance.DespawnAudio)</param>
+    /// <param name="loop">是否循环：如果是循环音效，需要手动清理(AudioSourcePools.instance.DespawnAudio)</param>
 	/// <returns></returns>
     public SoundBase PlaySoundEffect(string fileName, Vector3 pos, float min_distance, float max_distance, int count = 1)
     {
         if (IsCloseEffectSound || fileName.Length == 0) return null;
 
-        EffectSound sound = ObjectFactoryManager.Instance.CreateObject(SoundBase.POOLS_SOUND_EFFECT) as EffectSound;
+        EffectSound sound = CommonObjectPools.Spawn<EffectSound>();
         sound.Setup(fileName, pos, null, min_distance, max_distance, count);
         sound.LoadResource();
 
@@ -146,7 +143,7 @@ public class SoundManager : Singleton<SoundManager>
     {
         if (IsCloseEffectSound || clip == null) return null;
 
-        AudioSource aSrc = AudioPools.instance.SpawnAudioByClip(clip, Vector3.zero);
+        AudioSource aSrc = AudioSourcePools.instance.SpawnByClip(clip, Vector3.zero);
         aSrc.gameObject.transform.position = pos;
         aSrc.pitch = 1;
         aSrc.volume = m_EffectSoundVolume;
@@ -159,9 +156,9 @@ public class SoundManager : Singleton<SoundManager>
     }
     public AudioSource PlayUISoundEffect(AudioClip clip, bool loop = false)
     {
-        if (IsCloseEffectSound || clip == null || AudioPools.instance == null) return null;
+        if (IsCloseEffectSound || clip == null || AudioSourcePools.instance == null) return null;
 
-        AudioSource aSrc = AudioPools.instance.SpawnAudioByClip(clip, Vector3.zero);
+        AudioSource aSrc = AudioSourcePools.instance.SpawnByClip(clip, Vector3.zero);
         aSrc.pitch = 1;
         aSrc.volume = m_EffectSoundVolume;
         aSrc.loop = loop;
@@ -178,14 +175,15 @@ public class SoundManager : Singleton<SoundManager>
         if (aSrc == null) return;
 
         aSrc.Stop();
-        AudioPools.instance.DespawnAudio(aSrc.gameObject.transform);
+        AudioSourcePools.instance.Despawn(aSrc.gameObject.transform);
     }
     public void StopSoundEffect(SoundBase sound)
     {
         if (sound == null) return;
 
         sound.Stop();
-        ObjectFactoryManager.Instance.RecoverObject(sound);
+        sound.Destroy();
+        CommonObjectPools.Despawn(sound);
     }
     /*～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～其他～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～*/
     /// <summary>
@@ -195,7 +193,7 @@ public class SoundManager : Singleton<SoundManager>
     {
         if (IsCloseEffectSound || fileName.Length == 0) return null;
 
-        EffectSound sound = ObjectFactoryManager.Instance.CreateObject(SoundBase.POOLS_SOUND_EFFECT) as EffectSound;
+        EffectSound sound = CommonObjectPools.Spawn<EffectSound>();
         sound.Setup(fileName, Vector3.zero, GetDefaultListener().transform, 0, 500, count);
         sound.LoadResource();
 

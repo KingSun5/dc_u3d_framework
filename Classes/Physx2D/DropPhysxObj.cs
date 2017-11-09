@@ -44,7 +44,7 @@ public struct SDropInfo
 	}
 }
 
-public class DropPhysxObj : IPoolsObject
+public class DropPhysxObj
 {
     public const string POOLS_DROP_PHYSX_OBJ = "POOLS_DROP_PHYSX_OBJ";
 
@@ -56,18 +56,10 @@ public class DropPhysxObj : IPoolsObject
 	
 	private SDropInfo m_drop_info;
 
-	private DropPhysxObj()
-	{
-	}
-	
 	/**统一创建接口，不要使用默认的构造函数实现*/		
 	static public DropPhysxObj Create()
 	{
-		DropPhysxObj obj = ObjectPools.GetObj(POOLS_DROP_PHYSX_OBJ) as DropPhysxObj;
-		if(obj == null)
-		{
-			obj = new DropPhysxObj();
-		}
+        DropPhysxObj obj = CommonObjectPools.Spawn<DropPhysxObj>();
 		obj.Init();
 		return obj;
 	}
@@ -77,6 +69,7 @@ public class DropPhysxObj : IPoolsObject
 		if(obj == null)return;
 
 		obj.Release();
+        CommonObjectPools.Despawn(obj);
 	}
 	/** 初始化*/		
 	public void Init()
@@ -95,7 +88,6 @@ public class DropPhysxObj : IPoolsObject
 		m_drop_info.m_end_fun = null;
 		
 		DropSimulationManager.Instance.Remove(this);
-		ObjectPools.RecoverObj(POOLS_DROP_PHYSX_OBJ,this);
 	}
     public string GetPoolsType()
 	{
