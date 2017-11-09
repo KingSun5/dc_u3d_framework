@@ -37,8 +37,9 @@ public class ColumElement
         {
             return (elementValue.Length > 0) ? long.Parse(elementValue) : ((long)0);
         }
-        catch (Exception)
+        catch (Exception e)
         {
+            Log.Exception(e);
             return 0;
         }
     }
@@ -48,8 +49,9 @@ public class ColumElement
         {
             return (elementValue.Length > 0) ? ulong.Parse(elementValue) : ((long)0);
         }
-        catch (Exception)
+        catch (Exception e)
         {
+            Log.Exception(e);
             return 0;
         }
     }
@@ -59,8 +61,9 @@ public class ColumElement
         {
             return (elementValue.Length > 0) ? decimal.Parse(elementValue) : ((long)0);
         }
-        catch (Exception)
+        catch (Exception e)
         {
+            Log.Exception(e);
             return 0;
         }
     }
