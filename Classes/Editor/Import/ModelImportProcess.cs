@@ -25,32 +25,25 @@ public class ModelImportProcess : AssetPostprocessor
         {
             try
             {
-                if (DragAndDrop.paths.Length <= 0)return;
+                string path = Path.GetDirectoryName(assetPath);
+                string file_name = Path.GetFileNameWithoutExtension(assetPath);
 
-                string fileAnim = DragAndDrop.paths[0];
-
-                var select = Selection.activeObject;
-                if(select == null)
+                using(StreamReader file_stream = new StreamReader(path + "/" + file_name + ".txt"))
                 {
-                    EditorUtility.DisplayDialog("Imported animations", "先选中配置表文件!", "OK");
-                    return;
-                }
-                var path = AssetDatabase.GetAssetPath(select);
-                StreamReader file = new StreamReader(path);
-                string sAnimList = file.ReadToEnd();
-                file.Close();
-                
-                if (EditorUtility.DisplayDialog("FBX Animation Import from file", fileAnim, "Import", "Cancel"))
-                {
-                    List<ModelImporterClipAnimation> list_clip = new List<ModelImporterClipAnimation>();
-                    ParseAnimFile(sAnimList, ref list_clip);
+                    string sAnimList = file_stream.ReadToEnd();
 
-                    ModelImporter modelImporter = assetImporter as ModelImporter;
-                    modelImporter.animationType = ModelImporterAnimationType.Legacy;
-                    modelImporter.meshCompression = ModelImporterMeshCompression.Medium;
-                    modelImporter.clipAnimations = list_clip.ToArray();
+                    if (EditorUtility.DisplayDialog("FBX Animation Import from file", file_name, "Import", "Cancel"))
+                    {
+                        List<ModelImporterClipAnimation> list_clip = new List<ModelImporterClipAnimation>();
+                        ParseAnimFile(sAnimList, ref list_clip);
 
-                    EditorUtility.DisplayDialog("Imported animations","Number of imported clips: " + modelImporter.clipAnimations.GetLength(0).ToString(), "OK");
+                        ModelImporter modelImporter = assetImporter as ModelImporter;
+                        modelImporter.animationType = ModelImporterAnimationType.Legacy;
+                        modelImporter.meshCompression = ModelImporterMeshCompression.Medium;
+                        modelImporter.clipAnimations = list_clip.ToArray();
+
+                        EditorUtility.DisplayDialog("Imported animations", "Number of imported clips: " + modelImporter.clipAnimations.GetLength(0).ToString(), "OK");
+                    }
                 }
             }
             catch (Exception e)
