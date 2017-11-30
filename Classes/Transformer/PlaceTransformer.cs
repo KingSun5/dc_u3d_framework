@@ -4,7 +4,7 @@ using System.Collections;
 /// <summary>
 /// 放置指定位置
 /// @author hannibal
-/// @time 2017-2-14
+/// @time 2016-2-14
 /// </summary>
 public class PlaceTransformer : SpeedTransformer 
 {

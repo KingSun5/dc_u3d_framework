@@ -6,7 +6,7 @@ using System.Collections;
 /// <summary>
 /// alpha渐变
 /// @author hannibal
-/// @time 2017-3-19
+/// @time 2016-3-19
 /// </summary>
 public class UITextMeshFadeAction : MonoBehaviour 
 {

@@ -36,7 +36,7 @@ public class RockerButtonScript : MonoBehaviour
         UIEventListener.Get(gameObject).RemoveEventListener(eUIEventType.Up, OnUp);
     }
 
-    void OnDown(UIEventArgs evt)
+    void OnDown(UIEvent evt)
     {
         m_IsDrag = true;
         if (OnRockerDown != null)
@@ -44,7 +44,7 @@ public class RockerButtonScript : MonoBehaviour
             OnRockerDown();
         }
     }
-    void OnUp(UIEventArgs evt)
+    void OnUp(UIEvent evt)
     {
         m_IsDrag = false;
         if (OnRockerUp != null)

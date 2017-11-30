@@ -5,7 +5,7 @@ using System.Collections.Generic;
 /// <summary>
 /// http上报数据
 /// @author hannibal
-/// @time 2017-4-5
+/// @time 2016-4-5
 /// </summary>
 public class HttpClient : MonoBehaviour 
 {

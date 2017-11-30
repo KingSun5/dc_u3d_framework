@@ -8,7 +8,7 @@ using System.Linq;
 /// <summary>
 /// 线程函数处理器，可以让一个函数一部分逻辑在多线程中处理
 /// @author hannibal
-/// @time 2017-8-11
+/// @time 2016-8-11
 /// </summary>
 public class ThreadLoomManager : MonoBehaviour
 {

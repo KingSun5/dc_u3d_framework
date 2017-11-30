@@ -6,7 +6,7 @@ using UnityEngine.UI;
 /// <summary>
 /// UI文本加下划线
 /// @author hannibal
-/// @time 2017-2-25
+/// @time 2016-2-25
 /// </summary>
 [RequireComponent(typeof(Text))]
 public class UITextUnderline : MonoBehaviour 

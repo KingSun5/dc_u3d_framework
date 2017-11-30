@@ -8,7 +8,7 @@ using DG.Tweening;
 /// <summary>
 /// UI界面移动
 /// @author hannibal
-/// @time 2017-3-26
+/// @time 2016-3-26
 /// </summary>
 public class UIPanelMove : UIPanelAnimation
 {

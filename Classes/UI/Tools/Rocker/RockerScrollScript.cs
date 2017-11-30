@@ -57,11 +57,11 @@ public class RockerScrollScript : ScrollRect
         }
     }
 
-    void OnDown(UIEventArgs evt)
+    void OnDown(UIEvent evt)
     {
         m_IsDrag = true;
     }
-    void OnUp(UIEventArgs evt)
+    void OnUp(UIEvent evt)
     {
         m_IsDrag = false;
         if (OnRockerStop != null)

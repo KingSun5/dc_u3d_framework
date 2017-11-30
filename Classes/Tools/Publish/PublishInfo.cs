@@ -6,7 +6,7 @@ using System;
 /// <summary>
 /// 平台配置表信息
 /// @author hannibal
-/// @time 2017-6-30
+/// @time 2016-6-30
 /// </summary>
 [Serializable]
 public class PublishPlatformInfo

@@ -7,7 +7,7 @@ using System.Collections;
 /// <summary>
 /// image进度
 /// @author hannibal
-/// @time 2017-3-26
+/// @time 2016-3-26
 /// </summary>
 public class UIImageFillAction : MonoBehaviour
 {

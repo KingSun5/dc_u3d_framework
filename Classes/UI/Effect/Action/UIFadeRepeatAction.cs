@@ -4,7 +4,7 @@ using System.Collections;
 /// <summary>
 /// 闪烁
 /// @author hannibal
-/// @time 2017-3-26
+/// @time 2016-3-26
 /// </summary>
 public class UIFadeRepeatAction : MonoBehaviour 
 {

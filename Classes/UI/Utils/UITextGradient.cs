@@ -8,7 +8,7 @@ using UnityEngine.UI;
 /// <summary>
 /// 文本颜色渐变
 /// @author hannibal
-/// @time 2017-1-13
+/// @time 2016-1-13
 /// </summary>
 public class UITextGradient : BaseMeshEffect
 {

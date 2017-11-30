@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 /// <summary>
 /// u3d场景加载
 /// @author hannibal
-/// @time 2017-3-2
+/// @time 2016-3-2
 /// </summary>
 public class SceneLoaderManagerr : Singleton<SceneLoaderManagerr>
 {

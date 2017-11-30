@@ -6,7 +6,7 @@ using System.Text;
 /// <summary>
 /// 错误写入屏幕
 /// @author hannibal
-/// @time 2017-1-19
+/// @time 2016-1-19
 /// </summary>
 public class Log2ScreenScript : MonoBehaviour
 {

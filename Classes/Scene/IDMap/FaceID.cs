@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public enum eFaceType
+public enum eFace8Type
 {
-    NONE = 0,
+    NONE,
     RIGHT,		//正右方
     RIGHT_DOWN,	//右下方
     DOWN,		//下方
@@ -12,6 +12,17 @@ public enum eFaceType
     LEFT_UP,	//左上
     UP,			//上
     RIGHT_UP,	//右上
+
+    MAX,		//最大值
+}
+
+public enum eFace4Type
+{
+    NONE,
+    RIGHT,		//正右方
+    UP,			//上
+    LEFT,		//左
+    DOWN,		//下方
 
     MAX,		//最大值
 }

@@ -6,16 +6,16 @@ using System.Text;
 /// <summary>
 /// 链接socket管理器
 /// @author hannibal
-/// @time 2017-8-17
+/// @time 2016-8-17
 /// </summary>
 public class NetConnectManager : Singleton<NetConnectManager>
 {
     private long m_share_conn_idx = 0;
-    private Dictionary<long, NetConnecter> m_connectedes = null;
+    private Dictionary<long, TCPNetConnecter> m_connectedes = null;
 
     public NetConnectManager()
     {
-        m_connectedes = new Dictionary<long, NetConnecter>();
+        m_connectedes = new Dictionary<long, TCPNetConnecter>();
     }
 
     public void Setup()
@@ -49,7 +49,7 @@ public class NetConnectManager : Singleton<NetConnectManager>
     /// <summary>
     /// 连接主机
     /// </summary>
-    public long ConnectTo(string ip, ushort port, BaseNet.OnConnectedFunction connected, BaseNet.OnReceiveFunction receive, BaseNet.OnCloseFunction close)
+    public long ConnectTo(string ip, ushort port, TCPNetBase.OnConnectedFunction connected, TCPNetBase.OnReceiveFunction receive, TCPNetBase.OnCloseFunction close)
     {
         TCPNetConnecter socket = new TCPNetConnecter();
         socket.Setup();
@@ -63,7 +63,7 @@ public class NetConnectManager : Singleton<NetConnectManager>
     /// </summary>
     public void Disconnect(long conn_idx)
     {
-        NetConnecter socket;
+        TCPNetConnecter socket;
         if (m_connectedes.TryGetValue(conn_idx, out socket))
         {
             socket.Destroy();
@@ -72,7 +72,7 @@ public class NetConnectManager : Singleton<NetConnectManager>
     }
     public int Send(long conn_idx, ByteArray by)
     {
-        NetConnecter socket;
+        TCPNetConnecter socket;
         if (m_connectedes.TryGetValue(conn_idx, out socket))
         {
             return socket.Send(conn_idx, by);

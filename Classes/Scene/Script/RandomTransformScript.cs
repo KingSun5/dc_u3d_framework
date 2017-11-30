@@ -4,7 +4,7 @@ using System.Collections;
 /// <summary>
 /// 随机位置，缩放，旋转
 /// @author hannibal
-/// @time 2017-4-14
+/// @time 2016-4-14
 /// </summary>
 public class RandomTransformScript : MonoBehaviour 
 {

@@ -4,7 +4,7 @@ using System.Collections;
 /// <summary>
 /// 闪烁变换器
 /// @author hannibal
-/// @time 2017-2-14
+/// @time 2016-2-14
 /// </summary>
 public class BlinkTransformer : Transformer 
 {

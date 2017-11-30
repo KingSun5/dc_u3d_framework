@@ -7,9 +7,9 @@ using UnityEngine.UI;
 /// <summary>
 /// 弹框
 /// @author hannibal
-/// @time 2017-2-15
+/// @time 2016-2-15
 /// </summary>
-public class AlertView : UIWindowBase
+public class AlertView : UIPanelBase
 {
 	public Button[]     m_ArrBtn = new Button[(int)eAlertBtnType.MAX];
 	public Text         m_ContentText;
@@ -58,7 +58,7 @@ public class AlertView : UIWindowBase
 	}
 	
 	/**点击*/
-	private void OnBtnClick(UIEventArgs evt)
+	private void OnBtnClick(UIEvent evt)
 	{
 		if(m_Fun != null)
 		{

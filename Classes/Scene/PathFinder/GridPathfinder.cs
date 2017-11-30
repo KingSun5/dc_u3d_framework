@@ -23,7 +23,7 @@ public class GridPathfinder : Singleton<GridPathfinder>
 	
 	private Rect m_temp_collide_rect;
 
-	private eFaceType m_walkDir = eFaceType.NONE;
+	private eFace8Type m_walkDir = eFace8Type.NONE;
 	
 	/**地图障碍数据*/
 	private PathGridMap m_grid_map = null; 
@@ -93,28 +93,28 @@ public class GridPathfinder : Singleton<GridPathfinder>
 		//确定移动方向
 		PathFinderID.EFinderResult result = PathFinderID.EFinderResult.FAILED;
 		float angle = MathUtils.ToDegree(Math2DUtils.LineRadians(cur_x, cur_y, target_x, target_y));
-		m_walkDir = (eFaceType)Math2DUtils.getFace(angle, 8);
+		m_walkDir = (eFace8Type)Math2DUtils.getFace(angle, 8);
 		
 		m_cur_grid = m_grid_map.getNodeByPostion(cur_x, cur_y);
 		if(m_cur_grid == null)return PathFinderID.EFinderResult.FAILED;
 		
 		//重新设置方向
 		m_walkDir = resetDir(m_cur_grid, m_walkDir);
-		switch((eFaceType)m_walkDir)
+		switch((eFace8Type)m_walkDir)
 		{ 
-		case eFaceType.RIGHT:
+		case eFace8Type.RIGHT:
 			y_step_inc = 0;
 			break;
 			
-		case eFaceType.DOWN:
+		case eFace8Type.DOWN:
 			x_step_inc = 0;
 			break;
 			
-		case eFaceType.LEFT:
+		case eFace8Type.LEFT:
 			y_step_inc = 0;
 			break;
 			
-		case eFaceType.UP:
+		case eFace8Type.UP:
 			x_step_inc = 0;
 			break;
 		}
@@ -176,27 +176,27 @@ public class GridPathfinder : Singleton<GridPathfinder>
 		PathGrid tempTile = null;
 		switch(m_walkDir)
 		{ 
-		case eFaceType.RIGHT://校验相邻格子
+		case eFace8Type.RIGHT://校验相邻格子
 			tempTile = m_grid_map.getNode(grid_row,grid_col+1);
 			if(!checkBlock(tempTile))return false;
 			return true;
 			
-		case eFaceType.DOWN:
+		case eFace8Type.DOWN:
 			tempTile = m_grid_map.getNode(grid_row+1,grid_col);
 			if(!checkBlock(tempTile))return false;
 			return true;
 			
-		case eFaceType.LEFT:
+		case eFace8Type.LEFT:
 			tempTile = m_grid_map.getNode(grid_row,grid_col-1);
 			if(!checkBlock(tempTile))return false;
 			return true;
 			
-		case eFaceType.UP:
+		case eFace8Type.UP:
 			tempTile = m_grid_map.getNode(grid_row-1,grid_col);
 			if(!checkBlock(tempTile))return false;
 			return true;
 			
-		case eFaceType.RIGHT_DOWN:
+		case eFace8Type.RIGHT_DOWN:
 			tempTile = m_grid_map.getNode(grid_row,grid_col+1);
 			if(!checkBlock(tempTile))return false;
 			tempTile = m_grid_map.getNode(grid_row+1,grid_col);
@@ -205,7 +205,7 @@ public class GridPathfinder : Singleton<GridPathfinder>
 			if(!checkBlock(tempTile))return false;
 			return true;
 			
-		case eFaceType.RIGHT_UP:
+		case eFace8Type.RIGHT_UP:
 			tempTile = m_grid_map.getNode(grid_row,grid_col+1);
 			if(!checkBlock(tempTile))return false;
 			tempTile = m_grid_map.getNode(grid_row-1,grid_col);
@@ -214,7 +214,7 @@ public class GridPathfinder : Singleton<GridPathfinder>
 			if(!checkBlock(tempTile))return false;
 			return true;
 			
-		case eFaceType.LEFT_DOWN:
+		case eFace8Type.LEFT_DOWN:
 			tempTile = m_grid_map.getNode(grid_row,grid_col-1);
 			if(!checkBlock(tempTile))return false;
 			tempTile = m_grid_map.getNode(grid_row+1,grid_col);
@@ -223,7 +223,7 @@ public class GridPathfinder : Singleton<GridPathfinder>
 			if(!checkBlock(tempTile))return false;
 			return true;
 			
-		case eFaceType.LEFT_UP:
+		case eFace8Type.LEFT_UP:
 			tempTile = m_grid_map.getNode(grid_row,grid_col-1);
 			if(!checkBlock(tempTile))return false;
 			tempTile = m_grid_map.getNode(grid_row-1,grid_col);
@@ -235,7 +235,7 @@ public class GridPathfinder : Singleton<GridPathfinder>
 		
 		return false;
 	}
-	private eFaceType resetDir(PathGrid cur_tile, eFaceType dir)
+	private eFace8Type resetDir(PathGrid cur_tile, eFace8Type dir)
 	{
 		if(cur_tile == null)return dir;
 
@@ -244,32 +244,32 @@ public class GridPathfinder : Singleton<GridPathfinder>
 		PathGrid tempTile = null;
 		switch(dir)
 		{ 
-		case eFaceType.RIGHT_DOWN:
+		case eFace8Type.RIGHT_DOWN:
 			tempTile = m_grid_map.getNode(grid_row+1,grid_col);
-			if(!checkBlock(tempTile))return eFaceType.RIGHT;
+			if(!checkBlock(tempTile))return eFace8Type.RIGHT;
 			tempTile = m_grid_map.getNode(grid_row,grid_col+1);
-			if(!checkBlock(tempTile))return eFaceType.DOWN;
+			if(!checkBlock(tempTile))return eFace8Type.DOWN;
 			break;
 			
-		case eFaceType.RIGHT_UP:
+		case eFace8Type.RIGHT_UP:
 			tempTile = m_grid_map.getNode(grid_row-1,grid_col);
-			if(!checkBlock(tempTile))return eFaceType.RIGHT;
+			if(!checkBlock(tempTile))return eFace8Type.RIGHT;
 			tempTile = m_grid_map.getNode(grid_row,grid_col+1);
-			if(!checkBlock(tempTile))return eFaceType.UP;
+			if(!checkBlock(tempTile))return eFace8Type.UP;
 			break;
 			
-		case eFaceType.LEFT_DOWN:
+		case eFace8Type.LEFT_DOWN:
 			tempTile = m_grid_map.getNode(grid_row+1,grid_col);
-			if(!checkBlock(tempTile))return eFaceType.LEFT;
+			if(!checkBlock(tempTile))return eFace8Type.LEFT;
 			tempTile = m_grid_map.getNode(grid_row,grid_col-1);
-			if(!checkBlock(tempTile))return eFaceType.DOWN;
+			if(!checkBlock(tempTile))return eFace8Type.DOWN;
 			break;
 			
-		case eFaceType.LEFT_UP:
+		case eFace8Type.LEFT_UP:
 			tempTile = m_grid_map.getNode(grid_row-1,grid_col);
-			if(!checkBlock(tempTile))return eFaceType.LEFT;
+			if(!checkBlock(tempTile))return eFace8Type.LEFT;
 			tempTile = m_grid_map.getNode(grid_row,grid_col-1);
-			if(!checkBlock(tempTile))return eFaceType.UP;
+			if(!checkBlock(tempTile))return eFace8Type.UP;
 			break;
 		}
 		return dir;

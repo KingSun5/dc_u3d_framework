@@ -6,7 +6,7 @@ using System.Collections;
 /// <summary>
 /// 按钮按下的缩放动画
 /// @author hannibal
-/// @time 2017-2-25
+/// @time 2016-2-25
 /// </summary>
 public class UIPressScaleAction : MonoBehaviour
 {
@@ -41,17 +41,17 @@ public class UIPressScaleAction : MonoBehaviour
         UIEventListener.Get(gameObject).RemoveEventListener(eUIEventType.Exit, OnExit);
     }
 
-    void OnDown(UIEventArgs evt)
+    void OnDown(UIEvent evt)
     {
         GameObject influence_obj = InfluenceObject != null ? InfluenceObject : gameObject;
         influence_obj.transform.DOScale(Vector3.one * scale, time);
     }
-    void OnUp(UIEventArgs evt)
+    void OnUp(UIEvent evt)
     {
         GameObject influence_obj = InfluenceObject != null ? InfluenceObject : gameObject;
         influence_obj.transform.DOScale(Vector3.one, time); 
     }
-    void OnExit(UIEventArgs evt)
+    void OnExit(UIEvent evt)
     {
         GameObject influence_obj = InfluenceObject != null ? InfluenceObject : gameObject;
         influence_obj.transform.DOScale(Vector3.one, time);

@@ -1,13 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections;
 
 /// <summary>
-/// ui组件基类
+/// 非弹出子界面，一半是嵌入到UIPanelBase
 /// @author hannibal
 /// @time 2016-2-5
 /// </summary>
-public class UIComponentBase : MonoBehaviour 
+public class UIViewBase : MonoBehaviour
 {
     //～～～～～～～～～～～～～～～～～～～～～～～基本方法～～～～～～～～～～～～～～～～～～～～～～～//
     /// <summary>

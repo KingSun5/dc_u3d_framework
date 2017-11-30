@@ -4,7 +4,7 @@ using System.Collections;
 /// <summary>
 /// 声音基类
 /// @author hannibal
-/// @time 2017-1-14
+/// @time 2016-1-14
 /// </summary>
 public class SoundBase : IPoolsObject
 {

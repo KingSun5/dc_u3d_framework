@@ -7,7 +7,7 @@ using System.Reflection;
 /// <summary>
 /// 监视属性改变
 /// @author hannibal
-/// @time 2017-1-17
+/// @time 2016-1-17
 /// </summary>
 [CustomPropertyDrawer(typeof(SetPropertyAttribute))]
 public class SetPropertyDrawer : PropertyDrawer

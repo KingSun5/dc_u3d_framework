@@ -15,7 +15,7 @@ using System.IO;
 /// 3.删除fbx模型文件，重新拖入到unity资源目录
 /// 4.在弹出的对话框中选择Import按钮,等待结束
 /// @author hannibal
-/// @time 2017-1-3
+/// @time 2016-1-3
 /// </summary>
 public class ModelImportProcess : AssetPostprocessor
 {

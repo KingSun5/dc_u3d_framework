@@ -5,7 +5,7 @@ using System.Collections.Generic;
 /// <summary>
 /// 弹框
 /// @author hannibal
-/// @time 2017-2-15
+/// @time 2016-2-15
 /// </summary>
 public class AlertManager : Singleton<AlertManager>
 {

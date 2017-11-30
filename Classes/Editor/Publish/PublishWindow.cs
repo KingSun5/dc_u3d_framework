@@ -7,7 +7,7 @@ using System.IO;
 /// <summary>
 /// 发布窗口
 /// @author hannibal
-/// @time 2017-6-30
+/// @time 2016-6-30
 /// </summary>
 public class PublishWindow : EditorWindow
 {

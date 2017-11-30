@@ -6,7 +6,7 @@ using UnityEngine;
 /// <summary>
 /// 镜像翻转相机，用于镜子等情况
 /// @author hannibal
-/// @time 2017-11-4
+/// @time 2016-11-4
 /// </summary>
 [RequireComponent(typeof(Camera))]
 [ExecuteInEditMode]

@@ -8,12 +8,12 @@ using System;
 /// <summary>
 /// 网络连接管道
 /// @author hannibal
-/// @time 2017-5-24
+/// @time 2016-5-24
 /// </summary>
 public class NetChannel
 {
     protected long m_conn_idx = 0;
-    protected BaseNet m_net_socket = null;
+    protected TCPNetBase m_net_socket = null;
     protected ByteArray m_by_buffer = null;
     //由于收到数据时，已经通过lock全局锁同步到主线程，所以可以共用一个buffer
     static protected ByteArray m_dispatcher_buffer = new ByteArray(SocketID.SendRecvMaxSize, SocketID.SendRecvMaxSize);
@@ -23,7 +23,7 @@ public class NetChannel
         m_by_buffer = new ByteArray(SocketID.InitByteArraySize, SocketID.MaxByteArraySize);
     }
 
-    public virtual void Setup(BaseNet socket, long conn_idx)
+    public virtual void Setup(TCPNetBase socket, long conn_idx)
     {
         m_net_socket = socket;
         m_conn_idx = conn_idx;

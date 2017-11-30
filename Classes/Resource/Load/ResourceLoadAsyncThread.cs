@@ -4,7 +4,7 @@ using System.Collections;
 /// <summary>
 /// 资源异步加载
 /// @author hannibal
-/// @time 2017-1-5
+/// @time 2016-1-5
 /// </summary>
 public class ResourceLoadAsyncThread : ResourceLoadThread
 {

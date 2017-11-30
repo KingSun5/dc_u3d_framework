@@ -5,7 +5,7 @@ using System.Collections.Generic;
 /// <summary>
 /// 绘制贝塞尔曲线
 /// @author hannibal
-/// @time 2017-2-8
+/// @time 2016-2-8
 /// </summary>
 public class BezierScript : MonoBehaviour
 {

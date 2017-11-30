@@ -5,7 +5,7 @@ using System.Collections;
 /// <summary>
 /// UI状态按钮
 /// @author hannibal
-/// @time 2017-2-25
+/// @time 2016-2-25
 /// </summary>
 [RequireComponent(typeof(Image))]
 public class UISwitchButton : UIComponentBase
@@ -49,7 +49,7 @@ public class UISwitchButton : UIComponentBase
         this.RemoveUIEventListener(gameObject, eUIEventType.Click, OnClick);
     }
 
-    void OnClick(UIEventArgs args)
+    void OnClick(UIEvent args)
     {
         if (!AutoSwitch) return;
         switch (BtnStatus)

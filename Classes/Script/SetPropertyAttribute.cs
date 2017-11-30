@@ -4,7 +4,7 @@ using System.Collections;
 /// <summary>
 /// 与SetPropertyDrawer配合使用
 /// @author hannibal
-/// @time 2017-1-17
+/// @time 2016-1-17
 /// </summary>
 public class SetPropertyAttribute : PropertyAttribute
 {

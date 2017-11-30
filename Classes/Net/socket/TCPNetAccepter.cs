@@ -2,19 +2,24 @@
 using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Net;
-using System.Threading;
+using System.Threading;  
 using System;
 
 /// <summary>
-/// 客户端socket
+/// 服务端socket
 /// @author hannibal
-/// @time 2017-5-23
+/// @time 2016-5-23
 /// </summary>
-public sealed class TCPNetConnecter : NetConnecter
+public sealed class TCPNetAccepter : TCPNetBase
 {
-    private long m_conn_idx = 0;
-    private TCPClientSocket m_socket = null;
-    private NetChannel m_channel = null;
+    private TCPServerSocket m_socket = null;
+    private Dictionary<long, NetChannel> m_channels = null;
+
+    public TCPNetAccepter()
+        : base()
+    {
+        m_channels = new Dictionary<long, NetChannel>();
+    }
 
     public override void Setup()
     {
@@ -23,47 +28,53 @@ public sealed class TCPNetConnecter : NetConnecter
 
     public override void Destroy()
     {
-        if (m_socket != null)
-        {//socket只有外部调用时才主动关闭，否则底层会先自己关闭
-            m_socket.Close();
-            m_socket = null;
-        }
-        if (m_channel != null)
-        {
-            m_channel.Destroy();
-            NetChannelPools.Despawn(m_channel);
-            m_channel = null;
-        }
         base.Destroy();
     }
     public override void Close()
     {
-        HanldeCloseConnect();
+        if (m_socket != null)
+        {
+            m_socket.Close();
+            m_socket = null;
+        }
+        //需要放m_socket.Close()后，socket关闭时，内部回调的关闭事件HanldeCloseConnect不能正常执行
+        foreach (var obj in m_channels)
+        {
+            obj.Value.Destroy();
+            NetChannelPools.Despawn(obj.Value);
+        }
+        m_channels.Clear();
         base.Close();
     }
-
+    public void CloseConn(long conn_idx)
+    {
+        if (m_socket != null && conn_idx > 0)
+        {
+            m_socket.CloseConn(conn_idx);
+        }
+    }
     public override void Update()
     {
-        if (m_channel != null)
+        foreach (var obj in m_channels)
         {
-            m_channel.Update();
+            obj.Value.Update();
         }
+
         base.Update();
     }
 
-    public long Connect(string ip, ushort port, BaseNet.OnConnectedFunction connected, BaseNet.OnReceiveFunction receive, BaseNet.OnCloseFunction close)
+    public bool Listen(ushort port, TCPNetBase.OnAcceptFunction accept, TCPNetBase.OnReceiveFunction receive, TCPNetBase.OnCloseFunction close)
     {
-        OnConnected = connected;
+        OnAccept = accept;
         OnReceive = receive;
         OnClose = close;
 
-        m_socket = new TCPClientSocket();
+        m_socket = new TCPServerSocket();
         m_socket.OnOpen += OnAcceptConnect;
         m_socket.OnMessage += OnMessageReveived;
         m_socket.OnClose += OnConnectClose;
-        m_socket.Connect(ip, port);
-
-        return m_conn_idx;
+        m_socket.Start(port);
+        return true;
     }
 
     public override int Send(long conn_idx, ByteArray by)
@@ -82,51 +93,55 @@ public sealed class TCPNetConnecter : NetConnecter
         int data_len = by.Available - SocketID.PacketHeadSize;
         by.ModifyUShort((ushort)data_len, 0);
 
-        m_socket.Send(by.GetBuffer(), 0, (int)by.Available);
+        m_socket.Send(conn_idx, by.GetBuffer(), 0, (int)by.Available);
         return (int)by.Available;
     }
     private void OnAcceptConnect(long conn_idx)
     {
         lock (ThreadScheduler.Instance.LogicLock)
         {
-            m_channel = NetChannelPools.Spawn();
-            m_channel.Setup(this, m_conn_idx);
+            NetChannel channel = NetChannelPools.Spawn();
+            channel.Setup(this, conn_idx);
+            m_channels.Add(channel.conn_idx, channel);
 
-            if (OnConnected != null) OnConnected(m_channel.conn_idx);
+            if (OnAccept != null) OnAccept(channel.conn_idx);
         }
     }
     private void OnMessageReveived(long conn_idx, byte[] by, int count)
     {
         lock (ThreadScheduler.Instance.LogicLock)
         {
-            m_channel.HandleReceive(by, count);
+            NetChannel channel;
+            if (m_channels.TryGetValue(conn_idx, out channel))
+            {
+                channel.HandleReceive(by, count);
+            }
         }
     }
     private void OnConnectClose(long conn_idx)
     {
         lock (ThreadScheduler.Instance.LogicLock)
         {
-            this.Close();
+            this.HanldeCloseConnect(conn_idx);
         }
     }
     /// <summary>
     /// 关闭链接：底层通知
     /// </summary>
-    private void HanldeCloseConnect()
+    private void HanldeCloseConnect(long conn_idx)
     {
-        if (m_channel != null)
+        NetChannel channel;
+        if (m_channels.TryGetValue(conn_idx, out channel))
         {
-            m_channel.Destroy();
-            NetChannelPools.Despawn(m_channel);
-            m_channel = null;
+            channel.Destroy();
+            NetChannelPools.Despawn(channel);
         }
+        m_channels.Remove(conn_idx);
         if (OnClose != null)
         {
             OnClose(conn_idx);
-            OnClose = null;
         }
     }
-
     public override bool Valid
     {
         get
@@ -134,10 +149,5 @@ public sealed class TCPNetConnecter : NetConnecter
             if (m_socket == null) return false;
             return true;
         }
-    }
-    public long conn_idx
-    {
-        get { return m_conn_idx; }
-        set { m_conn_idx = value; }
     }
 }

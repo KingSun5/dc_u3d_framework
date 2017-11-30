@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// 发布管理器
 /// @author hannibal
-/// @time 2017-6-30
+/// @time 2016-6-30
 /// </summary>
 public class PublishManager : Singleton<PublishManager>
 {

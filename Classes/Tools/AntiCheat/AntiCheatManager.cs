@@ -6,7 +6,7 @@ using AntiCheat.Detectors;
 /// <summary>
 /// 防作弊
 /// @author hannibal
-/// @time 2017-4-12
+/// @time 2016-4-12
 /// </summary>
 public class AntiCheatManager : Singleton<AntiCheatManager> 
 {

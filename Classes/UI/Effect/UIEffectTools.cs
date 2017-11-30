@@ -22,9 +22,9 @@ public class UIEffectTools
     {
         if (receive_obj == null || influence_obj == null) return;
 
-        UIEventListener.Get(receive_obj).AddEventListener(eUIEventType.Down, delegate(UIEventArgs evt) { influence_obj.transform.DOScale(Vector3.one * scale, time); });
-        UIEventListener.Get(receive_obj).AddEventListener(eUIEventType.Up, delegate(UIEventArgs evt) { influence_obj.transform.DOScale(Vector3.one, time); });
-        UIEventListener.Get(receive_obj).AddEventListener(eUIEventType.Exit, delegate(UIEventArgs evt) { influence_obj.transform.DOScale(Vector3.one, time); });
+        UIEventListener.Get(receive_obj).AddEventListener(eUIEventType.Down, delegate(UIEvent evt) { influence_obj.transform.DOScale(Vector3.one * scale, time); });
+        UIEventListener.Get(receive_obj).AddEventListener(eUIEventType.Up, delegate(UIEvent evt) { influence_obj.transform.DOScale(Vector3.one, time); });
+        UIEventListener.Get(receive_obj).AddEventListener(eUIEventType.Exit, delegate(UIEvent evt) { influence_obj.transform.DOScale(Vector3.one, time); });
     }
     static public void RemovePressScaleAnim(GameObject receive_obj)
     {

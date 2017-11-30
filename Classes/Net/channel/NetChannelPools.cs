@@ -5,7 +5,7 @@ using System.Text;
 /// <summary>
 /// 通道对象池
 /// @author hannibal
-/// @time 2017-5-24
+/// @time 2016-5-24
 /// </summary>
 public class NetChannelPools
 {

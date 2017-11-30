@@ -8,7 +8,7 @@ using System.Collections.Generic;
 /// 3.控制台cmd命令
 /// 4.其他涉及到多线程与主线程交互的
 /// @author hannibal
-/// @time 2017-7-28
+/// @time 2016-7-28
 /// </summary>
 public class ThreadScheduler : Singleton<ThreadScheduler>
 {

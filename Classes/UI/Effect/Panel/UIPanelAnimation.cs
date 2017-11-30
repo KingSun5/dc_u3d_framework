@@ -13,7 +13,7 @@ using DG.Tweening;
 /// 2.todo：经讨论，退场动画功能暂时不需要实现
 /// 3.继承类：UIPanelMove、UIPanelScale、UIPanelFade
 /// @author Qc_Chao
-/// @time 2017-01-05
+/// @time 2016-01-05
 /// </summary>
 public class UIPanelAnimation : MonoBehaviour
 {

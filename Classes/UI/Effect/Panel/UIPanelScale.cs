@@ -8,7 +8,7 @@ using DG.Tweening;
 /// <summary>
 /// 缩放
 /// @author hannibal
-/// @time 2017-3-26
+/// @time 2016-3-26
 /// </summary>
 public class UIPanelScale : UIPanelAnimation
 {

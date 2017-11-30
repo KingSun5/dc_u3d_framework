@@ -4,7 +4,7 @@ using System.Collections;
 /// <summary>
 /// 背景声音
 /// @author hannibal
-/// @time 2017-2-20
+/// @time 2016-2-20
 /// </summary>
 public class BackgroundSound : SoundBase
 {
