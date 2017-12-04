@@ -30,7 +30,14 @@ public class SceneLayerUtils
             obj.SetParent(m_RootLayer, worldPosStays);
         }
     }
-
+    static public void Add2DChild(Transform obj, float z_depth)
+    {
+        if (obj != null)
+        {
+            obj.SetParent(m_RootLayer, false);
+            obj.localPosition = new Vector3(obj.localPosition.x, obj.localPosition.y, z_depth);
+        }
+    }
     static public void SetLayer(Transform obj, float layer)
     {
         obj.localPosition = new Vector3(obj.localPosition.x, obj.localPosition.y, layer);

@@ -26,3 +26,21 @@ public class SceneLayerID
         return (1 << LayerMask.NameToLayer(SceneLayerID.Layer_Scene) | 1 << LayerMask.NameToLayer(SceneLayerID.Layer_Role));
     }
 }
+
+
+/// <summary>
+/// 2d场景层次
+/// </summary>
+public class Scene2DLayerID
+{
+    public const float LAYER_TERRAIN        = -0.0f;
+    public const float LAYER_TERRAIN_EFFECT = -0.1f;
+    public const float LAYER_MAP_OBJ        = -0.2f;
+    public const float LAYER_MAP_ITEM       = -0.3f;
+    public const float LAYER_ROLE           = -0.4f;
+    public const float LAYER_PLAYER         = -0.5f;
+    public const float LAYER_BULLET         = -0.6f;
+    public const float LAYER_EFFECT         = -0.7f;
+    public const float LAYER_TOP            = -0.8f;
+
+}
