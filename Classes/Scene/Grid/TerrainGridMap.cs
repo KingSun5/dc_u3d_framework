@@ -260,7 +260,7 @@ public class TerrainGridMap : Singleton<TerrainGridMap>
 		get { return m_numPickRows; }
 		set { m_numPickRows = value; }
 	}
-	
+
 	public TerrainGrid [,] nodes
 	{
 		get { return m_nodes; }
