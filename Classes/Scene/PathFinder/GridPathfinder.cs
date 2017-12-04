@@ -26,8 +26,8 @@ public class GridPathfinder : Singleton<GridPathfinder>
 	private eFace8Type m_walkDir = eFace8Type.NONE;
 	
 	/**地图障碍数据*/
-	private PathGridMap m_grid_map = null; 
-	private PathGrid m_cur_grid = null;
+	private TerrainGridMap m_grid_map = null; 
+	private TerrainGrid m_cur_grid = null;
 
 	/**************************************************************************/
 	/*公共方法																  */
@@ -39,7 +39,7 @@ public class GridPathfinder : Singleton<GridPathfinder>
 		m_target_pos_y = 0;
 	}
 
-	public void setup(PathGridMap grid_map)
+	public void setup(TerrainGridMap grid_map)
 	{
 		m_grid_map = grid_map; 
 		
@@ -51,7 +51,7 @@ public class GridPathfinder : Singleton<GridPathfinder>
 		m_grid_map = null;
 		m_cur_grid = null;
 	}
-	public void update(PathGridMap grid_map)
+	public void update(TerrainGridMap grid_map)
 	{
 		m_grid_map = grid_map; 
 		
@@ -162,7 +162,7 @@ public class GridPathfinder : Singleton<GridPathfinder>
 		m_temp_collide_rect.x = x - m_temp_collide_rect.width*0.5f;
 		m_temp_collide_rect.y = y - m_temp_collide_rect.height*0.5f;
 		
-		PathGrid grid = m_grid_map.getNodeByPostion(x, y);
+		TerrainGrid grid = m_grid_map.getNodeByPostion(x, y);
 		//在障碍里面
 		if(grid == null || !grid.walkable)
 		{
@@ -171,7 +171,7 @@ public class GridPathfinder : Singleton<GridPathfinder>
 		
 		int grid_row = grid.row;
 		int grid_col = grid.col;
-		PathGrid tempTile = null;
+		TerrainGrid tempTile = null;
 		switch(m_walkDir)
 		{ 
 		case eFace8Type.RIGHT://校验相邻格子
@@ -233,13 +233,13 @@ public class GridPathfinder : Singleton<GridPathfinder>
 		
 		return false;
 	}
-	private eFace8Type resetDir(PathGrid cur_tile, eFace8Type dir)
+	private eFace8Type resetDir(TerrainGrid cur_tile, eFace8Type dir)
 	{
 		if(cur_tile == null)return dir;
 
 		int grid_row = cur_tile.row;
 		int grid_col = cur_tile.col;
-		PathGrid tempTile = null;
+		TerrainGrid tempTile = null;
 		switch(dir)
 		{ 
 		case eFace8Type.RIGHT_DOWN:
@@ -275,7 +275,7 @@ public class GridPathfinder : Singleton<GridPathfinder>
 	/**
 	 * 判断是否可移动
 	 */		
-	private bool checkBlock(PathGrid tile)
+	private bool checkBlock(TerrainGrid tile)
 	{
 		if(tile == null)return false;
 

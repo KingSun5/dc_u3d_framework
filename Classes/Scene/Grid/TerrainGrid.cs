@@ -7,12 +7,12 @@ using System.Collections.Generic;
 /// @author hannibal
 /// @time 2015-8-10
 /// </summary>
-public class PathGrid
+public class TerrainGrid
 {
 	public int col = 0;   
 	public int row = 0;
     public Rect rect = new Rect();
-    public PathGrid parent = null;   
+    public TerrainGrid parent = null;   
 	
 	public float f = 0f;   
 	public float g = 0f;   
@@ -27,7 +27,7 @@ public class PathGrid
 	/**格子上的对象列表*/
 	private List<IGridObject> m_arr_grid_obj = new List<IGridObject>();
 
-	public PathGrid(int row = 0, int col = 0, float w = 0, float h = 0)   
+	public TerrainGrid(int row = 0, int col = 0, float w = 0, float h = 0)   
 	{     
 		this.row = row;
 		this.col = col; 
@@ -60,7 +60,7 @@ public class PathGrid
         get { return rect.center; }
     }
 	
-	public bool equal(PathGrid g)
+	public bool equal(TerrainGrid g)
 	{
 		return ((this.col == g.col && this.row == g.row) ? true : false);
 	}

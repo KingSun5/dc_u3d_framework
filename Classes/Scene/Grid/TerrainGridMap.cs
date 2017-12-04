@@ -3,15 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 
 /// <summary>
-/// 地图格子信息
+/// 地图格子管理
 /// @author hannibal
 /// @time 2015-8-10
 /// </summary>
-public class PathGridMap : Singleton<PathGridMap>
+public class TerrainGridMap : Singleton<TerrainGridMap>
 {
-	private PathGrid m_startNode = null; 
-	private PathGrid m_endNode = null; 
-	private PathGrid [,] m_nodes;
+	private TerrainGrid m_startNode = null; 
+	private TerrainGrid m_endNode = null; 
+	private TerrainGrid [,] m_nodes;
 	private eAligeType m_alige = eAligeType.LEFT_BOTTOM;
 	/**单个格子大小*/
 	private float m_gridWidth = 1;
@@ -37,12 +37,12 @@ public class PathGridMap : Singleton<PathGridMap>
 		m_numPickRows = (int)((m_numRows*m_gridHeight) / m_gridPickHeight);
 		m_alige = alige;
 
-		m_nodes = new PathGrid[m_numRows,m_numCols];
+		m_nodes = new TerrainGrid[m_numRows,m_numCols];
 		for(int row = 0; row < m_numRows; row++) 
 		{ 
 			for(int col = 0; col < m_numCols; col++) 
 			{ 
-				m_nodes[row,col] = new PathGrid(row, col, m_gridWidth, m_gridHeight);
+				m_nodes[row,col] = new TerrainGrid(row, col, m_gridWidth, m_gridHeight);
 				switch(m_alige)
 				{
 				case eAligeType.LEFT_BOTTOM:
@@ -71,23 +71,23 @@ public class PathGridMap : Singleton<PathGridMap>
 		m_nodes = null;
 	}
 
-	public PathGrid getNode(int row, int col)
+	public TerrainGrid getNode(int row, int col)
 	{ 
 		if(isValidRowCol(row, col))
-			return m_nodes[row,col] as PathGrid; 
+			return m_nodes[row,col] as TerrainGrid; 
 		return null;
 	}
 	public void setEndNode(int row, int col) 
 	{ 
 		if(!isValidRowCol(row, col))
 			return;
-		m_endNode = m_nodes[row,col] as PathGrid; 
+		m_endNode = m_nodes[row,col] as TerrainGrid; 
 	} 
 	public void setStartNode(int row, int col) 
 	{ 
 		if(!isValidRowCol(row, col))
 			return;
-		m_startNode = m_nodes[row,col] as PathGrid; 
+		m_startNode = m_nodes[row,col] as TerrainGrid; 
 	} 
 	public void setCost(int row, int col, float cost) 
 	{ 
@@ -128,7 +128,7 @@ public class PathGridMap : Singleton<PathGridMap>
 		return false;
 	}
 
-	public PathGrid endNode
+	public TerrainGrid endNode
 	{ 
 		get { return m_endNode; }
 	} 
@@ -141,7 +141,7 @@ public class PathGridMap : Singleton<PathGridMap>
 	{ 
 		get { return m_numRows; }
 	} 
-	public PathGrid startNode 
+	public TerrainGrid startNode 
 	{ 
 		get { return m_startNode; }
 	} 
@@ -210,7 +210,7 @@ public class PathGridMap : Singleton<PathGridMap>
 		}
 		return y;
 	}
-	public PathGrid getNodeByPostion(float x, float y)
+	public TerrainGrid getNodeByPostion(float x, float y)
 	{
 		if(!isValidPos(x, y))return null;
 
@@ -243,7 +243,7 @@ public class PathGridMap : Singleton<PathGridMap>
 		return (int)((y) / m_gridPickHeight);
 	}
  
-	public uint getColor(PathGrid node)   
+	public uint getColor(TerrainGrid node)   
 	{  
 		if(node == null || !node.walkable)
 			return 0;  
@@ -261,7 +261,7 @@ public class PathGridMap : Singleton<PathGridMap>
 		set { m_numPickRows = value; }
 	}
 	
-	public PathGrid [,] nodes
+	public TerrainGrid [,] nodes
 	{
 		get { return m_nodes; }
 	}

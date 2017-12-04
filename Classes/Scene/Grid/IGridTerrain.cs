@@ -8,5 +8,5 @@ using System.Collections;
 /// </summary>
 public interface IGridTerrain 
 {
-	PathGrid GetGrid(int row, int col);
+	TerrainGrid GetGrid(int row, int col);
 }
