@@ -17,30 +17,25 @@ using System.Collections.Generic;
 /// @author hannibal
 /// @time 2014-12-5
 /// </summary>
-public class UILayerManager : Singleton<UILayerManager>
+public class UILayerUtils
 {
 	/**layer*/
-    private Transform m_RootLayer = null;
-    private GameObject m_Canvas = null;
-    private Dictionary<int, Transform> m_DicLayer;
-
-	public UILayerManager()
-	{
-        m_DicLayer = new Dictionary<int, Transform>();
-	}
+    private static Transform m_RootLayer = null;
+    private static GameObject m_Canvas = null;
+    private static Dictionary<int, Transform> m_DicLayer  = new Dictionary<int,Transform>();
 
 	//～～～～～～～～～～～～～～～～～～～～～～～Layer~～～～～～～～～～～～～～～～～～～～～～～～//
-    public void AddLayer(int layer_id, Transform layer)
+    public static void AddLayer(int layer_id, Transform layer)
 	{
 		if(m_DicLayer.ContainsKey(layer_id))
 		{
-			Log.Error("UILayerManager::AddLayer - same layer is register:"+layer_id.ToString());
+			Log.Error("UILayerUtils::AddLayer - same layer is register:"+layer_id.ToString());
 			return;
 		}
 
 		m_DicLayer.Add(layer_id, layer);
 	}
-	public void RemoveLayer(int layer_id)
+    public static void RemoveLayer(int layer_id)
 	{
 		if(m_DicLayer.ContainsKey(layer_id) == false)
 		{
@@ -49,14 +44,14 @@ public class UILayerManager : Singleton<UILayerManager>
 		
 		m_DicLayer.Remove(layer_id);
 	}
-	public void ClearLayer()
+    public static void ClearLayer()
 	{
 		m_DicLayer.Clear();
         m_Canvas = null;
 		m_RootLayer = null;
 	}
 
-    public Transform GetLayer(int layer)
+    public static Transform GetLayer(int layer)
 	{
         Transform obj;
 		if(m_DicLayer.TryGetValue(layer, out obj))
@@ -66,18 +61,18 @@ public class UILayerManager : Singleton<UILayerManager>
 		return null;
 	}
 
-	public void SetCanvas(GameObject canvas, Transform layer)
+    public static void SetCanvas(GameObject canvas, Transform layer)
 	{
         m_Canvas = canvas;
 		m_RootLayer = layer;
 	}
 
 	//～～～～～～～～～～～～～～～～～～～～～～～get/set~～～～～～～～～～～～～～～～～～～～～～～～//
-    public Transform RootLayer
+    public static Transform RootLayer
 	{
 		get { return m_RootLayer; }
 	}
-    public GameObject Canvas
+    public static GameObject Canvas
     {
         get { return m_Canvas; }
     }

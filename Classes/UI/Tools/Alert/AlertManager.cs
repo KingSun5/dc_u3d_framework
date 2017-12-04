@@ -14,11 +14,11 @@ public class AlertManager : Singleton<AlertManager>
     public void ShowAlert(int id, string content, string btn_name, System.Action<eAlertBtnType> fun)
 	{
 		//layer
-        Transform layer = UILayerManager.Instance.GetLayer((int)eUILayer.TOP);
+        Transform layer = UILayerUtils.GetLayer((int)eUILayer.TOP);
 		if(layer == null)
 		{
             Log.Warning("AlertManager::Show - not find layer:" + eUILayer.TOP);
-			layer = UILayerManager.Instance.RootLayer;
+			layer = UILayerUtils.RootLayer;
 		}
 
 		//构建
@@ -43,11 +43,11 @@ public class AlertManager : Singleton<AlertManager>
     public void ShowConfirm(int id, string content, string ok_name, string cancel_name, System.Action<eAlertBtnType> fun)
     {
         //layer
-        Transform layer = UILayerManager.Instance.GetLayer((int)eUILayer.TOP);
+        Transform layer = UILayerUtils.GetLayer((int)eUILayer.TOP);
         if (layer == null)
         {
             Log.Warning("AlertManager::Show - not find layer:" + eUILayer.TOP);
-            layer = UILayerManager.Instance.RootLayer;
+            layer = UILayerUtils.RootLayer;
         }
 
         //构建

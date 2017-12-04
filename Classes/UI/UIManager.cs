@@ -113,11 +113,11 @@ public class UIManager : Singleton<UIManager>
 		}
 
 		//layer
-        Transform layer = UILayerManager.Instance.GetLayer(info.mLayer);
+        Transform layer = UILayerUtils.GetLayer(info.mLayer);
 		if(layer == null)
 		{
             Log.Warning("UIManager::Show - not find layer:" + info.mLayer.ToString());
-			layer = UILayerManager.Instance.RootLayer;
+			layer = UILayerUtils.RootLayer;
 		}
 		if(layer == null)
 		{
@@ -196,7 +196,7 @@ public class UIManager : Singleton<UIManager>
 
         currView.MaxSortingOrder = 0;
         int UILayerID = UIManager.Instance.GetUILayerID(id);
-        GameObject layer = UILayerManager.Instance.GetLayer(UILayerID).gameObject;
+        GameObject layer = UILayerUtils.GetLayer(UILayerID).gameObject;
         int maxCanvasSortingOrder = GetMaxCanvasSortingOrder(layer);
         Canvas currCanvas = obj.GetComponent<Canvas>();
         if (currCanvas == null)
