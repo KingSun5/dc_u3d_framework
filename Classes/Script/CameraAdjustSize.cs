@@ -9,7 +9,7 @@ using UnityEngine;
 /// @author hannibal
 /// @time 2014-12-4
 /// </summary>
-public class Camera2dSize : MonoBehaviour 
+public class CameraAdjustSize : MonoBehaviour 
 {
     public float m_Scale = 1.0f;
 	void Start ()
