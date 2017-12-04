@@ -46,8 +46,11 @@ public class PathGridMap : Singleton<PathGridMap>
 				switch(m_alige)
 				{
 				case eAligeType.LEFT_BOTTOM:
-					m_nodes[row,col].rect_collide.x = -(numCols*gridW)*0.5f + m_nodes[row,col].rect_collide.x;
-					m_nodes[row,col].rect_collide.y = -(numRows*gridH)*0.5f + m_nodes[row,col].rect_collide.y;
+                    {
+                        float x = -(numCols * gridW) * 0.5f + m_nodes[row, col].rect.x;
+                        float y = -(numRows * gridH) * 0.5f + m_nodes[row, col].rect.y;
+                        m_nodes[row, col].setPosition(x, y);
+                    }
 					break;
 				}
 			}
@@ -86,11 +89,11 @@ public class PathGridMap : Singleton<PathGridMap>
 			return;
 		m_startNode = m_nodes[row,col] as PathGrid; 
 	} 
-	public void setCostMultiplier(int row, int col, float cost) 
+	public void setCost(int row, int col, float cost) 
 	{ 
 		if(!isValidRowCol(row, col) || m_nodes[row,col] == null)
 			return;
-		m_nodes[row,col].costMultiplier = cost; 
+        m_nodes[row, col].cost = cost; 
 	}
 	
 	public void setAlpha(int row, int col, float alpha) 

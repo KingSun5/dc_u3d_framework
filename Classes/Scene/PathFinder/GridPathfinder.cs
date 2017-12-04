@@ -15,8 +15,8 @@ public class GridPathfinder : Singleton<GridPathfinder>
 	/**
 	 * 寻路成功时的目标点 
 	 */		
-	private float m_targetPos_X;
-	private float m_targetPos_Y;
+	private float m_target_pos_x;
+	private float m_target_pos_y;
 	
 	private float m_last_pos_x;
 	private float m_last_pos_y;
@@ -35,16 +35,16 @@ public class GridPathfinder : Singleton<GridPathfinder>
 	public GridPathfinder()
 	{
 		m_temp_collide_rect = new Rect();
-		m_targetPos_X = 0;
-		m_targetPos_Y = 0;
+		m_target_pos_x = 0;
+		m_target_pos_y = 0;
 	}
 
 	public void setup(PathGridMap grid_map)
 	{
 		m_grid_map = grid_map; 
 		
-		m_targetPos_X = 0;
-		m_targetPos_Y = 0;
+		m_target_pos_x = 0;
+		m_target_pos_y = 0;
 	}
 	public void destroy()
 	{
@@ -55,8 +55,8 @@ public class GridPathfinder : Singleton<GridPathfinder>
 	{
 		m_grid_map = grid_map; 
 		
-		m_targetPos_X = 0;
-		m_targetPos_Y = 0;
+		m_target_pos_x = 0;
+		m_target_pos_y = 0;
 	}
 	/**
 	 * 寻路接口 
@@ -134,8 +134,8 @@ public class GridPathfinder : Singleton<GridPathfinder>
 				break;
 			}
 		}
-		m_targetPos_X = m_last_pos_x;
-		m_targetPos_Y = m_last_pos_y;
+		m_target_pos_x = m_last_pos_x;
+		m_target_pos_y = m_last_pos_y;
 
 		return result;
 	}
@@ -145,11 +145,11 @@ public class GridPathfinder : Singleton<GridPathfinder>
 	/**************************************************************************/
 	public float getTargetPos_X()
 	{
-		return this.m_targetPos_X;
+		return this.m_target_pos_x;
 	}
 	public float getTargetPos_Y()
 	{
-		return this.m_targetPos_Y;
+		return this.m_target_pos_y;
 	}
 	/**************************************************************************/
 	/*私有方法																  */
@@ -169,8 +169,6 @@ public class GridPathfinder : Singleton<GridPathfinder>
 			return false;
 		}
 		
-		int i;
-		int j;
 		int grid_row = grid.row;
 		int grid_col = grid.col;
 		PathGrid tempTile = null;
@@ -281,7 +279,7 @@ public class GridPathfinder : Singleton<GridPathfinder>
 	{
 		if(tile == null)return false;
 
-		if(!tile.walkable && Math2DUtils.intersectRect(tile.rect_collide, m_temp_collide_rect))
+		if(!tile.walkable && Math2DUtils.intersectRect(tile.rect, m_temp_collide_rect))
 			return false;
 		return true;
 	}

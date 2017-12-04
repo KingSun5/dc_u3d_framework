@@ -1,10 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CameraID
+public class CameraEvent
 {
 
-    //相机
-    public const string CAMERA_FOLLOW_TARGET = "CAMERA_FOLLOW_TARGET";						//相机跟随目标
+    /// <summary>
+    /// 相机跟随对象
+    /// </summary>
+    public const string FOLLOW_TARGET = "FOLLOW_TARGET";
+    /// <summary>
+    /// 相机可移动区域
+    /// </summary>
+    public const string MOVE_AREA = "MOVE_AREA";
 
 }

@@ -2,18 +2,24 @@
 using System.Collections;
 using System.Collections.Generic;
 
+/// <summary>
+/// 单个地图格子
+/// @author hannibal
+/// @time 2015-8-10
+/// </summary>
 public class PathGrid
 {
 	public int col = 0;   
-	public int row = 0;  
-	public Rect rect_collide = new Rect();
+	public int row = 0;
+    public Rect rect = new Rect();
+    public PathGrid parent = null;   
 	
 	public float f = 0f;   
 	public float g = 0f;   
 	public float h = 0f;    
-	public PathGrid parent = null;   
+
 	/**土路节点肯定比高速公路的代价大，沼泽或是高山节点代价可能大很多。不一样的代价可以通过引用附加的属性来添加 */		
-	private float m_costMultiplier = 1f; 
+	private float m_cost = 1f; 
 	private bool m_walkable = true;
 	
 	private float m_alpha = 1f;
@@ -25,10 +31,10 @@ public class PathGrid
 	{     
 		this.row = row;
 		this.col = col; 
-		rect_collide.x = col*w;
-		rect_collide.y = row*h;
-		rect_collide.width = w;
-		rect_collide.height = h;
+		rect.x = col*w;
+		rect.y = row*h;
+		rect.width = w;
+		rect.height = h;
 	} 
 	
 	public void reset()
@@ -36,26 +42,37 @@ public class PathGrid
 		col = row = 0;
 		f = g = h = 0;
 		parent = null;
-		costMultiplier = 1.0f;
-		rect_collide.x = 0;
-		rect_collide.y = 0;
-		rect_collide.width = 0;
-		rect_collide.height = 0;
+		cost = 1.0f;
+		rect.x = 0;
+		rect.y = 0;
+		rect.width = 0;
+		rect.height = 0;
 	}
+
+    public void setPosition(float x, float y)
+    {
+        rect.x = x;
+        rect.y = y;
+    }
+
+    public Vector2 pos
+    {
+        get { return rect.center; }
+    }
 	
 	public bool equal(PathGrid g)
 	{
 		return ((this.col == g.col && this.row == g.row) ? true : false);
 	}
 	
-	public float costMultiplier
+	public float cost
 	{
-		get{ return m_costMultiplier; }
+		get{ return m_cost; }
 		set
 		{
-			m_costMultiplier = value;
-			if(m_costMultiplier < 1)m_costMultiplier = 1;
-			m_walkable = m_costMultiplier >= PathFinderID.OBSTACLE ? false : true;
+			m_cost = value;
+			if(m_cost < 1)m_cost = 1;
+			m_walkable = m_cost >= PathFinderID.OBSTACLE ? false : true;
 		}
 	}
 
