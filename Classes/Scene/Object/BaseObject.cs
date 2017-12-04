@@ -73,7 +73,7 @@ public abstract class BaseObject : MonoBehaviour, IEventBase
         UnRegisterEvent();
     }
 
-    /*～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～基础方法～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～*/
+    #region 基础方法
     public BaseObject()
     {
     }
@@ -89,24 +89,16 @@ public abstract class BaseObject : MonoBehaviour, IEventBase
         return true;
     }
 
-    /**暂停*/
+    /// <summary>
+    /// 暂停
+    /// </summary>
     public virtual void OnPauseGame()
     {
-
     }
-    /**恢复*/
+    /// <summary>
+    /// 恢复
+    /// </summary>
     public virtual void OnResumeGame()
-    {
-
-    }
-
-    /**
-    * 注册事件 
-    */
-    public virtual void RegisterEvent()
-    {
-    }
-    public virtual void UnRegisterEvent()
     {
     }
 
@@ -209,7 +201,37 @@ public abstract class BaseObject : MonoBehaviour, IEventBase
     {
         get { return Position + new Vector3(0, BoundSize.y, 0); }
     }
-    /*～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～get/set～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～*/
+    #endregion
+
+    #region 事件
+    public virtual void RegisterEvent()
+    {
+    }
+    public virtual void UnRegisterEvent()
+    {
+    }
+    public void AddEventListener(string EventID, EventDispatcher.RegistFunction pFunction)
+    {
+        m_Observer.AddEventListener(EventID, pFunction);
+    }
+    public void RemoveEventListener(string EventID, EventDispatcher.RegistFunction pFunction)
+    {
+        m_Observer.RemoveEventListener(EventID, pFunction);
+    }
+    public void TriggerEvent(string EventID, GameEvent info)
+    {
+        m_Observer.TriggerEvent(EventID, info);
+    }
+    public void TriggerEvent(string eventType, params object[] list)
+    {
+        GameEvent info = new GameEvent();
+        info.Init(list);
+        info.type = eventType;
+        m_Observer.TriggerEvent(eventType, info);
+    }
+    #endregion
+
+    #region get/set
     public ulong ObjectUID
     {
         get { return m_ObjectUID; }
@@ -247,6 +269,7 @@ public abstract class BaseObject : MonoBehaviour, IEventBase
     {
         get { return m_Observer; }
     }
+    #endregion
 }
 
 public class ObjectEvent
