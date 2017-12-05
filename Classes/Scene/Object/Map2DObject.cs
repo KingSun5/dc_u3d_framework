@@ -8,19 +8,19 @@ using System.Collections;
 /// </summary>
 public class Map2DObject : BaseObject, IGridObject
 {
-    [Header("MapObject")]
+    [Header("Map2DObject")]
     [SerializeField, Tooltip("所在地图的行(readonly)")]
-	protected int       m_RowIndex = 0;
+	protected int           m_RowIndex = 0;
     [SerializeField, Tooltip("所在地图的列(readonly)")]
-	protected int       m_ColIndex = 0;
+	protected int           m_ColIndex = 0;
 
 	/**对象所在的格子*/
-	protected TerrainGrid  m_PathGrid = null;
+    protected TerrainGrid   m_TerrainGrid = null;
 
     [SerializeField, Tooltip("速度方向(readonly)")]
-    protected Vector3   m_VelocityDir = Vector3.zero;
+    protected Vector3       m_VelocityDir = Vector3.zero;
     [SerializeField, Tooltip("速度(readonly)")]
-    protected float     m_VelocityPower = 0;
+    protected float         m_VelocityPower = 0;
 	/*～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～基础方法～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～*/
     public Map2DObject()
 	{
@@ -42,31 +42,35 @@ public class Map2DObject : BaseObject, IGridObject
     }
 
     public override void OnDestroy()
-	{
+    {
+        if (m_TerrainGrid != null)
+        {
+            m_TerrainGrid.removeObject(this);
+            m_TerrainGrid = null;
+        }
         base.OnDestroy();
 	}
 
-	/**
-	* 所在格子发生改变
-	*/		
+	/// <summary>
+    /// 所在格子发生改变
+	/// </summary>
 	public virtual void OnMapGridChangle(int new_row, int new_col)
 	{
-		if(m_PathGrid != null)
+		if(m_TerrainGrid != null)
 		{
-			m_PathGrid.removeObject(this);
-			m_PathGrid = null;
+			m_TerrainGrid.removeObject(this);
+			m_TerrainGrid = null;
 		}
 		
 		m_ColIndex = new_col;
 		m_RowIndex = new_row;
-        m_Observer.TriggerEvent(ObjectEvent.MAP_GRID_CHANGE, m_ObjectUID, m_RowIndex, m_ColIndex);
-        EventController.TriggerEvent(ObjectEvent.MAP_GRID_CHANGE, m_ObjectUID, m_RowIndex, m_ColIndex);
 		
-		m_PathGrid = TerrainGridMap.Instance.getNode(m_ColIndex, m_RowIndex);
-		if(m_PathGrid != null)
+		m_TerrainGrid = TerrainGridMap.Instance.getNode(m_ColIndex, m_RowIndex);
+		if(m_TerrainGrid != null)
 		{
-			m_PathGrid.addObject(this);
-		}
+			m_TerrainGrid.addObject(this);
+        }
+        EventController.TriggerEvent(ObjectEvent.MAP_GRID_CHANGE, m_ObjectUID, m_RowIndex, m_ColIndex);
 	}
     public override void SetPosition(float x, float y, float z)
     {
@@ -79,7 +83,14 @@ public class Map2DObject : BaseObject, IGridObject
     public override void OnPositionChange()
     {
         base.OnPositionChange();
-        m_Observer.TriggerEvent(ObjectEvent.MAP_OBJ_POS, this.ObjectUID, transform.position);
+
+        //所在格子是否发生变化
+        TerrainGrid grid = TerrainGridMap.Instance.getNodeByPostion(this.Position.x, this.Position.y);
+        if(grid != null && grid != m_TerrainGrid)
+        {
+            this.OnMapGridChangle(grid.row, grid.col);
+        }
+
         EventController.TriggerEvent(ObjectEvent.MAP_OBJ_POS, this.ObjectUID, transform.position);
     }
     public virtual float GetMoveSpeed()
@@ -98,7 +109,7 @@ public class Map2DObject : BaseObject, IGridObject
 
 	public TerrainGrid TerrainGrid
 	{
-		get{ return m_PathGrid; }
+		get{ return m_TerrainGrid; }
 	}
 
     public Vector3 VelocityDir

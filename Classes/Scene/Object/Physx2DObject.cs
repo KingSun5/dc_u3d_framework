@@ -8,7 +8,7 @@ using System.Collections;
 /// </summary>
 public abstract class Physx2DObject : Map2DObject
 {
-    [Header("PhysxObject")]
+    [Header("Physx2DObject")]
     [SerializeField, Tooltip("是否激活物理效果")]
     protected bool          m_ActivePhysx = false;
 

@@ -22,7 +22,7 @@ public class EDrawSpriteGrid : MonoBehaviour
     /// <summary>
     /// 网格线宽度
     /// </summary>
-    public float m_LineWidth = 0.03f;
+    public float m_LineWidth = 0.01f;
     /// <summary>
     /// 网格线颜色
     /// </summary>

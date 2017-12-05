@@ -19,9 +19,6 @@ public abstract class BaseObject : MonoBehaviour, IEventBase
     [SerializeField, Tooltip("是否激活中(readonly)")]
     protected bool m_Active = true;
 
-    /**方位是否改变*/
-    protected bool m_TransformDirty;
-
     [SerializeField, Tooltip("包围盒大小(readonly)")]
     protected Vector3 m_BoundSize;
 
@@ -36,7 +33,6 @@ public abstract class BaseObject : MonoBehaviour, IEventBase
     {
         m_ObjectUID = ObjectManager.ShareGUID();
         gameObject.name = ObjectManager.AppendNameByID(gameObject.name, m_ObjectUID);
-        m_TransformDirty = true;
 
         m_AttachNode = transform;
         ObjectManager.Instance.AttachObject(this);
@@ -85,7 +81,6 @@ public abstract class BaseObject : MonoBehaviour, IEventBase
 
     public virtual bool Tick(float elapse, int game_frame)
     {
-        m_TransformDirty = false;
         return true;
     }
 
@@ -125,8 +120,12 @@ public abstract class BaseObject : MonoBehaviour, IEventBase
     }
     public virtual void SetPosition(Vector3 pos)
     {
+        bool is_change = false;
+        if (transform.localPosition != pos) is_change = true;
+
         transform.localPosition = pos;
-        m_TransformDirty = true;
+
+        if (is_change) this.OnPositionChange();
     }
     public virtual void SetPosition(float x, float y)
     {
@@ -135,9 +134,13 @@ public abstract class BaseObject : MonoBehaviour, IEventBase
     }
     public virtual void SetPosition(Vector2 pos)
     {
+        bool is_change = false;
+        if ((Vector2)transform.localPosition != pos) is_change = true;
+
         MathUtils.TMP_VECTOR3.Set(pos.x, pos.y, transform.localPosition.z);
         transform.localPosition = MathUtils.TMP_VECTOR3;
-        m_TransformDirty = true;
+
+        if (is_change) this.OnPositionChange();
     }
     public virtual void OnPositionChange()
     {
@@ -147,6 +150,7 @@ public abstract class BaseObject : MonoBehaviour, IEventBase
     {
         transform.Translate(vec, Space.World);
         SetPosition(transform.position);
+        this.OnPositionChange();
     }
     public virtual void LookAt(float x, float z)
     {
@@ -251,11 +255,6 @@ public abstract class BaseObject : MonoBehaviour, IEventBase
     {
         get { return m_ObjectType; }
         set { m_ObjectType = value; }
-    }
-    public bool TransformDirty
-    {
-        get { return m_TransformDirty; }
-        set { m_TransformDirty = value; }
     }
     public Transform AttachNode
     {

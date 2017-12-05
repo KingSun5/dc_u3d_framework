@@ -52,7 +52,6 @@ public class MapObject : BaseObject, IGridObject
     public override void OnPositionChange()
     {
         base.OnPositionChange();
-        m_Observer.TriggerEvent(ObjectEvent.MAP_OBJ_POS, this.ObjectUID, transform.position);
         EventController.TriggerEvent(ObjectEvent.MAP_OBJ_POS, this.ObjectUID, transform.position);
     }
     public virtual float GetMoveSpeed()
