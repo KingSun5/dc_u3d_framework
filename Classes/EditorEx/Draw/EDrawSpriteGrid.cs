@@ -14,6 +14,11 @@ public class EDrawSpriteGrid : MonoBehaviour
     public Vector3 m_MapCenter = Vector3.zero;
     public int m_GridWidth = 30;
     public int m_GridHeight = 30;
+    /// <summary>
+    /// 行列数
+    /// </summary>
+    public int m_GridRows = 0;
+    public int m_GridCols = 0;
 
     /// <summary>
     /// 网格线是否显示
@@ -34,16 +39,11 @@ public class EDrawSpriteGrid : MonoBehaviour
     private Sprite m_Sprite = null;
     private bool m_HadBuilder = false;
     /// <summary>
-    /// 行列数
-    /// </summary>
-    private int m_GridRows = 0;
-    private int m_GridCols = 0;
-    /// <summary>
     /// 网格线
     /// </summary>
     private GameObject[,] m_lines;
 
-    void Awake()
+    void Start()
     {
         m_Sprite = this.GetComponent<SpriteRenderer>().sprite;
         m_GridRows = (int)Mathf.Ceil(m_Sprite.rect.height / m_GridHeight);

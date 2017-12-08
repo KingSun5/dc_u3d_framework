@@ -9,7 +9,6 @@ public class TextureImportProcess : AssetPostprocessor
         var path = importer.assetPath;
 
         importer.textureCompression = TextureImporterCompression.Compressed;
-        importer.maxTextureSize = 2048;
 
         if (path.StartsWith("Assets/Assets/UI"))
         {
@@ -35,22 +34,52 @@ public class TextureImportProcess : AssetPostprocessor
             importer.SetPlatformTextureSettings(setting);
             importer.SetPlatformTextureSettings(pcSetting);
         }
-        else if (path.StartsWith("Assets/Plugins")) {
+        else if (path.StartsWith("Assets/Resources/Pic"))
+        {
+            //if (path.StartsWith("Assets/Resources/Pic/Scene/Map"))
+            //{//µØÍ¼±³¾°
+            //    TextureImporterPlatformSettings setting = new TextureImporterPlatformSettings();
+            //    setting.textureCompression = TextureImporterCompression.Compressed;
+            //    setting.maxTextureSize = 4096;
+            //    setting.name = "iPhone";
+            //    setting.format = TextureImporterFormat.RGBA32;
+            //    setting.overridden = true;
+
+            //    TextureImporterPlatformSettings pcSetting = new TextureImporterPlatformSettings();
+            //    pcSetting.textureCompression = TextureImporterCompression.Compressed;
+            //    pcSetting.maxTextureSize = 4096;
+            //    pcSetting.name = "Standalone";
+            //    pcSetting.format = TextureImporterFormat.RGBA32;
+            //    pcSetting.overridden = true;
+
+            //    importer.SetPlatformTextureSettings(setting);
+            //    importer.SetPlatformTextureSettings(pcSetting);
+            //}
+            importer.textureType = TextureImporterType.Sprite;
+            importer.spriteImportMode = SpriteImportMode.Single;
+            importer.mipmapEnabled = false;
+            importer.spritePackingTag = "";
+        }
+        else if (path.StartsWith("Assets/Plugins")) 
+        {
             importer.textureCompression = TextureImporterCompression.CompressedHQ;
         }
-        else {
+        else 
+        {
             var name = path.Substring(0, path.LastIndexOf('.'));
-            if (name.EndsWith("_full")) {
+            if (name.EndsWith("_full")) 
+            {
                 importer.textureCompression = TextureImporterCompression.CompressedHQ;
             }
-            else {
-                TextureImporterPlatformSettings setting = new TextureImporterPlatformSettings();
-                setting.textureCompression = TextureImporterCompression.Compressed;
-                setting.maxTextureSize = 2048;
-                setting.name = "iPhone";
-                setting.allowsAlphaSplitting = false;
-                setting.overridden = true;
-                importer.SetPlatformTextureSettings(setting);
+            else
+            {
+                //TextureImporterPlatformSettings setting = new TextureImporterPlatformSettings();
+                //setting.textureCompression = TextureImporterCompression.Compressed;
+                //setting.maxTextureSize = 2048;
+                //setting.name = "iPhone";
+                //setting.allowsAlphaSplitting = false;
+                //setting.overridden = true;
+                //importer.SetPlatformTextureSettings(setting);
             }
         }
     }
