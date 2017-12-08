@@ -80,6 +80,15 @@ public class Map2DObject : BaseObject, IGridObject
     {
         this.SetPosition((Vector2)pos);
     }
+    /// <summary>
+    /// 深度
+    /// </summary>
+    /// <param name="z_depth"></param>
+    public virtual void SetDepth(float z_depth)
+    {
+        MathUtils.TMP_VECTOR3.Set(transform.localPosition.x, transform.localPosition.y, z_depth);
+        transform.localPosition = MathUtils.TMP_VECTOR3;
+    }
     public override void OnPositionChange()
     {
         base.OnPositionChange();
