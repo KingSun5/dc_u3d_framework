@@ -58,6 +58,15 @@ public class MapObject : BaseObject, IGridObject
     {
         return m_VelocityPower;
     }
+
+    public override Vector3 Forward
+    {
+        get { return transform.localEulerAngles; }
+    }
+    public override void SetForward(Vector3 dir)
+    {
+        transform.localEulerAngles = dir;
+    }
     /*～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～get/set～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～*/
 
     public Vector3 VelocityDir

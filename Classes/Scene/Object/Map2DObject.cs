@@ -106,6 +106,40 @@ public class Map2DObject : BaseObject, IGridObject
     {
         return m_VelocityPower;
     }
+    /// <summary>
+    /// 朝向
+    /// </summary>
+    /// <returns></returns>
+    public override Vector3 Forward
+    {
+        get { return Math2DUtils.Radians2Point(this.Rotate2D); }
+    }
+    /// <summary>
+    /// 设置朝向
+    /// </summary>
+    /// <param name="dir">忽视z轴</param>
+    public override void SetForward(Vector3 dir)
+    {
+        //转换成角度
+        float angle = Math2DUtils.Point2Radians(dir.x, dir.y);
+        this.SetRotate2D(angle);
+    }
+    /// <summary>
+    /// 绕z轴旋转弧度值
+    /// </summary>
+    public virtual float Rotate2D
+    {
+        get { return transform.localEulerAngles.z * Mathf.Deg2Rad; }
+    }
+    /// <summary>
+    /// 2d旋转绕z轴
+    /// </summary>
+    /// <param name="angle">弧度</param>
+    public virtual void SetRotate2D(float angle)
+    {
+        float degree = angle * Mathf.Rad2Deg;
+        transform.Rotate(Vector3.forward, MathUtils.Cleap0_360(degree), Space.World);
+    }
     /*～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～get/set～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～*/
 	public int RowIndex
 	{

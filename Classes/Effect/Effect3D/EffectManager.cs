@@ -30,7 +30,7 @@ public class EffectManager : Singleton<EffectManager>
             effect.ObjectUID = ShareGUID();
             effect.transform.position = pos;
             effect.TotalTime = time;
-            GameObjectUtils.SetLayer(effect.gameObject, LayerMask.NameToLayer(SceneLayerID.Layer_Effect));
+            GameObjectUtils.SetLayer(effect.gameObject, LayerMask.NameToLayer(SceneLayerID.Effect));
         }
 
         return effect;
@@ -52,7 +52,7 @@ public class EffectManager : Singleton<EffectManager>
             effect.transform.SetParent(parent_node, false);
             effect.ParentNode = parent_node;
             effect.TotalTime = time;
-            GameObjectUtils.SetLayer(effect.gameObject, LayerMask.NameToLayer(SceneLayerID.Layer_Effect));
+            GameObjectUtils.SetLayer(effect.gameObject, LayerMask.NameToLayer(SceneLayerID.Effect));
         }
 
         return effect;

@@ -165,22 +165,11 @@ public abstract class BaseObject : MonoBehaviour, IEventBase
     {
         transform.localScale = new Vector3(x, y, z);
     }
-    public virtual Vector3 GetRotate()
-    {
-        return transform.localEulerAngles;
-    }
-    public virtual void SetRotate(Vector3 dir)
-    {
-        transform.localEulerAngles = dir;
-    }
-    public virtual float RotateDegree2D
-    {
-        get { return transform.localEulerAngles.z; }
-    }
-    public virtual void SetRotateDegree2D(float angle)
-    {
-        SetRotate(new Vector3(0, 0, angle));
-    }
+    /// <summary>
+    /// 朝向
+    /// </summary>
+    public virtual Vector3 Forward{get { throw new System.Exception("子类需要实现的借口"); }}
+    public abstract void SetForward(Vector3 dir);
     public virtual void CalBoundSize()
     {
         Renderer render = GetComponentInChildren<Renderer>();

@@ -8,39 +8,49 @@ using System.Collections;
 /// </summary>
 public class SceneLayerID
 {
-    public const string Layer_Default       = "Default";
-    public const string Layer_UI            = "UI";
-    public const string Layer_Scene         = "Scene";
-    public const string Layer_Effect        = "Effect";
-    public const string Layer_Role          = "Role";
-    public const string Layer_Bullet        = "Bullet";
-    public const string Layer_Item          = "Item";
-    public const string Layer_Collider      = "Collider";
+    public const string Default         = "Default";
+    public const string UI              = "UI";
+    public const string Scene           = "Scene";
+    public const string SceneUnreal     = "SceneUnreal";
+    public const string Effect          = "Effect";
+    public const string RTT             = "RTT";
+    public const string Role            = "Role";
+    public const string Role1           = "Role1";
+    public const string Role2           = "Role2";
+    public const string Item            = "Item";
+    public const string Item1           = "Item1";
+    public const string Item2           = "Item2";
+    public const string Bullet          = "Bullet";
+    public const string Bullet1         = "Bullet1";
+    public const string Bullet2         = "Bullet2";
+    public const string Block_Unreal    = "Block_Unreal";
+    public const string Block_Bounce    = "Block_Bounce";
+    public const string Block_Destroy   = "Block_Destroy";
 
     static public int GetSceneMask()
     {
-        return (1 << LayerMask.NameToLayer(SceneLayerID.Layer_Scene));
+        return (1 << LayerMask.NameToLayer(SceneLayerID.Scene));
     }
     static public int GetSceneRoleMask()
     {
-        return (1 << LayerMask.NameToLayer(SceneLayerID.Layer_Scene) | 1 << LayerMask.NameToLayer(SceneLayerID.Layer_Role));
+        return (1 << LayerMask.NameToLayer(SceneLayerID.Scene) | 1 << LayerMask.NameToLayer(SceneLayerID.Role));
     }
 }
 
 
 /// <summary>
-/// 2d场景层次
+/// 2d对象z-depth
 /// </summary>
-public class Scene2DLayerID
+public class ObjectDepthID
 {
-    public const float LAYER_TERRAIN        = -0.0f;
-    public const float LAYER_TERRAIN_EFFECT = -0.1f;
-    public const float LAYER_MAP_OBJ        = -0.2f;
-    public const float LAYER_MAP_ITEM       = -0.3f;
-    public const float LAYER_ROLE           = -0.4f;
-    public const float LAYER_PLAYER         = -0.5f;
-    public const float LAYER_BULLET         = -0.6f;
-    public const float LAYER_EFFECT         = -0.7f;
-    public const float LAYER_TOP            = -0.8f;
+    public const float TERRAIN          = -0.0f;
+    public const float TERRAIN_EFFECT   = -0.1f;
+    public const float MAP_OBJ          = -0.2f;
+    public const float MAP_ITEM         = -0.3f;
+    public const float ROLE             = -0.4f;
+    public const float PLAYER           = -0.5f;
+    public const float BULLET           = -0.6f;
+    public const float EFFECT           = -0.7f;
+    public const float TOP              = -0.8f;
 
 }

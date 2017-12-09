@@ -28,7 +28,7 @@ public class AlertManager : Singleton<AlertManager>
             return;
         }
 
-        GameObjectUtils.SetLayer(obj, LayerMask.NameToLayer(SceneLayerID.Layer_UI));
+        GameObjectUtils.SetLayer(obj, LayerMask.NameToLayer(SceneLayerID.UI));
         m_AlertView = obj.GetComponent<AlertView>() as AlertView;
         if (m_AlertView == null) m_AlertView = obj.AddComponent<AlertView>() as AlertView;
 
@@ -57,7 +57,7 @@ public class AlertManager : Singleton<AlertManager>
             return;
         }
 
-        GameObjectUtils.SetLayer(obj, LayerMask.NameToLayer(SceneLayerID.Layer_UI));
+        GameObjectUtils.SetLayer(obj, LayerMask.NameToLayer(SceneLayerID.UI));
         m_AlertView = obj.GetComponent<AlertView>() as AlertView;
         if (m_AlertView == null) m_AlertView = obj.AddComponent<AlertView>() as AlertView;
 
