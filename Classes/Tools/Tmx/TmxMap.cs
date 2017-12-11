@@ -19,7 +19,8 @@ public class TmxMap
 	public float tileheight = 0;
 	public int nextobjectid = 0;
 
-	public Dictionary<string, TmxTileSet> DicTileSet = new Dictionary<string, TmxTileSet>();
+    public Dictionary<string, string> DicProperty = new Dictionary<string, string>();
+    public Dictionary<int, TmxTileSet> DicTileSet = new Dictionary<int, TmxTileSet>();
 	public Dictionary<string, TmxLayer> DicLayer = new Dictionary<string, TmxLayer>();
 	public Dictionary<string, TmxObjectGroup> DicObjectGroup = new Dictionary<string, TmxObjectGroup>();
 
@@ -48,19 +49,28 @@ public class TmxMap
 		if(root_node.Attributes.GetNamedItem("nextobjectid") != null)
 			nextobjectid = System.Convert.ToInt32(root_node.Attributes.GetNamedItem("nextobjectid").Value);
 
-		///2.tileset
-		XmlNodeList node_list = root_node.SelectNodes("tileset");
+        ///2.properties
+        XmlNodeList node_list = root_node.SelectNodes("properties/property");
+        foreach (XmlNode obj in node_list)
+        {
+            string _name = obj.Attributes.GetNamedItem("name").Value;
+            string _value = obj.Attributes.GetNamedItem("value").Value;
+            DicProperty.Add(_name, _value);
+        }
+
+		///3.tileset
+		node_list = root_node.SelectNodes("tileset");
 		foreach(XmlNode obj in node_list)
 		{
 			TmxTileSet tile_set = new TmxTileSet();
 			tile_set.Parse(obj);
-			if(DicTileSet.ContainsKey(tile_set.name))
-				Log.Error("TmxMap::Parse the same tileset is exist:" + tile_set.name);
+			if(DicTileSet.ContainsKey(tile_set.firstGID))
+                Log.Error("TmxMap::Parse the same tileset is exist:" + tile_set.firstGID);
 			else
-				DicTileSet.Add(tile_set.name, tile_set);
+                DicTileSet.Add(tile_set.firstGID, tile_set);
 		}
 
-		///3.layer
+		///4.layer
 		node_list = root_node.SelectNodes("layer");
 		foreach(XmlNode obj in node_list)
 		{
@@ -72,7 +82,7 @@ public class TmxMap
 				DicLayer.Add(layer.name, layer);
 		}
 		
-		///4.objectgroup
+		///5.objectgroup
 		node_list = root_node.SelectNodes("objectgroup");
 		foreach(XmlNode obj in node_list)
 		{
@@ -100,6 +110,7 @@ public class TmxMap
         {
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(textAsset.text);
+            
             return xmlDoc;
         }
     }

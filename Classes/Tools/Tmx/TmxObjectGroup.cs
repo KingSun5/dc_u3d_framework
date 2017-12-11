@@ -3,6 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
 
+/// <summary>
+/// TMX 对象集合
+/// @author hannibal
+/// @time 2015-8-13
+/// </summary>
 public class TmxObjectGroup
 {
 	public string name = "";
@@ -30,28 +35,34 @@ public class TmxObjectGroup
 		}
 	}
 }
-
+/// <summary>
+/// 单个对象
+/// </summary>
 public class TmxObject
 {
 	public int id;
-	public string name;
-	public string type;
-	public float x;
+	public string name = "";
+	public string type = "";
+	public float x;         //坐标:像素
 	public float y;
-	public float width;
-	public float height;
+	public float width = 1; //一个单位格
+	public float height = 1;
 	public Dictionary<string, string> DicProperty = new Dictionary<string, string>();
 
 	public void Parse(XmlNode node)
 	{		
 		///1.properties
 		id = System.Convert.ToInt32(node.Attributes.GetNamedItem("id").Value);
-		name = node.Attributes.GetNamedItem("name").Value;
-		type = node.Attributes.GetNamedItem("type").Value;
+        if (node.Attributes.GetNamedItem("name") != null)
+		    name = node.Attributes.GetNamedItem("name").Value;
+        if (node.Attributes.GetNamedItem("type") != null)
+		    type = node.Attributes.GetNamedItem("type").Value;
 		x = System.Convert.ToSingle(node.Attributes.GetNamedItem("x").Value);
 		y = System.Convert.ToSingle(node.Attributes.GetNamedItem("y").Value);
-		width = System.Convert.ToSingle(node.Attributes.GetNamedItem("width").Value);
-		height = System.Convert.ToSingle(node.Attributes.GetNamedItem("height").Value);
+        if (node.Attributes.GetNamedItem("width") != null)
+		    width = System.Convert.ToSingle(node.Attributes.GetNamedItem("width").Value);
+        if (node.Attributes.GetNamedItem("height") != null)
+		    height = System.Convert.ToSingle(node.Attributes.GetNamedItem("height").Value);
 		
 		
 		///2.property

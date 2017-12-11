@@ -3,6 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
 
+
+/// <summary>
+/// TMX tile层
+/// @author hannibal
+/// @time 2015-8-13
+/// </summary>
 public class TmxLayer
 {
 	public string name = "";
@@ -44,7 +50,8 @@ public class TmxLayer
 			string encode_type = encode_node.Value;
 			if(encode_type == "csv")
 			{
-
+                string str_csv = data_node.InnerText;
+                ListGID = StringUtils.Split<int>(str_csv, ',');
 			}
 			else if(encode_type == "base64")
 			{
