@@ -8,23 +8,25 @@ using System.Collections;
 /// </summary>
 public class SceneLayerUtils
 {
-    static private Transform m_RootLayer;
+    static private Camera m_MainCamera = null;
+    static private Transform m_RootLayer = null;
 
-    static public void Setup(Transform rootLayer)
+    static public void Setup(Camera camera, Transform rootLayer)
     {
+        m_MainCamera = camera;
         m_RootLayer = rootLayer;
     }
 
     static public void Destroy()
     {
-        if (m_RootLayer != null)
-        {
-            m_RootLayer = null;
-        }
+        ClearAllChild();
+        m_MainCamera = null;
+        m_RootLayer = null;
     }
 
     static public void AddChild(Transform obj, bool worldPosStays=false)
     {
+        if (m_RootLayer == null) return;
         if (obj != null)
         {
             obj.SetParent(m_RootLayer, worldPosStays);
@@ -32,6 +34,7 @@ public class SceneLayerUtils
     }
     static public void Add2DChild(Transform obj, float z_depth)
     {
+        if (m_RootLayer == null) return;
         if (obj != null)
         {
             obj.SetParent(m_RootLayer, false);
@@ -45,6 +48,7 @@ public class SceneLayerUtils
 
     static public void ClearAllChild()
     {
+        if (m_RootLayer == null) return;
         for (int i = 0; i < m_RootLayer.childCount; ++i)
         {
             Transform obj = m_RootLayer.GetChild(i);
@@ -73,11 +77,12 @@ public class SceneLayerUtils
         GameObject.Destroy(root);
     }
 
+    static public Camera MainCamera
+    {
+        get { return m_MainCamera; }
+    }
     static public Transform RootLayer
     {
-        get
-        {
-            return m_RootLayer;
-        }
+        get { return m_RootLayer; }
     }
 }

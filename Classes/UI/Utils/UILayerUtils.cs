@@ -19,61 +19,71 @@ using System.Collections.Generic;
 /// </summary>
 public class UILayerUtils
 {
-	/**layer*/
+    private static Canvas m_UICanvas = null;
+    private static Camera m_UICamera = null;
     private static Transform m_RootLayer = null;
-    private static GameObject m_Canvas = null;
-    private static Dictionary<int, Transform> m_DicLayer  = new Dictionary<int,Transform>();
+    private static Dictionary<int, Transform> m_DicLayer = new Dictionary<int, Transform>();
 
-	//～～～～～～～～～～～～～～～～～～～～～～～Layer~～～～～～～～～～～～～～～～～～～～～～～～//
+    public static void Setup(Camera camera, Canvas canvas, Transform layer)
+    {
+        m_UICamera = camera;
+        m_UICanvas = canvas;
+        m_RootLayer = layer;
+    }
+
+    public static void Destroy()
+    {
+        ClearLayer();
+        m_UICanvas = null;
+        m_UICamera = null;
+    }
+
+    //～～～～～～～～～～～～～～～～～～～～～～～Layer~～～～～～～～～～～～～～～～～～～～～～～～//
     public static void AddLayer(int layer_id, Transform layer)
-	{
-		if(m_DicLayer.ContainsKey(layer_id))
-		{
-			Log.Error("UILayerUtils::AddLayer - same layer is register:"+layer_id.ToString());
-			return;
-		}
+    {
+        if (m_DicLayer.ContainsKey(layer_id))
+        {
+            Log.Error("UILayerUtils::AddLayer - same layer is register:" + layer_id.ToString());
+            return;
+        }
 
-		m_DicLayer.Add(layer_id, layer);
-	}
+        m_DicLayer.Add(layer_id, layer);
+    }
     public static void RemoveLayer(int layer_id)
-	{
-		if(m_DicLayer.ContainsKey(layer_id) == false)
-		{
-			return;
-		}
-		
-		m_DicLayer.Remove(layer_id);
-	}
+    {
+        if (m_DicLayer.ContainsKey(layer_id) == false)
+        {
+            return;
+        }
+
+        m_DicLayer.Remove(layer_id);
+    }
     public static void ClearLayer()
-	{
-		m_DicLayer.Clear();
-        m_Canvas = null;
-		m_RootLayer = null;
-	}
+    {
+        m_DicLayer.Clear();
+    }
 
     public static Transform GetLayer(int layer)
-	{
-        Transform obj;
-		if(m_DicLayer.TryGetValue(layer, out obj))
-		{
-			return obj;
-		}
-		return null;
-	}
-
-    public static void SetCanvas(GameObject canvas, Transform layer)
-	{
-        m_Canvas = canvas;
-		m_RootLayer = layer;
-	}
-
-	//～～～～～～～～～～～～～～～～～～～～～～～get/set~～～～～～～～～～～～～～～～～～～～～～～～//
-    public static Transform RootLayer
-	{
-		get { return m_RootLayer; }
-	}
-    public static GameObject Canvas
     {
-        get { return m_Canvas; }
+        Transform obj;
+        if (m_DicLayer.TryGetValue(layer, out obj))
+        {
+            return obj;
+        }
+        return null;
+    }
+
+    //～～～～～～～～～～～～～～～～～～～～～～～get/set~～～～～～～～～～～～～～～～～～～～～～～～//
+    public static Transform RootLayer
+    {
+        get { return m_RootLayer; }
+    }
+    public static Canvas UICanvas
+    {
+        get { return m_UICanvas; }
+    }
+    public static Camera UICamera
+    {
+        get { return m_UICamera; }
     }
 }
