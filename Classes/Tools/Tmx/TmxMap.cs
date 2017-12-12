@@ -13,10 +13,10 @@ public class TmxMap
 	public string version = "";
 	public string orientation = "";
 	public string renderorder = "";
-	public int tilerows = 0;
-	public int tilecols = 0;
-	public float tilewidth = 0;
-	public float tileheight = 0;
+	public int tile_rows = 0;
+    public int tile_cols = 0;
+    public float tile_width = 0;
+    public float tile_height = 0;
 	public int nextobjectid = 0;
 
     public Dictionary<string, string> DicProperty = new Dictionary<string, string>();
@@ -24,9 +24,14 @@ public class TmxMap
 	public Dictionary<string, TmxLayer> DicLayer = new Dictionary<string, TmxLayer>();
 	public Dictionary<string, TmxObjectGroup> DicObjectGroup = new Dictionary<string, TmxObjectGroup>();
 
-	public bool Parse(string file_name)
+    public bool Parse(string file_name)
+    {
+        XmlDocument doc = OpenXML(file_name);
+        if (doc == null) return false;
+        return this.Parse(doc);
+    }
+    public bool Parse(XmlDocument doc)
 	{
-		XmlDocument doc = OpenXML(file_name);
 		if(doc == null)return false;
 		
 		XmlNode root_node = doc.DocumentElement;
@@ -39,13 +44,13 @@ public class TmxMap
 		if(root_node.Attributes.GetNamedItem("renderorder") != null)
 			renderorder = root_node.Attributes.GetNamedItem("renderorder").Value;
 		if(root_node.Attributes.GetNamedItem("height") != null)
-			tilerows = System.Convert.ToInt32(root_node.Attributes.GetNamedItem("height").Value);
+            tile_rows = System.Convert.ToInt32(root_node.Attributes.GetNamedItem("height").Value);
 		if(root_node.Attributes.GetNamedItem("width") != null)
-			tilecols = System.Convert.ToInt32(root_node.Attributes.GetNamedItem("width").Value);
+            tile_cols = System.Convert.ToInt32(root_node.Attributes.GetNamedItem("width").Value);
 		if(root_node.Attributes.GetNamedItem("tilewidth") != null)
-			tilewidth = System.Convert.ToSingle(root_node.Attributes.GetNamedItem("tilewidth").Value);
+            tile_width = System.Convert.ToSingle(root_node.Attributes.GetNamedItem("tilewidth").Value);
 		if(root_node.Attributes.GetNamedItem("tileheight") != null)
-			tileheight = System.Convert.ToSingle(root_node.Attributes.GetNamedItem("tileheight").Value);
+            tile_height = System.Convert.ToSingle(root_node.Attributes.GetNamedItem("tileheight").Value);
 		if(root_node.Attributes.GetNamedItem("nextobjectid") != null)
 			nextobjectid = System.Convert.ToInt32(root_node.Attributes.GetNamedItem("nextobjectid").Value);
 
