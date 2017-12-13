@@ -3,10 +3,17 @@ using UnityEditor;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
+/// <summary>
+/// ugui控件rect添加移动按钮
+/// @author hannibal
+/// @time 2016-12-17
+/// </summary>
 [CustomEditor(typeof(RectTransform))]
-public class RectHelper : DecoratorEditor {
+public class EditorUGUIRectHelper : DecoratorEditor {
     Dictionary<string, bool> dicInitState = new Dictionary<string, bool>();
-    public RectHelper() : base("RectTransformEditor") {
+    public EditorUGUIRectHelper()
+        : base("RectTransformEditor")
+    {
     }
     public override void OnInspectorGUI() {
         base.OnInspectorGUI();

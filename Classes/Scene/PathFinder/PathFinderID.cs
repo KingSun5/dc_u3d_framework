@@ -11,9 +11,9 @@ public class PathFinderID
 	public static float OBSTACLE = 10;	//不可走
 }
 
-/**
- * 寻路结果 
- */
+/// <summary>
+/// 寻路结果
+/// </summary>
 public enum eFinderResult
 {
     FAILED,				//失败

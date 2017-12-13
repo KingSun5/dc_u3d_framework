@@ -9,7 +9,7 @@ using System.IO;
 /// @author hannibal
 /// @time 2015-3-4
 /// </summary>
-public class SyncScene : MonoBehaviour 
+public class EditorSyncScene : MonoBehaviour 
 {
 	[MenuItem("Tools/添加场景到SceneSetting")]
 	static void CheckSceneSetting()
