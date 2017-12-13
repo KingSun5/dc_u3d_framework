@@ -63,7 +63,7 @@ public abstract class Physx2DObject : Map2DObject
      */
     public virtual void OnTrigger2DEnter(Collider2D other)
     {
-        //Log.Info("发生碰撞OnTriggerEnter", other.GetComponent<Collider>().name, " ", other.gameObject.name);
+        Log.Info("发生碰撞OnTriggerEnter", other.GetComponent<Collider2D>().name, " ", other.gameObject.name);
     }
 
     /**

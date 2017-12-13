@@ -46,12 +46,19 @@ public class TerrainGridMap : Singleton<TerrainGridMap>
 				switch(m_alige)
 				{
 				case eAligeType.LEFT_BOTTOM:
-                    {
+                    {//(0,0)格子在左下方
                         float x = -(numCols * gridW) * 0.5f + m_nodes[row, col].rect.x;
                         float y = -(numRows * gridH) * 0.5f + m_nodes[row, col].rect.y;
                         m_nodes[row, col].setPosition(x, y);
                     }
 					break;
+                case eAligeType.LEFT_TOP:
+                    {//(0,0)格子在左上方
+                        float x = m_nodes[row, col].rect.x;
+                        float y = m_nodes[row, col].rect.y;
+                        m_nodes[row, col].setPosition(x, y);
+                    }
+                    break;
 				}
 			}
 		}
