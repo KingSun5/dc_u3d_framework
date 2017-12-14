@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(tk2dSpriteAnimator))]
-
 /// <summary>
 /// 动画查看器
 /// @author hannibal
@@ -15,11 +13,14 @@ public class tk2dAnimationView : MonoBehaviour
 
     void Awake()
     {
-        tk2dSpriteAnimator animator = this.GetComponent<tk2dSpriteAnimator>();
-        foreach(tk2dSpriteAnimationClip clip in animator.Library.clips)
+        tk2dSpriteAnimator animator = this.GetComponentInChildren<tk2dSpriteAnimator>();
+        if (animator != null)
         {
-            if (string.IsNullOrEmpty(clip.name)) continue;
-            m_ListAnimation.Add(clip.name);
+            foreach (tk2dSpriteAnimationClip clip in animator.Library.clips)
+            {
+                if (string.IsNullOrEmpty(clip.name)) continue;
+                m_ListAnimation.Add(clip.name);
+            }
         }
     }
 
