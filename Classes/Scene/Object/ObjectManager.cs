@@ -85,7 +85,7 @@ public class ObjectManager : Singleton<ObjectManager>
     /// <summary>
     /// 创建2D对象
     /// </summary>
-    public BaseObject NewObject<T>(string file, float z_depth)
+    public BaseObject New2DObject<T>(string file, float z_depth, Transform parent = null)
     {
         if (string.IsNullOrEmpty(file)) file = "Prefab/EmptyNode";
         //构建对象
@@ -94,6 +94,8 @@ public class ObjectManager : Singleton<ObjectManager>
 
         //父节点
         SceneLayerUtils.Add2DChild(obj.transform, z_depth);
+        if(parent != null)
+            obj.transform.SetParent(parent, false);
 
         //脚本
         BaseObject base_obj = null;
