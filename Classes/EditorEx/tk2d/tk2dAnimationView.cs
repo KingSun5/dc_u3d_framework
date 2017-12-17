@@ -55,7 +55,7 @@ public class tk2dAnimationView : MonoBehaviour
             if (GUI.Button(new Rect(x * UIID.ScreenScaleX, y * UIID.ScreenScaleY, w * UIID.ScreenScaleX, h * UIID.ScreenScaleY), m_ListAnimation[i]))
             {
                 string anim = m_ListAnimation[i];
-                tk2dSpriteAnimator animator = this.GetComponent<tk2dSpriteAnimator>();
+                tk2dSpriteAnimator animator = this.GetComponentInChildren<tk2dSpriteAnimator>();
                 animator.Play(anim);
             }
         }
