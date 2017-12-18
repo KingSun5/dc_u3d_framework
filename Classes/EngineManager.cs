@@ -10,6 +10,7 @@ public class EngineManager : Singleton<EngineManager>
 {
     public void Setup(int default_screen_w, int default_screen_h, int max_screen_w=1920)
     {
+        GameTime.Start();
         SetResolution(default_screen_w, default_screen_h, max_screen_w);
 
         AntiCheatManager.Instance.Setup();
@@ -23,10 +24,12 @@ public class EngineManager : Singleton<EngineManager>
 		InputSimulateManager.Instance.Enable = false;
         HttpDownloadManager.Instance.Setup();
         TransformerManager.Instance.Setup();
+        ObjectManager.Instance.Setup();
 	}
 	
 	public void Destroy()
-	{
+    {
+        ObjectManager.Instance.Destroy();
         AntiCheatManager.Instance.Destroy();
         TimerManager.Instance.Destroy();
         MultyBuildManager.Instance.Destroy();
@@ -49,6 +52,7 @@ public class EngineManager : Singleton<EngineManager>
 		DropSimulationManager.Instance.Tick(elapse, game_frame);
 		InputSimulateManager.Instance.Tick(elapse, game_frame);
         TransformerManager.Instance.Tick(elapse, game_frame);
+        ObjectManager.Instance.Tick(elapse, game_frame);
 	}
 
     public void ProcessGC(bool release)

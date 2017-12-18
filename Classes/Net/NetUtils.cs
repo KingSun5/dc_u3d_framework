@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Text;
 
 
@@ -12,6 +14,23 @@ public class NetUtils
         tmpSendBy.Clear();
         tmpSendBy.WriteUShort(0);//协议头，包长度
         return tmpSendBy;
+    }
+
+    /// <summary>
+    /// 本机ip
+    /// </summary>
+    /// <returns></returns>
+    public static string GetLocalIpv4()
+    {
+        IPHostEntry IpEntry = Dns.GetHostEntry(Dns.GetHostName());
+        for (int i = 0; i < IpEntry.AddressList.Length; i++)
+        {
+            if (IpEntry.AddressList[i].AddressFamily == AddressFamily.InterNetwork)
+            {
+                return IpEntry.AddressList[i].ToString();
+            }
+        }
+        return "127.0.0.1";
     }
 }
 
