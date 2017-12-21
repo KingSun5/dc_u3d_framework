@@ -27,8 +27,10 @@ public class ModelImportProcess : AssetPostprocessor
             {
                 string path = Path.GetDirectoryName(assetPath);
                 string file_name = Path.GetFileNameWithoutExtension(assetPath);
+                string full_txt_path = path + "/" + file_name + ".txt";
+                if (!File.Exists(full_txt_path)) return;
 
-                using(StreamReader file_stream = new StreamReader(path + "/" + file_name + ".txt"))
+                using (StreamReader file_stream = new StreamReader(full_txt_path))
                 {
                     string sAnimList = file_stream.ReadToEnd();
 
