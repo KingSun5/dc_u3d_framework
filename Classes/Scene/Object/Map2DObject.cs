@@ -15,7 +15,7 @@ public class Map2DObject : BaseObject, IGridObject
 	protected int           m_ColIndex = 0;
 
 	/**对象所在的格子*/
-    protected TerrainGrid   m_TerrainGrid = null;
+    protected PathGrid   m_TerrainGrid = null;
 
     [SerializeField, Tooltip("速度方向(readonly)")]
     protected Vector3       m_VelocityDir = Vector3.zero;
@@ -60,7 +60,7 @@ public class Map2DObject : BaseObject, IGridObject
 		m_ColIndex = new_col;
 		m_RowIndex = new_row;
 		
-		m_TerrainGrid = TerrainGridMap.Instance.getNode(m_ColIndex, m_RowIndex);
+		m_TerrainGrid = PathGridMap.Instance.getNode(m_ColIndex, m_RowIndex);
 		if(m_TerrainGrid != null)
 		{
 			m_TerrainGrid.addObject(this);
@@ -89,7 +89,7 @@ public class Map2DObject : BaseObject, IGridObject
         base.OnPositionChange();
 
         //所在格子是否发生变化
-        TerrainGrid grid = TerrainGridMap.Instance.getNodeByPostion(this.Position.x, this.Position.y);
+        PathGrid grid = PathGridMap.Instance.getNodeByPostion(this.Position.x, this.Position.y);
         if(grid != null && grid != m_TerrainGrid)
         {
             this.OnMapGridChangle(grid.row, grid.col);
@@ -145,7 +145,7 @@ public class Map2DObject : BaseObject, IGridObject
 		get{ return m_ColIndex; }
 	}
 
-	public TerrainGrid TerrainGrid
+	public PathGrid PathGrid
 	{
 		get{ return m_TerrainGrid; }
 	}

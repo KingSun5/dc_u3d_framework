@@ -8,13 +8,14 @@ using System;
 /// @author hannibal
 /// @time 2015-8-10
 /// </summary>
-public class TerrainGrid : IComparable
+public class PathGrid : IComparable
 {
 	public int col = 0;   
 	public int row = 0;
     public Rect rect = new Rect();
-    public TerrainGrid parent = null;   
-	
+
+    //寻路部分
+    public PathGrid parent = null;   
 	public float f = 0f;   
 	public float g = 0f;   
 	public float h = 0f;    
@@ -28,7 +29,7 @@ public class TerrainGrid : IComparable
 	/**格子上的对象列表*/
 	private List<IGridObject> m_arr_grid_obj = new List<IGridObject>();
 
-	public TerrainGrid(int row = 0, int col = 0, float w = 0, float h = 0)   
+	public PathGrid(int row = 0, int col = 0, float w = 0, float h = 0)   
 	{     
 		this.row = row;
 		this.col = col; 
@@ -41,7 +42,7 @@ public class TerrainGrid : IComparable
     public int CompareTo(object obj)
     {
         int res = 0;
-        TerrainGrid sObj = (TerrainGrid)obj;
+        PathGrid sObj = (PathGrid)obj;
         if (this.f > sObj.f)
         {
             res = 1;
@@ -76,7 +77,7 @@ public class TerrainGrid : IComparable
         get { return rect.center; }
     }
 	
-	public bool equal(TerrainGrid g)
+	public bool equal(PathGrid g)
 	{
 		return ((this.col == g.col && this.row == g.row) ? true : false);
 	}

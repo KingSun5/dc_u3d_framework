@@ -35,26 +35,26 @@ public class AStarPathfinder : Singleton<AStarPathfinder>
     private bool m_active = false;
 
     /**默认最大搜索次数*/
-    private const int MAX_DEFAULT_SEARCH_COUNT = 200;
+    private const int MAX_DEFAULT_SEARCH_COUNT = 2000;
     private int m_max_search_count = MAX_DEFAULT_SEARCH_COUNT;
 
     /**开启和封闭路点列表*/
-    private List<TerrainGrid> m_array_open = null;
-    private List<TerrainGrid> m_array_closed = null;
+    private List<PathGrid> m_array_open = null;
+    private List<PathGrid> m_array_closed = null;
 
     /**地图障碍数据*/
-    private TerrainGridMap m_grid_map = null;
+    private PathGridMap m_grid_map = null;
 
     /**寻路起点和终点*/
-    private TerrainGrid m_start_node;
-    private TerrainGrid m_end_node;
+    private PathGrid m_start_node;
+    private PathGrid m_end_node;
     private Vector2 m_start_pos;
     private Vector2 m_end_pos;
 
     /**最终寻路结果*/
-    private List<TerrainGrid> m_array_search_path = null;
+    private List<PathGrid> m_array_search_path = null;
     //寻路失败可以到达的最近点
-    private TerrainGrid m_failed_last_node = null;
+    private PathGrid m_failed_last_node = null;
 
     /**基础代价*/
     private float m_straight_cost = 1.0f;
@@ -63,21 +63,17 @@ public class AStarPathfinder : Singleton<AStarPathfinder>
     /**************************************************************************/
     /*公共方法																  */
     /**************************************************************************/
-    public AStarPathfinder()
-    {
-    }
-
-    public void setup(TerrainGridMap grid_map)
+    public void setup(PathGridMap grid_map)
     {
         m_active = true;
 
         m_grid_map = grid_map;
 
-        m_start_node = new TerrainGrid();
-        m_end_node = new TerrainGrid();
-        m_array_search_path = new List<TerrainGrid>();
-        m_array_open = new List<TerrainGrid>();
-        m_array_closed = new List<TerrainGrid>();
+        m_start_node = new PathGrid();
+        m_end_node = new PathGrid();
+        m_array_search_path = new List<PathGrid>();
+        m_array_open = new List<PathGrid>();
+        m_array_closed = new List<PathGrid>();
     }
 
     public void destroy()
@@ -113,11 +109,12 @@ public class AStarPathfinder : Singleton<AStarPathfinder>
         m_end_pos = endPos;
         m_start_node = m_grid_map.getNodeByPostion(startPos.x, startPos.y);
         m_end_node = m_grid_map.getNodeByPostion(endPos.x, endPos.y);
-//			if(!m_start_node || !m_start_node.walkable)
-//			{
-//				PaperLogger.error("AStarPathfinder::findPath - 角色起点在障碍里面");
-//				return eFinderResult.FAILED;
-//			}
+        //if (m_start_node == null || !m_start_node.walkable)
+        //{
+        //    Log.Error("AStarPathfinder::search - 角色起点在障碍里面");
+        //    return eFinderResult.FAILED;
+        //}
+        //Log.Debug(string.Format("起点{0},{1};终点{2},{3}", m_start_node.row, m_start_node.col, m_end_node.row, m_end_node.col));
         if (m_start_node == null)
         {
             Log.Error("AStarPathfinder::findPath - 角色起点在障碍里面");
@@ -147,42 +144,44 @@ public class AStarPathfinder : Singleton<AStarPathfinder>
             }
         }
 
-        Log.Debug("[AI]AStarPathfinder::search - 寻路总用时:", (Time.realtimeSinceStartup - old_time) + "s");
+        //Log.Debug("[AI]AStarPathfinder::search - 寻路总用时:", (Time.realtimeSinceStartup - old_time) + "s");
 
         return result;
     }
 
-    /**************************************************************************/
-    /*公共属性																  */
-    /**************************************************************************/
-    public List<TerrainGrid> path()
+    public List<PathGrid> paths
     {
-        return m_array_search_path;
+        get { return m_array_search_path; }
     }
 
+    public int max_search_count
+    {
+        set { m_max_search_count = value; }
+    }
     /**************************************************************************/
     /*私有方法																  */
     /**************************************************************************/
     private eFinderResult travel(bool isFindNearstPath)
     {
-        TerrainGrid node = m_start_node;
+        PathGrid node = m_start_node;
         int search_count = 0;
         while (!node.equal(m_end_node) && search_count < m_max_search_count)
         {
             ++search_count;
-            int startX = Mathf.Max(0, node.col - 1);
-            int endX = Mathf.Min(m_grid_map.numCols - 1, node.col + 1);
-            int startY = Mathf.Max(0, node.row - 1);
-            int endY = Mathf.Min(m_grid_map.numRows - 1, node.row + 1);
-            for (int i = startX; i <= endX; i++)
+            int start_col = Mathf.Max(0, node.col - 1);
+            int end_col = Mathf.Min(m_grid_map.numCols - 1, node.col + 1);
+            int start_row = Mathf.Max(0, node.row - 1);
+            int end_row = Mathf.Min(m_grid_map.numRows - 1, node.row + 1);
+            for (int col = start_col; col <= end_col; col++)
             {
-                for (int j = startY; j <= endY; j++)
+                for (int row = start_row; row <= end_row; row++)
                 {
-                    TerrainGrid test = m_grid_map.getNode(i, j);
+                    PathGrid test = m_grid_map.getNode(row, col);
                     if (test == null || test.equal(node) ||
                         !test.walkable ||
-                        !m_grid_map.getNode(node.col, test.row).walkable ||   //拐角不能通过
-                        !m_grid_map.getNode(test.col, node.row).walkable)
+                        !m_grid_map.getNode(node.row, test.col).walkable ||   //拐角不能通过
+                        !m_grid_map.getNode(test.row, node.col).walkable
+                        )
                     {
                         continue;
                     }
@@ -251,20 +250,21 @@ public class AStarPathfinder : Singleton<AStarPathfinder>
         return eFinderResult.SUCCEEDED;
     }
 
-    private void buildPath(TerrainGrid end_node)
+    private void buildPath(PathGrid end_node)
     {
-        TerrainGrid node = end_node;
+        PathGrid node = end_node;
         m_array_search_path.Add(node);
         while (!node.equal(m_start_node))
         {
             node = node.parent;
-            m_array_search_path.Insert(0,node);
+            m_array_search_path.Add(node);
         }
+        m_array_search_path.Reverse();
     }
 
-    private bool isOpen(TerrainGrid test)
+    private bool isOpen(PathGrid test)
 	{
-        foreach (TerrainGrid t in m_array_open)
+        foreach (PathGrid t in m_array_open)
 		{
 			if(t.equal(test))
 			{
@@ -274,9 +274,9 @@ public class AStarPathfinder : Singleton<AStarPathfinder>
 		return false;
 	}
 
-    private bool isClosed(TerrainGrid test)
+    private bool isClosed(PathGrid test)
 	{
-        foreach (TerrainGrid t in m_array_closed)
+        foreach (PathGrid t in m_array_closed)
 		{
 			if(t.equal(test))
 			{
@@ -285,12 +285,14 @@ public class AStarPathfinder : Singleton<AStarPathfinder>
 		}
 		return false;	
 	}
+
+    #region
     /// <summary>
     /// 对角线估价法 
     /// </summary>
     /// <param name="node"></param>
     /// <returns></returns>
-    private float onDiagonal(TerrainGrid node)
+    private float onDiagonal(PathGrid node)
     {
         int dx = Mathf.Abs(node.col - m_end_node.col);
         int dy = Mathf.Abs(node.row - m_end_node.row);
@@ -298,14 +300,27 @@ public class AStarPathfinder : Singleton<AStarPathfinder>
         int straight = dx + dy;
         return m_diag_cost * diag + m_straight_cost * (straight - 2 * diag);
     }
-
-    public int max_search_count()
+    /// <summary>
+    /// 几何估价法（Euclidian heuristic）
+	/// 它计算出两点之间的直线距离，本质公式为勾股定理
+    /// </summary>
+    private float onEuclidian(PathGrid node)
     {
-        return m_max_search_count;
+        int dx = node.col - m_end_node.col;
+        int dy = node.row - m_end_node.row;
+        return Mathf.Sqrt(dx * dx + dy * dy) * m_straight_cost;
     }
-
-    public void max_search_count(int value)
+    /// <summary>
+    ///  曼哈顿估价法(Manhattan heuristic)
+    ///  它忽略所有的对角移动，只添加起点节点和
+    ///  终点节点之间的行、列数目。就像你在曼哈顿的大街上一样，比如说，你在（5，40），到（8，43），
+    ///  你必须先在一个方向上走过 3 个节点，然后另一个方向上的 3 个节点。有可能是先横走完，在竖走
+    ///  完，反之亦然；或者横、竖、横、竖、横、竖，每边都要走 3 个 
+    /// </summary>
+    private float onManhattan(PathGrid node)
     {
-        m_max_search_count = value;
+        return Mathf.Abs(node.col - m_end_node.col) * m_straight_cost +
+            Mathf.Abs(node.row + m_end_node.row) * m_straight_cost;
     }
+    #endregion
 }

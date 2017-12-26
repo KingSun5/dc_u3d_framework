@@ -26,10 +26,10 @@ public class GridPathfinder : Singleton<GridPathfinder>
 	private Rect m_collide_rect = new Rect();
 
 	/**地图障碍数据*/
-	private TerrainGridMap m_grid_map = null; 
-	private TerrainGrid m_cur_grid = null;
+	private PathGridMap m_grid_map = null; 
+	private PathGrid m_cur_grid = null;
 
-	public void setup(TerrainGridMap grid_map, float step_length = 0.1f)
+	public void setup(PathGridMap grid_map, float step_length = 0.1f)
 	{
 		m_grid_map = grid_map;
         STEP_LENGTH = step_length;
@@ -147,7 +147,7 @@ public class GridPathfinder : Singleton<GridPathfinder>
 		m_collide_rect.x = x - m_collide_rect.width*0.5f;
 		m_collide_rect.y = y - m_collide_rect.height*0.5f;
 		
-		TerrainGrid grid = m_grid_map.getNodeByPostion(x, y);
+		PathGrid grid = m_grid_map.getNodeByPostion(x, y);
 		//在障碍里面
 		if(grid == null || !grid.walkable)
 		{
@@ -156,7 +156,7 @@ public class GridPathfinder : Singleton<GridPathfinder>
 		
 		int grid_row = grid.row;
 		int grid_col = grid.col;
-		TerrainGrid tempTile = null;
+		PathGrid tempTile = null;
         switch (dir)
 		{ 
 		case eFace8Type.RIGHT://校验相邻格子
@@ -227,7 +227,7 @@ public class GridPathfinder : Singleton<GridPathfinder>
     /// <returns></returns>
     private eFace8Type adjustDir(eFace8Type dir, float x, float y)
     {
-        TerrainGrid cur_tile = m_grid_map.getNodeByPostion(x, y);
+        PathGrid cur_tile = m_grid_map.getNodeByPostion(x, y);
 		if(cur_tile == null || !cur_tile.walkable)return eFace8Type.NONE;
         m_collide_rect.x = x - m_collide_rect.width * 0.5f;
         m_collide_rect.y = y - m_collide_rect.height * 0.5f;
@@ -238,8 +238,8 @@ public class GridPathfinder : Singleton<GridPathfinder>
 		{//地图{0,0}在左下角
 		case eFace8Type.RIGHT_DOWN:
             {
-                TerrainGrid right_tile = m_grid_map.getNode(grid_row, grid_col + 1);
-                TerrainGrid down_tile = m_grid_map.getNode(grid_row - 1, grid_col);
+                PathGrid right_tile = m_grid_map.getNode(grid_row, grid_col + 1);
+                PathGrid down_tile = m_grid_map.getNode(grid_row - 1, grid_col);
                 bool can_right = checkCanMove(right_tile, m_collide_rect);
                 bool can_down = checkCanMove(down_tile, m_collide_rect);
                 if (!can_right && !can_down) return eFace8Type.NONE;
@@ -250,8 +250,8 @@ public class GridPathfinder : Singleton<GridPathfinder>
 			
 		case eFace8Type.RIGHT_UP:
             {
-                TerrainGrid right_tile = m_grid_map.getNode(grid_row, grid_col + 1);
-                TerrainGrid up_tile = m_grid_map.getNode(grid_row + 1, grid_col);
+                PathGrid right_tile = m_grid_map.getNode(grid_row, grid_col + 1);
+                PathGrid up_tile = m_grid_map.getNode(grid_row + 1, grid_col);
                 bool can_right = checkCanMove(right_tile, m_collide_rect);
                 bool can_up = checkCanMove(up_tile, m_collide_rect);
                 if (!can_right && !can_up) return eFace8Type.NONE;
@@ -262,8 +262,8 @@ public class GridPathfinder : Singleton<GridPathfinder>
 			
 		case eFace8Type.LEFT_DOWN:
             {
-                TerrainGrid left_tile = m_grid_map.getNode(grid_row, grid_col - 1);
-                TerrainGrid down_tile = m_grid_map.getNode(grid_row - 1, grid_col);
+                PathGrid left_tile = m_grid_map.getNode(grid_row, grid_col - 1);
+                PathGrid down_tile = m_grid_map.getNode(grid_row - 1, grid_col);
                 bool can_left = checkCanMove(left_tile, m_collide_rect);
                 bool can_down = checkCanMove(down_tile, m_collide_rect);
                 if (!can_left && !can_down) return eFace8Type.NONE;
@@ -274,8 +274,8 @@ public class GridPathfinder : Singleton<GridPathfinder>
 			
 		case eFace8Type.LEFT_UP:
             {
-                TerrainGrid left_tile = m_grid_map.getNode(grid_row, grid_col - 1);
-                TerrainGrid up_tile = m_grid_map.getNode(grid_row + 1, grid_col);
+                PathGrid left_tile = m_grid_map.getNode(grid_row, grid_col - 1);
+                PathGrid up_tile = m_grid_map.getNode(grid_row + 1, grid_col);
                 bool can_left = checkCanMove(left_tile, m_collide_rect);
                 bool can_up = checkCanMove(up_tile, m_collide_rect);
                 if (!can_left && !can_up) return eFace8Type.NONE;
@@ -291,7 +291,7 @@ public class GridPathfinder : Singleton<GridPathfinder>
 	/// </summary>
 	/// <param name="tile"></param>
 	/// <returns></returns>
-	private bool checkCanMove(TerrainGrid tile, Rect collide_rect)
+	private bool checkCanMove(PathGrid tile, Rect collide_rect)
 	{
 		if(tile == null)return false;
 
