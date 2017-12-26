@@ -34,9 +34,9 @@ public class MapObject : BaseObject, IGridObject
         base.Start();
     }
 
-    public override void OnDestroy()
+    public override void Destroy()
 	{
-        base.OnDestroy();
+        base.Destroy();
 	}
 
 	/**

@@ -47,18 +47,6 @@ public abstract class BaseObject : MonoBehaviour, IEventBase
     {
         //undo
     }
-    public virtual void OnDestroy()
-    {
-        m_Active = false;
-        m_ObjectUID = 0;
-
-        if (m_Observer != null)
-        {
-            m_Observer.Cleanup();
-            m_Observer = null;
-        }
-        m_AttachNode = null;
-    }
 
     public virtual void OnEnable()
     {
@@ -77,6 +65,18 @@ public abstract class BaseObject : MonoBehaviour, IEventBase
     public virtual void Setup(object info)
     {
 
+    }
+    public virtual void Destroy()
+    {
+        m_Active = false;
+        m_ObjectUID = 0;
+
+        if (m_Observer != null)
+        {
+            m_Observer.Cleanup();
+            m_Observer = null;
+        }
+        m_AttachNode = null;
     }
 
     public virtual bool Tick(float elapse, int game_frame)

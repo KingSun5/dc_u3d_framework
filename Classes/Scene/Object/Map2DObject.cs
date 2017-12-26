@@ -41,14 +41,14 @@ public class Map2DObject : BaseObject, IGridObject
         base.Start();
     }
 
-    public override void OnDestroy()
+    public override void Destroy()
     {
         if (m_TerrainGrid != null)
         {
             m_TerrainGrid.removeObject(this);
             m_TerrainGrid = null;
         }
-        base.OnDestroy();
+        base.Destroy();
 	}
 
 	/// <summary>

@@ -129,8 +129,14 @@ public class ObjectManager : Singleton<ObjectManager>
     /// </summary>
     private void ReleaseObject(BaseObject pObj)
     {
+        if (pObj == null) return;
+
         DetachObject(pObj);
-        GameObject.Destroy(pObj.gameObject);
+        pObj.Destroy();
+        if (pObj.gameObject != null)
+        {
+            GameObject.Destroy(pObj.gameObject);
+        }
     }
     /// <summary>
     /// 释放所有对象
@@ -138,9 +144,9 @@ public class ObjectManager : Singleton<ObjectManager>
     public void ReleaseAllObject()
     {
         var list_values = new List<BaseObject>(m_DicObject.Values);
-        foreach (var obj in list_values)
+        for (int i = list_values.Count - 1; i >= 0; --i)
         {
-            ReleaseObject(obj);
+            ReleaseObject(list_values[i]);
         }
 
         m_DicObject.Clear();

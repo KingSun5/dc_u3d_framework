@@ -28,9 +28,9 @@ public abstract class Physx2DObject : Map2DObject
         base.Start();
     }
 
-    public override void OnDestroy()
+    public override void Destroy()
     {
-        base.OnDestroy();
+        base.Destroy();
     }
 
     /*～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～物理～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～*/
