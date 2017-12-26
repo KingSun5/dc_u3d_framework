@@ -1,13 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 /// <summary>
 /// 单个地图格子
 /// @author hannibal
 /// @time 2015-8-10
 /// </summary>
-public class TerrainGrid
+public class TerrainGrid : IComparable
 {
 	public int col = 0;   
 	public int row = 0;
@@ -35,8 +36,23 @@ public class TerrainGrid
 		rect.y = row*h;
 		rect.width = w;
 		rect.height = h;
-	} 
-	
+	}
+
+    public int CompareTo(object obj)
+    {
+        int res = 0;
+        TerrainGrid sObj = (TerrainGrid)obj;
+        if (this.f > sObj.f)
+        {
+            res = 1;
+        }
+        else if (this.f < sObj.f)
+        {
+            res = -1;
+        }
+        return res;
+    }
+
 	public void reset()
 	{
 		col = row = 0;

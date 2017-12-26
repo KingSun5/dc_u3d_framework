@@ -37,7 +37,7 @@ public class Effect2DBase : MonoBehaviour
     }
     public virtual void OnLoadComplate()
 	{
-        m_Animation = gameObject.GetComponent<tk2dSpriteAnimator>();
+        m_Animation = gameObject.GetComponentInChildren<tk2dSpriteAnimator>();
         m_Animation.Play("Anim");
         m_Animation.AnimationCompleted = OnAnimationEnd;
 	}
