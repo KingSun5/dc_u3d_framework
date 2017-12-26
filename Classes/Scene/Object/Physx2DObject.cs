@@ -23,11 +23,6 @@ public abstract class Physx2DObject : Map2DObject
         base.Setup(info);
     }
 
-    public override void Start()
-    {
-        base.Start();
-    }
-
     public override void Destroy()
     {
         base.Destroy();

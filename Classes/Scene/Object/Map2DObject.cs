@@ -36,11 +36,6 @@ public class Map2DObject : BaseObject, IGridObject
         base.Setup(info);
     }
 
-    public override void Start()
-    {
-        base.Start();
-    }
-
     public override void Destroy()
     {
         if (m_TerrainGrid != null)

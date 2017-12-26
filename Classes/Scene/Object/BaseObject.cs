@@ -38,11 +38,6 @@ public abstract class BaseObject : MonoBehaviour, IEventBase
         ObjectManager.Instance.AttachObject(this);
     }
 
-    public virtual void Start()
-    {
-        CalBoundSize();
-    }
-
     void Update()
     {
         //undo
@@ -64,7 +59,7 @@ public abstract class BaseObject : MonoBehaviour, IEventBase
 
     public virtual void Setup(object info)
     {
-
+        CalBoundSize();
     }
     public virtual void Destroy()
     {
