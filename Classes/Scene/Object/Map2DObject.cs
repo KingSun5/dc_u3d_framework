@@ -15,7 +15,7 @@ public class Map2DObject : BaseObject, IGridObject
 	protected int           m_ColIndex = 0;
 
 	/**对象所在的格子*/
-    protected PathGrid   m_TerrainGrid = null;
+    protected PathGrid      m_PathGrid = null;
 
     [SerializeField, Tooltip("速度方向(readonly)")]
     protected Vector3       m_VelocityDir = Vector3.zero;
@@ -38,10 +38,10 @@ public class Map2DObject : BaseObject, IGridObject
 
     public override void Destroy()
     {
-        if (m_TerrainGrid != null)
+        if (m_PathGrid != null)
         {
-            m_TerrainGrid.removeObject(this);
-            m_TerrainGrid = null;
+            m_PathGrid.removeObject(this);
+            m_PathGrid = null;
         }
         base.Destroy();
 	}
@@ -51,19 +51,19 @@ public class Map2DObject : BaseObject, IGridObject
 	/// </summary>
 	public virtual void OnMapGridChangle(int new_row, int new_col)
 	{
-		if(m_TerrainGrid != null)
+		if(m_PathGrid != null)
 		{
-			m_TerrainGrid.removeObject(this);
-			m_TerrainGrid = null;
+			m_PathGrid.removeObject(this);
+			m_PathGrid = null;
 		}
 		
 		m_ColIndex = new_col;
 		m_RowIndex = new_row;
-		
-		m_TerrainGrid = PathGridMap.Instance.getNode(m_ColIndex, m_RowIndex);
-		if(m_TerrainGrid != null)
+
+        m_PathGrid = PathGridMap.Instance.getNode(m_RowIndex, m_ColIndex);
+		if(m_PathGrid != null)
 		{
-			m_TerrainGrid.addObject(this);
+			m_PathGrid.addObject(this);
         }
         EventController.TriggerEvent(ObjectEvent.MAP_GRID_CHANGE, m_ObjectUID, m_RowIndex, m_ColIndex);
 	}
@@ -90,7 +90,7 @@ public class Map2DObject : BaseObject, IGridObject
 
         //所在格子是否发生变化
         PathGrid grid = PathGridMap.Instance.getNodeByPostion(this.Position.x, this.Position.y);
-        if(grid != null && grid != m_TerrainGrid)
+        if(grid != null && grid != m_PathGrid)
         {
             this.OnMapGridChangle(grid.row, grid.col);
         }
@@ -147,7 +147,7 @@ public class Map2DObject : BaseObject, IGridObject
 
 	public PathGrid PathGrid
 	{
-		get{ return m_TerrainGrid; }
+		get{ return m_PathGrid; }
 	}
 
     public Vector3 VelocityDir

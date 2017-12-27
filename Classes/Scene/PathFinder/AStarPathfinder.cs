@@ -32,8 +32,6 @@ A_star 运算法则
 */
 public class AStarPathfinder : Singleton<AStarPathfinder>
 {
-    private bool m_active = false;
-
     /**默认最大搜索次数*/
     private const int MAX_DEFAULT_SEARCH_COUNT = 2000;
     private int m_max_search_count = MAX_DEFAULT_SEARCH_COUNT;
@@ -64,7 +62,7 @@ public class AStarPathfinder : Singleton<AStarPathfinder>
     /// <returns></returns>
     public eFinderResult search(PathGridMap grid_map, Vector2 startPos, Vector2 endPos, bool isFindNearstPath = false)
     {
-        if (!m_active || grid_map == null) return eFinderResult.FAILED;
+        if (grid_map == null) return eFinderResult.FAILED;
 
         m_array_open.Clear();
         m_array_closed.Clear();
@@ -77,12 +75,12 @@ public class AStarPathfinder : Singleton<AStarPathfinder>
         //Log.Debug(string.Format("起点{0},{1};终点{2},{3}", m_start_node.row, m_start_node.col, m_end_node.row, m_end_node.col));
         if (m_start_node == null)
         {
-            Log.Error("AStarPathfinder::findPath - 角色起点在障碍里面");
+            //Log.Error("AStarPathfinder::findPath - 角色起点在障碍里面");
             return eFinderResult.FAILED;
         }
         if (m_end_node == null || (!m_end_node.walkable && !isFindNearstPath))
         {
-            Log.Error("AStarPathfinder::findPath - 角色终点在障碍里面");
+            //Log.Error("AStarPathfinder::findPath - 角色终点在障碍里面");
             return eFinderResult.FAILED;
         }
         m_start_node.g = 0;
