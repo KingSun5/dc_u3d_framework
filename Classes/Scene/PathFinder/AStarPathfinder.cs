@@ -39,129 +39,80 @@ public class AStarPathfinder : Singleton<AStarPathfinder>
     private int m_max_search_count = MAX_DEFAULT_SEARCH_COUNT;
 
     /**开启和封闭路点列表*/
-    private List<PathGrid> m_array_open = null;
-    private List<PathGrid> m_array_closed = null;
-
-    /**地图障碍数据*/
-    private PathGridMap m_grid_map = null;
+    private List<PathGrid> m_array_open = new List<PathGrid>();
+    private List<PathGrid> m_array_closed = new List<PathGrid>();
 
     /**寻路起点和终点*/
-    private PathGrid m_start_node;
-    private PathGrid m_end_node;
-    private Vector2 m_start_pos;
-    private Vector2 m_end_pos;
+    private PathGrid m_start_node = new PathGrid();
+    private PathGrid m_end_node = new PathGrid();
 
     /**最终寻路结果*/
-    private List<PathGrid> m_array_search_path = null;
-    //寻路失败可以到达的最近点
-    private PathGrid m_failed_last_node = null;
+    private List<Vector2> m_array_search_path = new List<Vector2>();
+    private List<PathGrid> m_array_search_grid = new List<PathGrid>();
 
     /**基础代价*/
     private float m_straight_cost = 1.0f;
     private float m_diag_cost = 1.414f;
 
-    /**************************************************************************/
-    /*公共方法																  */
-    /**************************************************************************/
-    public void setup(PathGridMap grid_map)
+    /// <summary>
+    /// 寻路接口 
+    /// </summary>
+    /// <param name="grid_map">地图格子列表</param>
+    /// <param name="startPos">起点</param>
+    /// <param name="endPos">终点</param>
+    /// <param name="isFindNearstPath">失败时，是否返回最近可移动路径</param>
+    /// <returns></returns>
+    public eFinderResult search(PathGridMap grid_map, Vector2 startPos, Vector2 endPos, bool isFindNearstPath = false)
     {
-        m_active = true;
+        if (!m_active || grid_map == null) return eFinderResult.FAILED;
 
-        m_grid_map = grid_map;
-
-        m_start_node = new PathGrid();
-        m_end_node = new PathGrid();
-        m_array_search_path = new List<PathGrid>();
-        m_array_open = new List<PathGrid>();
-        m_array_closed = new List<PathGrid>();
-    }
-
-    public void destroy()
-    {
-        m_array_search_path.Clear();
         m_array_open.Clear();
         m_array_closed.Clear();
-        m_grid_map = null;
-        m_start_node = null;
-        m_end_node = null;
-        m_array_open = null;
-        m_array_closed = null;
-        m_failed_last_node = null;
-        m_array_search_path = null;
-
-        m_active = false;
-    }
-    /**
-     * 寻路接口 
-     * @param startNode 起点
-     * @param endNode 终点
-     * @return true - 寻路成功；false - 寻路失败
-     */
-    public eFinderResult search(Vector2 startPos, Vector2 endPos, bool isFindNearstPath = false)
-    {
-        if (!m_active || m_grid_map == null) return eFinderResult.FAILED;
-
         m_array_search_path.Clear();
-        m_array_open.Clear();
-        m_array_closed.Clear();
+        m_array_search_grid.Clear();
 
-        m_start_pos = startPos;
-        m_end_pos = endPos;
-        m_start_node = m_grid_map.getNodeByPostion(startPos.x, startPos.y);
-        m_end_node = m_grid_map.getNodeByPostion(endPos.x, endPos.y);
-        //if (m_start_node == null || !m_start_node.walkable)
-        //{
-        //    Log.Error("AStarPathfinder::search - 角色起点在障碍里面");
-        //    return eFinderResult.FAILED;
-        //}
+        m_start_node = grid_map.getNodeByPostion(startPos.x, startPos.y);
+        m_end_node = grid_map.getNodeByPostion(endPos.x, endPos.y);
+
         //Log.Debug(string.Format("起点{0},{1};终点{2},{3}", m_start_node.row, m_start_node.col, m_end_node.row, m_end_node.col));
         if (m_start_node == null)
         {
             Log.Error("AStarPathfinder::findPath - 角色起点在障碍里面");
             return eFinderResult.FAILED;
         }
-        if (m_start_node == null || !m_end_node.walkable)
+        if (m_end_node == null || (!m_end_node.walkable && !isFindNearstPath))
         {
+            Log.Error("AStarPathfinder::findPath - 角色终点在障碍里面");
             return eFinderResult.FAILED;
         }
         m_start_node.g = 0;
         m_start_node.h = onDiagonal(m_start_node);
         m_start_node.f = m_start_node.g + m_start_node.h;
 
-        //时间
-        float old_time = Time.realtimeSinceStartup;
-
         //执行寻路
-        eFinderResult result = travel(isFindNearstPath);
-        if (result == eFinderResult.FAILED)
-        {
-            if (isFindNearstPath && m_failed_last_node != null &&
-                m_failed_last_node.equal(m_start_node) == false)
-            {//找最近点
-                m_array_search_path.Add(m_start_node);
-                m_array_search_path.Add(m_failed_last_node);
-                result = eFinderResult.SUCCEEDED_NEAREST;
-            }
-        }
-
+        //float old_time = Time.realtimeSinceStartup;
+        eFinderResult result = travel(grid_map, isFindNearstPath);
         //Log.Debug("[AI]AStarPathfinder::search - 寻路总用时:", (Time.realtimeSinceStartup - old_time) + "s");
 
         return result;
     }
 
-    public List<PathGrid> paths
+    public List<Vector2> paths
     {
         get { return m_array_search_path; }
+    }
+    public List<PathGrid> grids
+    {
+        get { return m_array_search_grid; }
     }
 
     public int max_search_count
     {
         set { m_max_search_count = value; }
     }
-    /**************************************************************************/
-    /*私有方法																  */
-    /**************************************************************************/
-    private eFinderResult travel(bool isFindNearstPath)
+
+    #region 寻路
+    private eFinderResult travel(PathGridMap grid_map, bool isFindNearstPath)
     {
         PathGrid node = m_start_node;
         int search_count = 0;
@@ -169,18 +120,18 @@ public class AStarPathfinder : Singleton<AStarPathfinder>
         {
             ++search_count;
             int start_col = Mathf.Max(0, node.col - 1);
-            int end_col = Mathf.Min(m_grid_map.numCols - 1, node.col + 1);
+            int end_col = Mathf.Min(grid_map.numCols - 1, node.col + 1);
             int start_row = Mathf.Max(0, node.row - 1);
-            int end_row = Mathf.Min(m_grid_map.numRows - 1, node.row + 1);
+            int end_row = Mathf.Min(grid_map.numRows - 1, node.row + 1);
             for (int col = start_col; col <= end_col; col++)
             {
                 for (int row = start_row; row <= end_row; row++)
                 {
-                    PathGrid test = m_grid_map.getNode(row, col);
+                    PathGrid test = grid_map.getNode(row, col);
                     if (test == null || test.equal(node) ||
                         !test.walkable ||
-                        !m_grid_map.getNode(node.row, test.col).walkable ||   //拐角不能通过
-                        !m_grid_map.getNode(test.row, node.col).walkable
+                        !grid_map.getNode(node.row, test.col).walkable ||   //拐角不能通过
+                        !grid_map.getNode(test.row, node.col).walkable
                         )
                     {
                         continue;
@@ -253,13 +204,16 @@ public class AStarPathfinder : Singleton<AStarPathfinder>
     private void buildPath(PathGrid end_node)
     {
         PathGrid node = end_node;
-        m_array_search_path.Add(node);
+        m_array_search_path.Add(new Vector2(node.row, node.col));
+        m_array_search_grid.Add(node);
         while (!node.equal(m_start_node))
         {
             node = node.parent;
-            m_array_search_path.Add(node);
+            m_array_search_path.Add(new Vector2(node.row, node.col));
+            m_array_search_grid.Add(node);
         }
         m_array_search_path.Reverse();
+        m_array_search_grid.Reverse();
     }
 
     private bool isOpen(PathGrid test)
@@ -285,6 +239,7 @@ public class AStarPathfinder : Singleton<AStarPathfinder>
 		}
 		return false;	
 	}
+    #endregion
 
     #region
     /// <summary>
