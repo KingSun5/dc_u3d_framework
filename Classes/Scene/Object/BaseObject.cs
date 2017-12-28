@@ -183,11 +183,11 @@ public abstract class BaseObject : MonoBehaviour, IEventBase
     }
     public virtual Vector3 CenterPosition
     {
-        get { return HalfBoundSize; }
+        get { return this.Position + new Vector3(0, BoundSize.y*0.5f, 0); ; }
     }
     public virtual Vector3 TopPosition
     {
-        get { return Position + new Vector3(0, BoundSize.y, 0); }
+        get { return this.Position + new Vector3(0, BoundSize.y, 0); }
     }
     #endregion
 

@@ -76,6 +76,15 @@ public class Map2DObject : BaseObject, IGridObject
         this.SetPosition((Vector2)pos);
     }
     /// <summary>
+    /// 两个对象相差格子数
+    /// </summary>
+    public int Distance(Map2DObject obj)
+    {
+        int offset_row = Mathf.Abs(obj.RowIndex - this.RowIndex);
+        int offset_col = Mathf.Abs(obj.ColIndex - this.ColIndex);
+        return (int)Mathf.Ceil(Mathf.Sqrt(offset_row * offset_row + offset_col * offset_col));
+    }
+    /// <summary>
     /// 深度
     /// </summary>
     /// <param name="z_depth"></param>

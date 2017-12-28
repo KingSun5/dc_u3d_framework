@@ -202,12 +202,12 @@ public class AStarPathfinder : Singleton<AStarPathfinder>
     private void buildPath(PathGrid end_node)
     {
         PathGrid node = end_node;
-        m_array_search_path.Add(new Vector2(node.row, node.col));
+        m_array_search_path.Add(node.pos);
         m_array_search_grid.Add(node);
         while (!node.equal(m_start_node))
         {
             node = node.parent;
-            m_array_search_path.Add(new Vector2(node.row, node.col));
+            m_array_search_path.Add(node.pos);
             m_array_search_grid.Add(node);
         }
         m_array_search_path.Reverse();
