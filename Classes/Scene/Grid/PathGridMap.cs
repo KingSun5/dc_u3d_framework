@@ -115,6 +115,12 @@ public class PathGridMap : Singleton<PathGridMap>
 			return 1;
 		return m_nodes[row,col].alpha; 
 	}
+    /// <summary>
+    /// 是否有效坐标
+    /// </summary>
+    /// <param name="x">unity坐标系</param>
+    /// <param name="y">unity坐标系</param>
+    /// <returns></returns>
 	public bool isValidPos(float x, float y)
 	{
 		switch(m_alige)
@@ -217,6 +223,12 @@ public class PathGridMap : Singleton<PathGridMap>
 		}
 		return y;
 	}
+    /// <summary>
+    /// 根据坐标获取格子
+    /// </summary>
+    /// <param name="x">unity坐标系</param>
+    /// <param name="y">unity坐标系</param>
+    /// <returns></returns>
 	public PathGrid getNodeByPostion(float x, float y)
 	{
 		if(!isValidPos(x, y))return null;
