@@ -106,6 +106,10 @@ public abstract class BaseObject : MonoBehaviour, IEventBase
     {
         gameObject.SetActive(b);
     }
+    public virtual bool IsVisible
+    {
+        get { return gameObject.activeSelf; }
+    }
     public virtual void SetColor(int r, int g, int b, int alpha)
     {
         if (GetComponent<SpriteRenderer>() != null)

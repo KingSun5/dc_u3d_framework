@@ -8,7 +8,7 @@ public class TextureImportProcess : AssetPostprocessor
         var importer = assetImporter as TextureImporter;
         var path = importer.assetPath;
 
-        importer.textureCompression = TextureImporterCompression.Compressed;
+        importer.textureCompression = TextureImporterCompression.Uncompressed;
 
         if (path.StartsWith("Assets/Assets/UI"))
         {
@@ -18,14 +18,14 @@ public class TextureImportProcess : AssetPostprocessor
             importer.spritePackingTag = "";
 
             TextureImporterPlatformSettings setting = new TextureImporterPlatformSettings();
-            setting.textureCompression = TextureImporterCompression.CompressedHQ;
+            setting.textureCompression = TextureImporterCompression.Uncompressed;
             setting.maxTextureSize = 2048;
             setting.name = "iPhone";
             setting.format = TextureImporterFormat.RGBA32;
             setting.overridden = true;
 
             TextureImporterPlatformSettings pcSetting = new TextureImporterPlatformSettings();
-            pcSetting.textureCompression = TextureImporterCompression.CompressedHQ;
+            pcSetting.textureCompression = TextureImporterCompression.Uncompressed;
             pcSetting.maxTextureSize = 2048;
             pcSetting.name = "Standalone";
             pcSetting.format = TextureImporterFormat.RGBA32;
