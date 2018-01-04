@@ -38,18 +38,21 @@ public abstract class BaseObject : MonoBehaviour, IEventBase
         ObjectManager.Instance.AttachObject(this);
     }
 
+    void Start()
+    {
+        //undo
+    }
     void Update()
     {
         //undo
     }
-
-    public virtual void OnEnable()
+    void OnEnable()
     {
-        RegisterEvent();
+        //undo
     }
-    public virtual void OnDisable()
+    void OnDisable()
     {
-        UnRegisterEvent();
+        //undo
     }
 
     #region 基础方法
@@ -59,10 +62,12 @@ public abstract class BaseObject : MonoBehaviour, IEventBase
 
     public virtual void Setup(object info)
     {
+        RegisterEvent();
         CalBoundSize();
     }
     public virtual void Destroy()
     {
+        UnRegisterEvent();
         m_Active = false;
         m_ObjectUID = 0;
 
