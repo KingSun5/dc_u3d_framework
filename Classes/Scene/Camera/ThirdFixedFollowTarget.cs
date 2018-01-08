@@ -17,11 +17,6 @@ public class ThirdFixedFollowTarget : MonoBehaviour
     /// </summary>
     public Vector3 m_offsetTarget = new Vector3(0, 0, -10);
 
-
-    /// <summary>
-    /// 主摄像机
-    /// </summary>
-    private Camera m_mainCamera;
     /// <summary>
     /// 摄像机要跟随的对象
     /// </summary>
@@ -33,7 +28,6 @@ public class ThirdFixedFollowTarget : MonoBehaviour
 
     void Awake()
     {
-        m_mainCamera = this.GetComponent<Camera>();
     }
 
     void OnEnable()

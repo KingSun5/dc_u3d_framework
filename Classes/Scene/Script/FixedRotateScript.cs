@@ -10,13 +10,11 @@ public class FixedRotateScript : MonoBehaviour
 {
     public Transform m_RootParent;
 
-    private Quaternion m_InitRotate;
     private Vector3 m_InitPosition;
 
 	void Awake () 
     {
         m_InitPosition = gameObject.transform.localPosition;
-        m_InitRotate = gameObject.transform.localRotation;
 	}
 	
 	// Update is called once per frame

@@ -14,8 +14,8 @@ public class AlertView : UIPanelBase
 	public Button[]     m_ArrBtn = new Button[(int)eAlertBtnType.MAX];
 	public Text         m_ContentText;
 
+    private object      m_Info;
 	private string      m_Content;
-	private object      m_Info;
     private System.Action<eAlertBtnType>        m_Fun;
     private Dictionary<eAlertBtnType, string>   m_DicBtn;
 
@@ -27,6 +27,7 @@ public class AlertView : UIPanelBase
 	public override void Show(params object[] info)
     {
         base.Show(info);
+        m_Info = (info != null && info.Length > 0) ? info[0] : null;
 
 		for(int i = 0; i < m_ArrBtn.Length; ++i)
 		{
@@ -68,6 +69,11 @@ public class AlertView : UIPanelBase
 		}
 	}
 
+    public object Info
+    {
+        set { m_Info = value; }
+        get { return m_Info; }
+    }
 	public string Content
 	{
 		set{ m_Content = value; }
@@ -75,10 +81,6 @@ public class AlertView : UIPanelBase
     public System.Action<eAlertBtnType> Fun
 	{
 		set{ m_Fun = value; }
-	}
-	public object Info
-	{
-		set{ m_Info = value; }
 	}
 	public Dictionary<eAlertBtnType, string> DicBtn
 	{

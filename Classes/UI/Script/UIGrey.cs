@@ -18,7 +18,6 @@ public class UIGrey : MonoBehaviour
     [SerializeField, Tooltip("变灰材质")]
     protected Material m_Material;
 
-    private bool m_IsDataDirty = true;
     private Image m_MaterialOwner;
 
     void Awake()

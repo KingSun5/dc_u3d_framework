@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using System;
-using System.IO;
 
 /// <summary>
 /// 通过配置表切割动画

@@ -18,7 +18,6 @@ public class FreeCameraScript : MonoBehaviour
 
     private Vector3 tmpLastMousePos = Vector3.zero;
     private bool tmpIsDrag = false;
-    private int tmpCurTouchIndex = -1;
 	void Update () 
     {
         ///1.移动

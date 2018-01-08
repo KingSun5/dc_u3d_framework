@@ -62,8 +62,6 @@ public class HUDTextPools : MonoBehaviour
             }
             else
             {
-                float mov = Camera.main.WorldToScreenPoint(cur_text.InitPos).y;
-
                 cur_text.m_Yquickness += Time.deltaTime * cur_text.m_YquicknessScaleFactor;
                 switch (cur_text.movement)
                 {
