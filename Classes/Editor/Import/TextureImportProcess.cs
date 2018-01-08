@@ -9,6 +9,8 @@ public class TextureImportProcess : AssetPostprocessor
         var path = importer.assetPath;
 
         importer.textureCompression = TextureImporterCompression.Uncompressed;
+        importer.alphaIsTransparency = true;
+        importer.wrapMode = TextureWrapMode.Clamp;
 
         if (path.StartsWith("Assets/Assets/UI"))
         {

@@ -25,7 +25,7 @@ public class RockerScrollScript : ScrollRect
     {
         base.Start();
         //计算摇杆块的半径
-        m_Radius = (transform as RectTransform).sizeDelta.x * 0.5f;
+        m_Radius = (transform as RectTransform).sizeDelta.x * 0.2f;
     }
 
     protected override void OnEnable()
