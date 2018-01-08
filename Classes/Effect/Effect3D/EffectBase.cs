@@ -20,6 +20,8 @@ public class EffectBase : MonoBehaviour
     protected bool m_Active = false;
     [SerializeField, Tooltip("是否准备完成(readonly)")]
     protected bool m_IsLoadComplete = false;
+    [SerializeField, Tooltip("正在加载的文件(readonly)")]
+    protected string m_FilePath = "";
 
     protected Transform m_RootNode = null;
     protected EventDispatcher m_Observer = new EventDispatcher();
@@ -41,6 +43,7 @@ public class EffectBase : MonoBehaviour
     }
     public virtual void OnDestroy()
     {
+        m_Active = false;
     }
     public virtual void OnEnable()
     {
@@ -50,6 +53,7 @@ public class EffectBase : MonoBehaviour
     public virtual void OnDisable()
     {
         m_Active = false;
+        ResourceManager.Instance.RemoveAsync(m_FilePath);
         UnRegisterEvent();
     }
     /// <summary>
@@ -72,28 +76,26 @@ public class EffectBase : MonoBehaviour
     public virtual void LoadResource(string file)
     {
         m_IsLoadComplete = false;
-
+        m_FilePath = file;
         ResourceManager.Instance.AddAsync(file, eResType.PREFAB, delegate(sResLoadResult info)
         {
-            if (!m_Active) return;
+            if (!m_Active || gameObject == null) return;
             Object res = ResourceLoaderManager.Instance.GetResource(file);
             if (res == null) return;
 
             GameObject obj = GameObject.Instantiate(res) as GameObject;
             if (obj == null) return;
-            TimerManager.Instance.AddTimer(0, 1, delegate() { OnLoadComplete(obj.transform); });
+            OnLoadComplete(obj.transform);
         }
         );
     }
     public virtual void OnLoadComplete(Transform obj)
     {
-        if (obj == null) return;
+        if (obj == null || gameObject == null) return;
 
         m_IsLoadComplete = true;
         m_RootNode = obj;
         m_RootNode.SetParent(this.transform, false);
-        m_RootNode.localPosition = Vector3.zero;
-        m_RootNode.localRotation = Quaternion.identity;
     }
 
     protected virtual void AddDestroyComponent()
