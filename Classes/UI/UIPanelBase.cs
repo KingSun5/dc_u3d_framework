@@ -32,6 +32,11 @@ public class UIPanelBase : MonoBehaviour
     {
     }
 
+    public virtual void Close()
+    {
+        UIManager.Instance.Close(m_ScreenID);
+    }
+
 	public virtual void OnEnable()
     {
         m_IsOpen = true;

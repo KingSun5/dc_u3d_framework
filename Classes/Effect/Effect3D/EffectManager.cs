@@ -101,6 +101,7 @@ public class EffectManager : Singleton<EffectManager>
     {
         GameObject obj = GameObjectUtils.BuildObject("Prefab/EmptyObject");
         if (obj == null) return null;
+        SceneLayerUtils.AddChild(obj.transform);
         Component gameObj = obj.GetComponent(typeof(T));
         if (gameObj == null) gameObj = obj.AddComponent(typeof(T));
 

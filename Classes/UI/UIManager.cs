@@ -92,8 +92,15 @@ public class UIManager : Singleton<UIManager>
 		GameObject obj;
 		if(m_DicUIView.TryGetValue(id, out obj))
 		{
-			obj.SetActive(true);
-			return obj;
+            if (obj != null)
+            {
+                obj.SetActive(true);
+                return obj;
+            }
+            else
+            {
+                m_DicUIView.Remove(id);
+            }
 		}
 
 		//获取数据
