@@ -96,6 +96,14 @@ public class EffectBase : MonoBehaviour
         m_IsLoadComplete = true;
         m_RootNode = obj;
         m_RootNode.SetParent(this.transform, false);
+        if (this is EffectUI)
+        {
+            GameObjectUtils.SetLayer(gameObject, LayerMask.NameToLayer(SceneLayerID.UI));
+        }
+        else
+        {
+            GameObjectUtils.SetLayer(gameObject, LayerMask.NameToLayer(SceneLayerID.Effect));
+        }
     }
 
     protected virtual void AddDestroyComponent()

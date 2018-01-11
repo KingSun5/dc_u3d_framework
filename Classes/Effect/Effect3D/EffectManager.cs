@@ -70,9 +70,12 @@ public class EffectManager : Singleton<EffectManager>
         EffectUI effect = NewObject<EffectUI>(file) as EffectUI;
         if (effect != null)
         {
+            if (parent_node == null)
+                parent_node = UILayerUtils.RootLayer;
             effect.transform.SetParent(parent_node, false);
             effect.ParentNode = parent_node;
             effect.TotalTime = time;
+            GameObjectUtils.SetLayer(effect.gameObject, LayerMask.NameToLayer(SceneLayerID.UI));
         }
 
         return effect;

@@ -21,7 +21,6 @@ public class EffectUI : EffectBase
     public override void Start()
     {
         base.Start();
-        GameObjectUtils.SetLayer(gameObject, LayerMask.NameToLayer("UI"));
     }
     public override void OnDestroy()
 	{
