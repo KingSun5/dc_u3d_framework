@@ -24,7 +24,7 @@ public class EffectBase : MonoBehaviour
     protected string m_FilePath = "";
 
     protected Transform m_RootNode = null;
-    protected EventDispatcher m_Observer = new EventDispatcher();
+    private System.Action OnComplete = null;
 
     public EffectBase()
     {
@@ -43,6 +43,9 @@ public class EffectBase : MonoBehaviour
     }
     public virtual void OnDestroy()
     {
+        //不能放在OnDisable
+        ResourceManager.Instance.RemoveAsync(m_FilePath);
+        OnComplete = null;
         m_Active = false;
     }
     public virtual void OnEnable()
@@ -53,7 +56,6 @@ public class EffectBase : MonoBehaviour
     public virtual void OnDisable()
     {
         m_Active = false;
-        ResourceManager.Instance.RemoveAsync(m_FilePath);
         UnRegisterEvent();
     }
     /// <summary>
@@ -131,8 +133,12 @@ public class EffectBase : MonoBehaviour
     {
         m_Active = false;
 
-        m_Observer.TriggerEvent(EffectID.EFFECT_DESTROY, new GameEvent());
+        if (OnComplete != null) OnComplete();
         EffectManager.Instance.RemoveEffect(this);
+    }
+    public void OnCompleted(System.Action callback)
+    {
+        OnComplete = callback;
     }
     public ulong ObjectUID
     {
