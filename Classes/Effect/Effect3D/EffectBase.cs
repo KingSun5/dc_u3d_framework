@@ -161,10 +161,6 @@ public class EffectBase : MonoBehaviour
         get { return m_TotalTime; }
         set { m_TotalTime = value; }
     }
-    public EventDispatcher Observer
-    {
-        get { return m_Observer; }
-    }
     public bool IsLoadComplete
     {
         get { return m_IsLoadComplete; }
